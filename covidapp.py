@@ -630,7 +630,7 @@ def ranker(county_name):
             pct = 'middle 50%'
         else:
             pct = 'bottom 25%'
-        return "With a rank of {rank}, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, county_name = county_name, pct = pct, inf_col = inf_col) 
+        return "With a rank of {rank} out of {ctynum} included counties, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, ctynum = ctynum + 1, county_name = county_name, pct = pct, inf_col = inf_col) 
     else:
         return "Please Enter a Valid County Name (i.e. Orange County, CA)"
     

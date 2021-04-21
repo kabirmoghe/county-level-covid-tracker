@@ -14,9 +14,9 @@ def countyinfo():
 	if request.method == "POST":
 		county = request.form["cty"]
 		allinfo = covidapp.county_stats(county)
-		if len(allinfo) == 2:
-			stat, info = allinfo
-			return render_template("result.html", county = county, stat = stat, info = info)
+		if len(allinfo) == 3:
+			tbl, stat, info = allinfo
+			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info)
 		else:
 			return render_template("undef_result.html", issue = allinfo)
 	else:

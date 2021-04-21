@@ -10,12 +10,15 @@
 {% block title %}Data{% endblock %}
 {% block content %}
 <br>
+<div id="loading" justify-content: center></div>
+<div id="content">
 <h3>Input your county</h3>
-<p>Enter the name of your county below (results should load in ~10 seconds):<br><i>ex: Orange County, CA</i></p>
-<form action = "#" method = "post">
-	<p><input type="text" name="cty"></p>
-	<p><input type="submit" value = "Get Results"></p>
-</form>
+	<p>Enter the name of your county below (results should load in ~10 seconds):<br><i>ex: Orange County, CA</i></p>
+	<form action = "#" method = "post">
+		<p><input type="text" name="cty"></p>
+		<p><input type="submit" name="anything_submit" value = "Get Results" onclick="loading();"></p>
+	</form>
+</div>
 {% endblock %}
 </body>
 </html>

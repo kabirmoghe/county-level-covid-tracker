@@ -11,3 +11,15 @@ table, th, td{
   	vertical-align: middle;
   	font-size: 14px;
 }
+
+div#loading {
+    position: absolute;
+    display: none;
+    background: url(/static/loading.gif) no-repeat;
+    width: 300px;
+  	height: 200px;
+  	z-index: 15;
+  	top: 50%;
+  	left: 50%;
+  	background-size: 50px 50px;
+    }

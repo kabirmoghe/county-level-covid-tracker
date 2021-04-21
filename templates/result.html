@@ -17,11 +17,11 @@
 	<p>{{info}}</p>
 	<img style="max-width: 300px; height: auto;" src="{{url_for('static', filename='ratechart.png')}}" alt="Breakdown of Infection Rates and Rankings">
 	<p><br><strong>Attributes of Your County</strong></p>
-	
+	<div style="overflow-x:auto;">
 	{% for item in tbl%}
             {{ item|safe }}
 	{% endfor %}
-
+	</div>
 	{% endblock %}
 </body>
 </html>

@@ -13,12 +13,12 @@ def home():
 def countyinfo():
 	if request.method == "POST":
 		county = request.form["cty"]
-		if len(covidapp.county_stats(county)) == 2:
-			stat, info = covidapp.county_stats(county)
+		allinfo = covidapp.county_stats(county)
+		if len(allinfo) == 2:
+			stat, info = allinfo
 			return render_template("result.html", county = county, stat = stat, info = info)
 		else:
-			issue = covidapp.county_stats(county)
-			return render_template("undef_result.html", issue = issue)
+			return render_template("undef_result.html", issue = allinfo)
 	else:
 		return render_template("data.html")
 

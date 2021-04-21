@@ -624,33 +624,3 @@ def county_stats(county_name):
         return stat, info
     else:
         return "Please enter a valid county name (i.e. Orange County, CA). The county you entered may not have complete information."
-'''
-def ranker(county_name):
-    
-    data = main_function()
-    
-    cols = data.columns
-    inf_col = 0
-    for col in cols:
-        if "Infection" in col.split() and "as" in col.split():
-            inf_col = col
-
-    data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
-
-    ctynum = len(data)
-
-    high25pct = round(ctynum*0.25)
-    low25pct = round(ctynum*0.75)
-    if county_name in data['County Name'].values:
-        rank = data[data['County Name']==county_name].index.values[0]
-        if rank < high25pct:
-            pct = 'top 25%'
-        elif high25pct < rank < low25pct:
-            pct = 'middle 50%'
-        else:
-            pct = 'bottom 25%'
-        return "With a rank of {rank} out of {ctynum} included counties, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, ctynum = ctynum + 1, county_name = county_name, pct = pct, inf_col = inf_col) 
-    else:
-        return "Please Enter a Valid County Name (i.e. Orange County, CA)"
-'''
-

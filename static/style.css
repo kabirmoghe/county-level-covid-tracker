@@ -36,6 +36,7 @@ input#box {
 
 input#getresults {
   border: none;
+  background-color: #ededed; 
 }
 
 ::placeholder {

@@ -15,10 +15,25 @@ table, th, td{
 div#loading {
     position: absolute;
     display: none;
-    background: url(/static/loading.gif) no-repeat;
-    width: 300px;
-  	height: 200px;
+    background: url(/static/rolling.gif) no-repeat;
+    width: 100px;
+  	height: 100px;
   	top: 50%;
   	left: 50%;
-  	background-size: 50px 50px;
+  	background-size: 45px 45px;
     }
+
+button {
+	border-width: 0.5px
+}
+
+input#box {
+	background-color: #f2f6fa; 
+	border-width: 0.5px;
+	padding: 5px;
+}
+
+::placeholder {
+   font-style: italic;
+   color: #bbc2c7;
+}

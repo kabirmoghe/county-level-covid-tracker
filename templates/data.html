@@ -4,6 +4,12 @@
 	<title>Live County COVID-19 Data</title>
 	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename = 'style.css')}}">
 	<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+	<script type="text/javascript">// <![CDATA[
+        function loading(){
+            $("#loading").show();
+            $("#content").hide();       
+        }
+// ]]></script>
 </head>
 <body>
 {% extends "base.html" %}
@@ -15,7 +21,7 @@
 <h3>Input your county</h3>
 	<p>Enter the name of your county below (results should load in ~10 seconds):<br><i>ex: Orange County, CA</i></p>
 	<form action = "#" method = "post">
-		<p><input type="text" name="cty"></p>
+		<p><input type="text" id = 'box' name="cty" placeholder="County, State"></p>
 		<p><input type="submit" name="anything_submit" value = "Get Results" onclick="loading();"></p>
 	</form>
 </div>

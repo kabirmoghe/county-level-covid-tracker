@@ -629,4 +629,4 @@ def county_stats(county_name):
         info = "With a rank of {rank} out of {ctynum} included counties, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, ctynum = ctynum + 1, county_name = county_name, pct = pct, inf_col = inf_col) 
         return otherinfo, stat, info
     else:
-        return "Please enter a valid county name (i.e. Orange County, CA). The county you entered may not have complete information."
+        return "Please enter a valid county name (i.e. Orange County, CA). The county, '{county_name}', you entered may not have complete information.".format(county_name = county_name)

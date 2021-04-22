@@ -26,17 +26,20 @@ div#loading {
 button {
   background-color: #ededed;
 	border: none;
+  border-radius: 5px;
 }
 
 input#box {
 	background-color: #f2f6fa; 
 	border: none;
 	padding: 5px;
+  border-radius: 5px;
 }
 
 input#getresults {
   border: none;
   background-color: #ededed; 
+  border-radius: 5px;
 }
 
 ::placeholder {

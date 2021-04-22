@@ -6,10 +6,10 @@ body {
 table, th, td{
 	border: 1px solid white;
 	outline-color: #FFFFFF;
-    background-color: #CBDCFA;
-    text-align: center;
-  	vertical-align: middle;
-  	font-size: 14px;
+  background-color: #CBDCFA;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
 }
 
 div#loading {
@@ -24,13 +24,18 @@ div#loading {
     }
 
 button {
-	border-width: 0.5px
+  background-color: #ededed;
+	border: none;
 }
 
 input#box {
 	background-color: #f2f6fa; 
-	border-width: 0.5px;
+	border: none;
 	padding: 5px;
+}
+
+input#getresults {
+  border: none;
 }
 
 ::placeholder {

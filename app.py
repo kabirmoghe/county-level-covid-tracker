@@ -1,6 +1,8 @@
 from flask import Flask, redirect, url_for, render_template, request, session
 from datetime import timedelta
 import covidapp
+import matplotlib.pyplot as pyplot
+import seaborn as sns
 
 app = Flask(__name__)
 app.secret_key = 'hello'
@@ -14,9 +16,9 @@ def countyinfo():
 	if request.method == "POST":
 		county = request.form["cty"]
 		allinfo = covidapp.county_stats(county)
-		if len(allinfo) == 3:
-			tbl, stat, info = allinfo
-			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info)
+		if len(allinfo) == 4:
+			tbl, stat, info, rec = allinfo
+			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec)
 		else:
 			return render_template("undef_result.html", issue = allinfo)
 	else:

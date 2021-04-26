@@ -16,7 +16,10 @@
 	<p>April 2021 Infection rate for {{county}}: <strong>{{stat}}</strong> (cases per 100,000)</p>
 	<p>{{info}}</p>
 	<img style="max-width: 100%; height: auto;" src="{{url_for('static', filename='ratechart.png')}}" alt="Breakdown of Infection Rates and Rankings">
-	<h5><br>Attributes of {{county}}</h5>
+	<br><br>
+	<p><strong>{{rec}}</strong></p>
+	<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
+	<h5>Attributes of {{county}}</h5>
 	<div style="overflow-x:auto;">
 	{% for item in tbl%}
             {{ item|safe }}

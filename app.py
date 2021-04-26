@@ -1,8 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, session
 from datetime import timedelta
 import covidapp
-import matplotlib.pyplot as pyplot
-import seaborn as sns
 
 app = Flask(__name__)
 app.secret_key = 'hello'

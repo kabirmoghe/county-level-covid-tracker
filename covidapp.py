@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 import requests
-import seaborn as sns
-import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 
 # Creates COVID-19 County Level Dataset

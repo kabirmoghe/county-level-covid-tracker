@@ -1,7 +1,6 @@
 body {
-	padding: 20px;
+  padding: 20px;
 }
-
 
 table, th, td{
 	border: 1px solid white;
@@ -45,4 +44,9 @@ input#getresults {
 ::placeholder {
    font-style: italic;
    color: #bbc2c7;
+}
+
+hr  {
+  border-color:#f2f6fa;
+  border-width: 3px;
 }

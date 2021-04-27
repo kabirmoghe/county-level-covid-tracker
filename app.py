@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request
 from datetime import timedelta
 import covidapp
 
@@ -14,9 +14,10 @@ def countyinfo():
 	if request.method == "POST":
 		county = request.form["cty"]
 		allinfo = covidapp.county_stats(county)
-		if len(allinfo) == 4:
-			tbl, stat, info, rec = allinfo
-			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec)
+		if len(allinfo) == 5:
+			tbl, stat, info, rec, img = allinfo
+			
+			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, img = img)
 		else:
 			return render_template("undef_result.html", issue = allinfo)
 	else:

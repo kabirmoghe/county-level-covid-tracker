@@ -593,6 +593,8 @@ def main_function():
     return data
 
 def county_stats(county_name):
+    if county_name == '':
+        return "Please enter a county name (i.e. Orange County, CA)."
     data = main_function()
 
     infs = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()]
@@ -631,11 +633,11 @@ def county_stats(county_name):
 
         if rank < high25pct:
             pct = 'top 25%'
-            rec = 'There is a high risk of infection in {county_name}, so careful precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
+            rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
             img = 'ratechart_top.png'
         elif high25pct < rank < low25pct:
             pct = 'middle 50%'
-            rec = 'There is a moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed strictly:'.format(county_name = county_name)
+            rec = 'There is a moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
             img = 'ratechart_mid.png'
         else:
             pct = 'bottom 25%'

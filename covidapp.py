@@ -181,7 +181,7 @@ def create_mask_data():
         if txt != '' and txt != '|':
             sps.append(txt)
 
-    date_txt = sps[14].split()
+    date_txt = sps[15].split()
         
     date_updated = date_txt[5] + ' ' + date_txt[6] + ' ' + date_txt[7]
     

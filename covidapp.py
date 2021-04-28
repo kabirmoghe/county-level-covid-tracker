@@ -595,56 +595,57 @@ def main_function():
 def county_stats(county_name):
     if county_name == '':
         return "Please enter a county name (i.e. Orange County, CA)."
-    data = main_function()
-
-    infs = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()]
-
-    cols = data.columns
-
-    inf_col = 0
-    for col in cols:
-        if "Infection" in col.split() and "as" in col.split():
-            inf_col = col
-
-    sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
-
-    ctynum = len(sorted_data)
-
-    high25pct = round(ctynum*0.25)
-    low25pct = round(ctynum*0.75)
-
-    if county_name in data['County Name'].values:
-        #county_df = data[data['County Name'] == county_name][infs].transpose().reset_index()
-        #county_df['Time'] = ["Jan '20", "Feb '20", "Mar '20", "Apr '20", "May '20", "Jun '20", "Jul '20", "Aug '20", "Sept '20", "Oct '20", "Nov '20", "Dec '20", "Jan '21", "Feb '21", "Mar '21", "Apr '21"]
-        #county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
-        
-        #sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
-        #plt.savefig('../static/countyplot.png')
-
-        des_row = data[data['County Name'] == str(county_name)]
-
-        des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
-
-        otherinfo = des_row.iloc[:, -11:]
-        
-        stat = des_row[inf_col].iloc[0]
-
-        rank = sorted_data[sorted_data['County Name']==county_name].index.values[0]
-
-        if rank < high25pct:
-            pct = 'top 25%'
-            rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
-            img = 'ratechart_top.png'
-        elif high25pct < rank < low25pct:
-            pct = 'middle 50%'
-            rec = 'There is a moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
-            img = 'ratechart_mid.png'
-        else:
-            pct = 'bottom 25%'
-            rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
-            img = 'ratechart_bot.png'
-        info = "With a rank of {rank} out of {ctynum} included counties, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, ctynum = ctynum + 1, county_name = county_name, pct = pct, inf_col = inf_col)
-
-        return otherinfo, stat, info, rec, img
     else:
-        return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
+        data = main_function()
+
+        infs = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()]
+
+        cols = data.columns
+
+        inf_col = 0
+        for col in cols:
+            if "Infection" in col.split() and "as" in col.split():
+                inf_col = col
+
+        sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
+
+        ctynum = len(sorted_data)
+
+        high25pct = round(ctynum*0.25)
+        low25pct = round(ctynum*0.75)
+
+        if county_name in data['County Name'].values:
+            #county_df = data[data['County Name'] == county_name][infs].transpose().reset_index()
+            #county_df['Time'] = ["Jan '20", "Feb '20", "Mar '20", "Apr '20", "May '20", "Jun '20", "Jul '20", "Aug '20", "Sept '20", "Oct '20", "Nov '20", "Dec '20", "Jan '21", "Feb '21", "Mar '21", "Apr '21"]
+            #county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
+            
+            #sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
+            #plt.savefig('../static/countyplot.png')
+
+            des_row = data[data['County Name'] == str(county_name)]
+
+            des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
+
+            otherinfo = des_row.iloc[:, -11:]
+            
+            stat = des_row[inf_col].iloc[0]
+
+            rank = sorted_data[sorted_data['County Name']==county_name].index.values[0]
+
+            if rank < high25pct:
+                pct = 'top 25%'
+                rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
+                img = 'ratechart_top.png'
+            elif high25pct < rank < low25pct:
+                pct = 'middle 50%'
+                rec = 'There is a moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
+                img = 'ratechart_mid.png'
+            else:
+                pct = 'bottom 25%'
+                rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
+                img = 'ratechart_bot.png'
+            info = "With a rank of {rank} out of {ctynum} included counties, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, ctynum = ctynum + 1, county_name = county_name, pct = pct, inf_col = inf_col)
+
+            return otherinfo, stat, info, rec, img
+        else:
+            return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)

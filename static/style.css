@@ -1,5 +1,6 @@
-body {
-  padding: 20px;
+div#all {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 table, th, td{
@@ -49,4 +50,8 @@ input#getresults {
 hr  {
   border-color:#f2f6fa;
   border-width: 3px;
+}
+
+a#dot {
+  color: #34C654;
 }

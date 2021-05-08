@@ -22,6 +22,11 @@
 	<p>Enter the name of your county below (results should load in ~10 seconds):<br><i>ex: Orange County, CA</i></p>
 	<form action = "#" method = "post">
 		<p><input type="text" id = 'box' name="cty" placeholder="County, State"></p>
+			<select>
+			    {% for state in states %}
+			    <option value= "{{state}}" SELECTED>{{state}}</option>"
+			    {% endfor %}
+			</select>
 		<p><input type="submit" id = 'getresults' name="anything_submit" value = "Get Results" onclick="loading();"></p>
 	</form>
 </div>

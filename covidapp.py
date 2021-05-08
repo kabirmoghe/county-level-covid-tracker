@@ -589,8 +589,13 @@ def main_function():
     # Function that puts everything together
 
     data = combiner()    
-
     return data
+
+def county_list(state):
+    data = main_function()
+    st_list = list(data['State'].unique())
+    ctys = list(data[data['State'] == state]['County Name'].values)
+    return ctys
 
 def county_stats(county_name):
     if county_name == '':

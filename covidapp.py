@@ -244,7 +244,7 @@ def create_covid_pop_data():
     cases = cases[cases['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
     cases['County Name'] = cases['County Name']  + ', ' + cases['State']
     cases['County Name'] = cases['County Name'].apply(county_cleaner)
-    cases.drop(cases.columns[-7:], axis = 1, inplace = True)
+    cases.drop(cases.columns[-3:], axis = 1, inplace = True)
     
     cases2020 = cases.iloc[:,:349]
     cases2021 = cases.iloc[:,349:]
@@ -591,10 +591,8 @@ def main_function():
     data = combiner()    
     return data
 
-def county_list(state):
-    data = main_function()
-    st_list = list(data['State'].unique())
-    ctys = list(data[data['State'] == state]['County Name'].values)
+def county_list():
+    ctys = list(pd.read_csv('https://raw.githubusercontent.com/kabirmoghe/Demographic-Data/main/countynames.csv')['County Name'].values)
     return ctys
 
 def county_stats(county_name):

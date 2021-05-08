@@ -1,6 +1,10 @@
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
 div#all {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 table, th, td{

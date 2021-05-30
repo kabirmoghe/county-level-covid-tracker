@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from urllib.request import urlopen
+import json
+import plotly.express as px
 
 # Creates COVID-19 County Level Dataset
 
@@ -652,3 +655,22 @@ def county_stats(county_name):
             return otherinfo, stat, info, rec, img
         else:
             return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
+
+def usplot():
+    with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+        counties = json.load(response)
+    data = create_covid_pop_data()
+    last_inf_rate = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()][-1]
+
+    data['Log {name}'.format(name = last_inf_rate)] = data[last_inf_rate].apply(lambda value: np.log(value) if value != 0 else value)
+    
+    fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_inf_rate),
+                           color_continuous_scale="Plasma",
+                           hover_name = 'County Name',
+                           hover_data=[last_inf_rate],
+                           scope="usa",
+                           labels={'Log {name}'.format(name = last_inf_rate):'Current Log May Infection Rate'}
+                          )
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.update_traces(marker_line_width=0)
+    fig.write_html("/Users/kabirmoghe/Desktop/covidapp/templates/usplot.html", full_html = False)

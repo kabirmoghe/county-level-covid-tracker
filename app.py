@@ -29,5 +29,10 @@ def countyinfo():
 def about():
     return render_template("about.html")
 
+@app.route("/stats")
+def stats():
+	covidapp.usplot()
+	return render_template("plot.html")
+
 if __name__ == '__main__':
     app.run(debug = True)

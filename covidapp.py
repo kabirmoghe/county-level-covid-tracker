@@ -673,4 +673,4 @@ def usplot():
                           )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_traces(marker_line_width=0)
-    fig.write_html("/Users/kabirmoghe/Desktop/covidapp/templates/usplot.html", full_html = False)
+    fig.write_html("../covidapp/templates/usplot.html", full_html = False)

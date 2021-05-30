@@ -17,20 +17,27 @@
 {% block content %}
 <br>
 <div id="loading" justify-content: center></div>
+
 <div id="content">
-<h3>Input your county</h3>
-	<p>Enter the name of your county below (results should load in ~10 seconds):<br><i>ex: Orange County, CA</i></p>
-	<form action = "#" method = "post">
-		<!--<p><input type="text" id = 'box' name="cty" placeholder="County, State"></p>-->
-			<p><datalist id="counties">
-			    {% for cty in ctys %}
-			    <option value= "{{cty}}" SELECTED>{{cty}}</option>"
-			    {% endfor %}
-			</datalist>
-			<input autoComplete="on" id = 'box' name = 'cty' placeholder = 'County, State' list="counties"/> 
-			</p>
-		<p><input type="submit" id = 'getresults' name="anything_submit" value = "Get Results" onclick="loading();"></p>
-	</form>
+	<div class="outer">
+	  <div class="middle">
+	    <div class="inner">
+	      <h3>Input your county</h3>
+			<p>Enter the name of your county below (results should load in ~10 seconds):<br><i>ex: Orange County, CA</i></p>
+			<form action = "#" method = "post">
+				<!--<p><input type="text" id = 'box' name="cty" placeholder="County, State"></p>-->
+					<p><datalist id="counties">
+					    {% for cty in ctys %}
+					    <option value= "{{cty}}" SELECTED>{{cty}}</option>"
+					    {% endfor %}
+					</datalist>
+					<input autoComplete="on" id = 'box' name = 'cty' placeholder = 'County, State' list="counties"/> 
+					</p><p>
+					<input type="submit" id = 'getresults' name="anything_submit" value = "Get Results" onclick="loading();"></p>
+			</form>
+	    </div>
+	  </div>
+	</div>
 </div>
 {% endblock %}
 </body>

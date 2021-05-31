@@ -7,6 +7,7 @@ import json
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.graph_objects as go
 
 # Creates COVID-19 County Level Dataset
 
@@ -696,3 +697,226 @@ def usplot():
         top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = top10[inf_col].iloc[i]))
 
     return top10lst
+
+def create_vaxx_data():
+    vaxx_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/COVID19_Vaccination_Demographics.csv'
+    vaxx_data = pd.read_csv(vaxx_url)
+    
+    states = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado",
+      "Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois",
+      "Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland",
+      "Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana",
+      "Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York",
+      "North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania",
+      "Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah",
+      "Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]
+    
+    abbrev = {
+            'District of Columbia': 'DC',
+            'Puerto Rico': 'PR',
+            'Alabama': 'AL',
+            'Montana': 'MT',
+            'Alaska': 'AK',
+            'Nebraska': 'NE',
+            'Arizona': 'AZ',
+            'Nevada': 'NV',
+            'Arkansas': 'AR',
+            'New Hampshire': 'NH',
+            'California': 'CA',
+            'New Jersey': 'NJ',
+            'Colorado': 'CO',
+            'New Mexico': 'NM',
+            'Connecticut': 'CT',
+            'New York': 'NY',
+            'Delaware': 'DE',
+            'North Carolina': 'NC',
+            'Florida': 'FL',
+            'North Dakota': 'ND',
+            'Georgia': 'GA',
+            'Ohio': 'OH',
+            'Hawaii': 'HI',
+            'Oklahoma': 'OK',
+            'Idaho': 'ID',
+            'Oregon': 'OR',
+            'Illinois': 'IL',
+            'Pennsylvania': 'PA',
+            'Indiana': 'IN',
+            'Rhode Island': 'RI',
+            'Iowa': 'IA',
+            'South Carolina': 'SC',
+            'Kansas': 'KS',
+            'South Dakota': 'SD',
+            'Kentucky': 'KY',
+            'Tennessee': 'TN',
+            'Louisiana': 'LA',
+            'Texas': 'TX',
+            'Maine': 'ME',
+            'Utah': 'UT',
+            'Maryland': 'MD',
+            'Vermont': 'VT',
+            'Massachusetts': 'MA',
+            'Virginia': 'VA',
+            'Michigan': 'MI',
+            'Washington': 'WA',
+            'Minnesota': 'MN',
+            'West Virginia': 'WV',
+            'Mississippi': 'MS',
+            'Wisconsin': 'WI',
+            'Missouri': 'MO',
+            'Wyoming': 'WY',
+        }
+    
+    #CLEANING
+    
+    vaxx_data.drop('GEOGRAPHY_TYPE', axis = 1, inplace = True)
+    vaxx_data = vaxx_data.drop_duplicates()
+    
+    vaxx_breakdown = vaxx_data[vaxx_data['DEMOGRAPHIC_CATEGORY'] == 'TOTAL'][['STATE_NAME','Full_or_Partial_Vaccinated_Percent', 'Fully_Vaccinated_Percent']].reset_index(drop = True).rename(columns = {'STATE_NAME': 'State', 'Full_or_Partial_Vaccinated_Percent': '% ≥ 1 Dose', 'Fully_Vaccinated_Percent': '% Fully Vaccinated'})
+    
+    vaxx_breakdown['% ≥ 1 Dose'] = pd.to_numeric(vaxx_breakdown['% ≥ 1 Dose'], errors='coerce')
+    vaxx_breakdown = vaxx_breakdown.replace(np.nan, 0, regex=True)
+
+    vaxx_breakdown['% ≥ 1 Dose'] = round(vaxx_breakdown['% ≥ 1 Dose']*100, 2)
+
+    vaxx_breakdown['% Fully Vaccinated'] = pd.to_numeric(vaxx_breakdown['% Fully Vaccinated'], errors='coerce')
+    vaxx_breakdown = vaxx_breakdown.replace(np.nan, 0, regex=True)
+
+    vaxx_breakdown['% Fully Vaccinated'] = round(vaxx_breakdown['% Fully Vaccinated']*100, 2)
+    
+    race_df = pd.concat([pd.DataFrame(states), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50)))], axis = 1)
+    race_df.columns = ['State','WHITE','BLACK','HISPANIC OR LATINO', 'ASIAN', 'NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER', 'AMERICAN INDIAN OR ALASKA NATIVE']
+    
+    race_breakdown = vaxx_data[vaxx_data['DEMOGRAPHIC_CATEGORY'] == 'RACE/ETHNICITY']
+
+    race_breakdown = race_breakdown[race_breakdown['DEMOGRAPHIC_GROUP'] != 'TWO OR MORE RACES']
+    race_breakdown = race_breakdown[race_breakdown['DEMOGRAPHIC_GROUP'] != 'OTHER']
+    race_breakdown = race_breakdown[race_breakdown['DEMOGRAPHIC_GROUP'] != 'NON-HISPANIC']
+
+    race_breakdown = race_breakdown[['STATE_NAME', 'DEMOGRAPHIC_GROUP', 'Full_or_Partial_Vaccinated_Percent', 'Fully_Vaccinated_Percent']]
+
+    race_breakdown['Full_or_Partial_Vaccinated_Percent'] = pd.to_numeric(race_breakdown['Full_or_Partial_Vaccinated_Percent'], errors='coerce')
+    race_breakdown = race_breakdown.replace(np.nan, 0, regex=True)
+
+    race_breakdown['Full_or_Partial_Vaccinated_Percent'] = race_breakdown['Full_or_Partial_Vaccinated_Percent']*100
+
+    race_breakdown['Fully_Vaccinated_Percent'] = pd.to_numeric(race_breakdown['Fully_Vaccinated_Percent'], errors='coerce')
+    race_breakdown = race_breakdown.replace(np.nan, 0, regex=True)
+
+    race_breakdown['Fully_Vaccinated_Percent'] = race_breakdown['Fully_Vaccinated_Percent']*100
+    
+    groups = ['WHITE','BLACK','HISPANIC OR LATINO', 'ASIAN', 'NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER', 'AMERICAN INDIAN OR ALASKA NATIVE']
+    
+    # Partial/Full Vaccination % By Race in Each State
+
+    for group in groups:
+        group_df = race_breakdown[race_breakdown['DEMOGRAPHIC_GROUP'] == group].reset_index(drop = True)
+        group_df = group_df.rename(columns = {'STATE_NAME': 'State','Full_or_Partial_Vaccinated_Percent': group})
+        group_df.drop(['DEMOGRAPHIC_GROUP', 'Fully_Vaccinated_Percent'], axis = 1, inplace = True)
+        for i in range(len(race_df.index)):
+            state = race_df['State'].iloc[i]
+            if state in group_df['State'].values:
+                value = group_df[group_df['State'] == state][group].iloc[0]
+                if value > 100:
+                    race_df[group].iloc[i] = 100
+                else: 
+                    value = round(value)
+                    race_df[group].iloc[i] = group_df[group_df['State'] == state][group].iloc[0]     
+            else:
+                race_df[group].iloc[i] = 'N/A'
+    
+    # Adding new columns and changing names
+
+    race_df = pd.concat([race_df, pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50))), pd.DataFrame(list(range(0,50)))], axis = 1)
+
+    race_df.columns = ['State','% White ≥ 1 Dose', '% Black ≥ 1 Dose', '% Hispanic or Latino ≥ 1 Dose','% Asian ≥ 1 Dose', '% Native Hawaiian/Other Pacific Islander ≥ 1 Dose', '% Native American/Alaska Native ≥ 1 Dose', 'WHITE','BLACK','HISPANIC OR LATINO', 'ASIAN', 'NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER', 'AMERICAN INDIAN OR ALASKA NATIVE']
+    
+    # Full Vaccination % By Race in Each State
+
+    for group in groups:
+        group_df = race_breakdown[race_breakdown['DEMOGRAPHIC_GROUP'] == group].reset_index(drop = True)
+        group_df = group_df.rename(columns = {'STATE_NAME': 'State','Fully_Vaccinated_Percent': group})
+        group_df.drop(['DEMOGRAPHIC_GROUP', 'Full_or_Partial_Vaccinated_Percent'], axis = 1, inplace = True)
+        for i in range(len(race_df.index)):
+            state = race_df['State'].iloc[i]
+            if state in group_df['State'].values:
+                value = group_df[group_df['State'] == state][group].iloc[0]
+                if value > 100:
+                    race_df[group].iloc[i] = 100.00
+                else: 
+                    value = round(value)
+                    race_df[group].iloc[i] = group_df[group_df['State'] == state][group].iloc[0]     
+            else:
+                race_df[group].iloc[i] = 'N/A'
+                
+    race_df.columns = ['State','% White ≥ 1 Dose', '% Black ≥ 1 Dose', '% Hispanic or Latino ≥ 1 Dose','% Asian ≥ 1 Dose', '% Native Hawaiian/Other Pacific Islander ≥ 1 Dose', '% Native American/Alaska Native ≥ 1 Dose','% White Fully Vaccinated', '% Black Fully Vaccinated', '% Hispanic or Latino Fully Vaccinated','% Asian Fully Vaccinated', '% Native Hawaiian/Other Pacific Islander Fully Vaccinated', '% Native American/Alaska Native Fully Vaccinated']
+    
+    vaxx_info = pd.merge(vaxx_breakdown, race_df, on = 'State')
+    
+    vaxx_info['State'] = vaxx_info['State'].map(abbrev)
+    
+    return vaxx_info
+
+def vaxx_plot(cty):
+    
+    state = cty.split(', ')[-1]
+    
+    data = create_vaxx_data()
+    
+    df = data[data['State'] == state]
+    
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+    y=df['State'],
+    x=df['% ≥ 1 Dose'],
+    width=[0.1],
+    name='% ≥1 Dose',
+    orientation='h',
+    marker=dict(
+        color='#B8D4FE'
+        )
+    ))
+    
+    fig.add_trace(go.Bar(
+    y=df['State'],
+    x=df['% Fully Vaccinated'],
+    width=[0.1],
+    name='% Fully Vaccinated',
+    orientation='h',
+    marker=dict(
+        color='#69F68C',
+        )
+    ))
+    
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay', plot_bgcolor = '#ffffff')
+    fig.update_xaxes(visible=False, showticklabels=False)
+    
+    fig.write_html('/app/templates/vaxxplot.html', full_html = False)
+
+def multivaxx_plot():
+    
+    df = create_vaxx_data().sort_values(by = '% ≥ 1 Dose', ascending = False).head(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
+    
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+    y=df['State'],
+    x=df['% ≥ 1 Dose'],
+    name='% ≥1 Dose',
+    orientation='h',
+    marker=dict(
+        color='#B8D4FE'
+        )
+    ))
+    
+    fig.add_trace(go.Bar(
+    y=df['State'],
+    x=df['% Fully Vaccinated'],
+    name='% Fully Vaccinated',
+    orientation='h',
+    marker=dict(
+        color='#69F68C',
+        )
+    ))
+    
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay')
+    
+    fig.write_html('/app/templates/multivaxxplot.html', full_html = False)

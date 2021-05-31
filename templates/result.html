@@ -24,6 +24,10 @@
 		<li>Sign up for vaccinations if eligible</li>
 	</ul>
 	<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
+	<h5>Vaccination Progress for {{county}}*</h5>
+	<p>*The visualization below shows the percentage of partially vaccinated and fully vaccinated people within the state.</p>
+
+	{% include "vaxxplot.html" %}
 	<h5>Significant Attributes of {{county}}</h5>
 	<div style="overflow-x:auto;">
 	{% for item in tbl%}

@@ -694,7 +694,7 @@ def usplot():
     top10lst = []
     
     for i in range(10):
-        top10lst.append(round('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = top10[inf_col].iloc[i])),2)
+        top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = round(float(top10[inf_col].iloc[i]),2)))
 
     return top10lst
 

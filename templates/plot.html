@@ -20,19 +20,22 @@
 	</div>
 	{% include "usplot.html" %}
 	<br>
+	<hr>
 	<h4>Top 10 Counties in Terms of Current Monthly Infection Rate (per 100,000)</h4>
 		<ol>
 		{% for item in top10 %}
 	         <li>{{item}}</li>
 		{% endfor %}
 		</ol>
-		<br>
+	<hr>
 	<div class = 'content'>
 		<div class = 'title'>
 		<h4>Top 10 States with the Highest % At Least Partially Vaccinated</h4>
 		</div>
 	</div>
+
 	{% include "multivaxxplot.html" %}
+	<button onclick="location.href = '/';">Take me back</button>
 	{% endblock %}
 </body>
 </html>

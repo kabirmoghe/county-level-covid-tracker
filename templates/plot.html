@@ -12,10 +12,22 @@
 	{% block titles %}Stats{% endblock %}
 	{% block content %}
 	<br>
-	<div id = 'title'>
-		<h3>Current US Infection Rates per County*</h4>
+	<div class = 'content'>
+		<div class = 'title'>
+		<h3>Current US Infection Rates per County*</h3>
 		<p><strong>*Note:</strong> The visualization below uses logarithmic infection rates for this month for coloration.</p>
+		</div>
+	</div>
 	{% include "usplot.html" %}
+	<br>
+		<h3 id = 'title'>Top 10 Counties in Terms of Current Monthly Infection Rate (per 100,000)</h3>
+			<div class = 'list'>
+				<ol>
+				{% for item in top10 %}
+			         <li>{{item}}</li>
+				{% endfor %}
+				</ol>
+			</div>
 	{% endblock %}
 </body>
 </html>

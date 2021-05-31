@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import json
 import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Creates COVID-19 County Level Dataset
 
@@ -621,13 +623,13 @@ def county_stats(county_name):
         low25pct = round(ctynum*0.75)
 
         if county_name in data['County Name'].values:
-            #county_df = data[data['County Name'] == county_name][infs].transpose().reset_index()
-            #county_df['Time'] = ["Jan '20", "Feb '20", "Mar '20", "Apr '20", "May '20", "Jun '20", "Jul '20", "Aug '20", "Sept '20", "Oct '20", "Nov '20", "Dec '20", "Jan '21", "Feb '21", "Mar '21", "Apr '21"]
-            #county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
+            '''county_df = data[data['County Name'] == county_name][infs].transpose().reset_index()
+            county_df['Time'] = ["Jan '20", "Feb '20", "Mar '20", "Apr '20", "May '20", "Jun '20", "Jul '20", "Aug '20", "Sept '20", "Oct '20", "Nov '20", "Dec '20", "Jan '21", "Feb '21", "Mar '21", "Apr '21", "May '21"]
+            county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
             
-            #sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
-            #plt.savefig('../static/countyplot.png')
-
+            sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
+            plt.savefig('../covidapp/static/countyplot.png')
+            '''
             des_row = data[data['County Name'] == str(county_name)]
 
             des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
@@ -657,9 +659,11 @@ def county_stats(county_name):
             return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
 
 def usplot():
-    with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+    '''with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
         counties = json.load(response)
+    '''
     data = create_covid_pop_data()
+    '''
     last_inf_rate = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()][-1]
 
     data['Log {name}'.format(name = last_inf_rate)] = data[last_inf_rate].apply(lambda value: np.log(value) if value != 0 else value)
@@ -673,4 +677,22 @@ def usplot():
                           )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_traces(marker_line_width=0)
-    fig.write_html("/app/templates/usplot.html", full_html = False)
+    fig.write_html("../covidapp/templates/usplot.html", full_html = False)
+    '''
+    cols = data.columns
+
+    inf_col = 0
+    for col in cols:
+        if "Infection" in col.split() and "as" in col.split():
+            inf_col = col
+
+    sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
+
+    top10 = sorted_data.head(10)[['County Name', inf_col]]
+
+    top10lst = []
+    
+    for i in range(10):
+        top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = top10[inf_col].iloc[i]))
+
+    return top10lst

@@ -11,9 +11,13 @@
 	{% block titles %}Result{% endblock %}
 	{% block content%}
 	<br>
-	<h3 id = 'title'>My Results</h3>
-	<p>{{issue}}</p>
-	<button onclick="location.href = '/countyinfo';">Take me back</button>
+	<div class = 'content'>
+		<div class = 'title'>
+			<h3 id = 'title'>My Results</h3>
+			<p>{{issue}}</p>
+			<button onclick="location.href = '/countyinfo';">Take me back</button>
+		</div>
+	</div>
 	{% endblock %}
 </body>
 </html>

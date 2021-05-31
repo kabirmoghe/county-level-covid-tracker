@@ -31,8 +31,8 @@ def about():
 
 @app.route("/stats")
 def stats():
-	covidapp.usplot()
-	return render_template("plot.html")
+	top10 = covidapp.usplot()
+	return render_template("plot.html", top10 = top10)
 
 if __name__ == '__main__':
     app.run(debug = True)

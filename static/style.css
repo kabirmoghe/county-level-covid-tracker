@@ -61,34 +61,34 @@ a#dot {
   color: #34C654;
 }
 
-div#title{
-  text-align: center;
+.title{
+  width: 700px;
 }
 
 h3#title {
   text-align: center;
 }
 
-.outer {
-  display: table;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+
+.ncontent {
+  display: flex;
+  justify-content: center;
+
 }
 
-.middle {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.inner {
-  margin-left: auto;
-  margin-right: auto;
-  /* Whatever width you want */
+.content {
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
 div#content {
+  display: flex;
+  justify-content: center;
   text-align: center;
+}
+
+.list {
+  text-align: center;
+  list-style-position: inside;
 }

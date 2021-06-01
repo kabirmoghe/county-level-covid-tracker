@@ -684,7 +684,7 @@ def usplot():
 
     inf_col = 0
     for col in cols:
-        if "Infection" in col.split() and "as" in col.split():
+        if "Infection" in col.split() and "as" in col.split() and "Log" not in col.split():
             inf_col = col
 
     sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
@@ -887,8 +887,7 @@ def vaxx_plot(cty):
         )
     ))
     
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay', plot_bgcolor = '#ffffff')
-    fig.update_xaxes(visible=False, showticklabels=False)
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state}'.format(state = state)})
     
     fig.write_html('/app/templates/vaxxplot.html', full_html = False)
 
@@ -917,6 +916,15 @@ def multivaxx_plot():
         )
     ))
     
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay')
+    fig.update_layout(
+    title={
+        'text': "Plot Title",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+    
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Top 10 States With The Heighest Current Vaccination Progress','xanchor': 'center',
+        'yanchor': 'top'})
     
     fig.write_html('/app/templates/multivaxxplot.html', full_html = False)

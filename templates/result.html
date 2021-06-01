@@ -25,9 +25,9 @@
 	</ul>
 	<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
 	<h5>Vaccination Progress for {{county}}*</h5>
-	<p><strong>*Note:</strong>The visualization below shows the percentage of partially vaccinated and fully vaccinated people within the state.</p>
+	<p><strong>*Note:</strong> The visualization below shows the percentage of partially vaccinated and fully vaccinated people within the state.</p>
 
-	{% include "vaxxplot.html" %}
+	{% include "/app/templates/vaxxplot.html" %}
 	<h5>Significant Attributes of {{county}}</h5>
 	<div style="overflow-x:auto;background-color:#E4EEFD;">
 		{% for item in tbl%}

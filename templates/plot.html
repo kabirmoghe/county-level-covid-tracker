@@ -20,23 +20,42 @@
 	</div>
 	{% include "usplot.html" %}
 	<br>
-	<hr>
-	<h4>Top 10 Counties in Terms of Current Monthly Infection Rate (per 100,000)</h4>
-		<ol>
-		{% for item in top10 %}
-	         <li>{{item}}</li>
-		{% endfor %}
-		</ol>
-	<hr>
+	<br>
+	<br>
+	<h4 id = 'title'>Top and Bottom 10 Counties in Terms of Current Monthly Infection Rate (per 100,000)</h4>
 	<div class = 'content'>
 		<div class = 'title'>
-		<h4>Top 10 States with the Highest % At Least Partially Vaccinated</h4>
+			<img style="max-width: 30%; height: auto;" src="/static/top-bottom-legend.png" alt="Top vs. Bottom Legend">
+		</div>
+	</div>
+	<br>
+	<div class = 'content'>
+		<div style="overflow-x:auto;background-color:#FED4D0;">
+		{% for item in top10 %}
+            {{ item|safe }}
+		{% endfor %}
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title'>
+		<p>. . .</p>
+		</div>
+	</div>
+	<div class = 'content'>
+		<div style="overflow-x:auto;background-color:#DBFDF9;">
+		{% for item in bot10 %}
+            {{ item|safe }}
+		{% endfor %}
+		</div>
+	</div>
+	<br><br>
+	<div class = 'content'>
+		<div class = 'title'>
+		<h4>Current State-Wide Vaccination Progress</h4>
 		</div>
 	</div>
 
 	{% include "multivaxxplot.html" %}
-	<button onclick="location.href = '/';">Take me back</button>
-	<p></p>
 	{% endblock %}
 </body>
 </html>

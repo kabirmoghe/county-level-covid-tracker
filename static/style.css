@@ -10,12 +10,10 @@ div#all {
 table, th, td{
 	border: 1px solid white;
 	outline-color: #FFFFFF;
-  background-color: #E4EEFD;
   text-align: center;
   vertical-align: middle;
   font-size: 14px;
 }
-
 
 div#loading {
     position: absolute;
@@ -65,7 +63,7 @@ a#dot {
   width: 700px;
 }
 
-h3#title {
+h3#title, h4#title {
   text-align: center;
 }
 

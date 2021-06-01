@@ -29,7 +29,7 @@
 
 	{% include "vaxxplot.html" %}
 	<h5>Significant Attributes of {{county}}</h5>
-	<div style="overflow-x:auto;">
+	<div style="overflow-x:auto;background-color:#FF9A90;">
 	{% for item in tbl%}
             {{ item|safe }}
 	{% endfor %}

@@ -13,8 +13,8 @@ def home():
 def countyinfo():
 	if request.method == "POST":
 		county = request.form["cty"]
-		allinfo = covidapp.county_stats(county)
 		covidapp.vaxx_plot(county)
+		allinfo = covidapp.county_stats(county)
 		if len(allinfo) == 5:
 			tbl, stat, info, rec, img = allinfo
 			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, img = img)
@@ -32,9 +32,9 @@ def about():
 
 @app.route("/stats")
 def stats():
-	top10 = covidapp.usplot()
+	top10, bot10 = covidapp.usplot()
 	covidapp.multivaxx_plot()
-	return render_template("plot.html", top10 = top10)
+	return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)])
 
 if __name__ == '__main__':
     app.run(debug = True)

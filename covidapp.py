@@ -678,7 +678,7 @@ def usplot():
                           )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_traces(marker_line_width=0)
-    fig.write_html("/app/templates/usplot.html", full_html = False)
+    fig.write_html("../covidapp/templates/usplot.html", full_html = False)
     
     cols = data.columns
 
@@ -689,14 +689,15 @@ def usplot():
 
     sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
 
-    top10 = sorted_data.head(10)[['County Name', inf_col]]
+    top10 = sorted_data.head(10)[['County Name', inf_col]].reset_index(drop = True)
+    bot10 = sorted_data.tail(10)[['County Name', inf_col]].reset_index(drop = True)
 
-    top10lst = []
+    #top10lst = []
     
-    for i in range(10):
-        top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = round(float(top10[inf_col].iloc[i]),2)))
+    #for i in range(10):
+    #    top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = round(float(top10[inf_col].iloc[i]),2)))
 
-    return top10lst
+    return top10, bot10
 
 def create_vaxx_data():
     vaxx_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/COVID19_Vaccination_Demographics.csv'
@@ -889,7 +890,7 @@ def vaxx_plot(cty):
     
     fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state}'.format(state = state)})
     
-    fig.write_html('/app/templates/vaxxplot.html', full_html = False)
+    fig.write_html('../covidapp/templates/vaxxplot.html', full_html = False)
 
 def multivaxx_plot():
     
@@ -927,4 +928,4 @@ def multivaxx_plot():
     fig.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Top 10 States With The Heighest Current Vaccination Progress','xanchor': 'center',
         'yanchor': 'top'})
     
-    fig.write_html('/app/templates/multivaxxplot.html', full_html = False)
+    fig.write_html('../covidapp/templates/multivaxxplot.html', full_html = False)

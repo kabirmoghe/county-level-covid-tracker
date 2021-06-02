@@ -8,6 +8,9 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
+import chart_studio
+import chart_studio.plotly as py
+import chart_studio.tools as tls
 
 # Creates COVID-19 County Level Dataset
 
@@ -678,7 +681,7 @@ def usplot():
                           )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_traces(marker_line_width=0)
-    fig.write_html("/app/templates/usplot.html", full_html = False)
+    fig.write_html("../covidapp/templates/usplot.html", full_html = False)
     
     cols = data.columns
 
@@ -889,8 +892,10 @@ def vaxx_plot(cty):
     ))
     
     fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state}'.format(state = state)})
-    
-    fig.write_html('/app/templates/vaxxplot.html', full_html = False)
+
+    fig.write_html('/users/kabirmoghe/Desktop/covidapp/templates/{state}_vaxxplot.html'.format(state = state), full_html = False) 
+
+    #fig.write_html('../covidapp/templates/vaxxplot.html', full_html = False)
 
 def multivaxx_plot():
     
@@ -928,4 +933,4 @@ def multivaxx_plot():
     fig.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Top 10 States With The Heighest Current Vaccination Progress','xanchor': 'center',
         'yanchor': 'top'})
     
-    fig.write_html('/app/templates/multivaxxplot.html', full_html = False)
+    fig.write_html('../covidapp/templates/multivaxxplot.html', full_html = False)

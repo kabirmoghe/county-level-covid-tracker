@@ -891,7 +891,7 @@ def vaxx_plot(cty):
         )
     ))
     
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state}'.format(state = state)})
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state} in Terms of % People Vaccinated'.format(state = state)})
 
     fig.write_html('/app/templates/{state}_vaxxplot.html'.format(state = state), full_html = False) 
 

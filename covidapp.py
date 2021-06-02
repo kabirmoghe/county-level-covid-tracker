@@ -681,7 +681,7 @@ def usplot():
                           )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_traces(marker_line_width=0)
-    fig.write_html("/app/templates/usplot.html", full_html = False)
+    fig.write_html("../covidapp/templates/usplot.html", full_html = False)
     
     cols = data.columns
 
@@ -893,18 +893,21 @@ def vaxx_plot(cty):
     
     fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state}'.format(state = state)})
 
-    fig.write_html('/app/templates/{state}_vaxxplot.html'.format(state = state), full_html = False) 
+    fig.write_html('../covidapp/templates/{state}_vaxxplot.html'.format(state = state), full_html = False) 
 
     #fig.write_html('../covidapp/templates/vaxxplot.html', full_html = False)
 
 def multivaxx_plot():
     
-    df = create_vaxx_data().sort_values(by = '% ≥ 1 Dose', ascending = False).head(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
+    df_top = create_vaxx_data().sort_values(by = '% ≥ 1 Dose').tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
+    df_bottom = create_vaxx_data().sort_values(by = '% ≥ 1 Dose', ascending = False).tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
     
-    fig = go.Figure()
-    fig.add_trace(go.Bar(
-    y=df['State'],
-    x=df['% ≥ 1 Dose'],
+    #TOP 10
+
+    fig_top = go.Figure()
+    fig_top.add_trace(go.Bar(
+    y=df_top['State'],
+    x=df_top['% ≥ 1 Dose'],
     name='% ≥1 Dose',
     orientation='h',
     marker=dict(
@@ -912,9 +915,9 @@ def multivaxx_plot():
         )
     ))
     
-    fig.add_trace(go.Bar(
-    y=df['State'],
-    x=df['% Fully Vaccinated'],
+    fig_top.add_trace(go.Bar(
+    y=df_top['State'],
+    x=df_top['% Fully Vaccinated'],
     name='% Fully Vaccinated',
     orientation='h',
     marker=dict(
@@ -922,7 +925,7 @@ def multivaxx_plot():
         )
     ))
     
-    fig.update_layout(
+    fig_top.update_layout(
     title={
         'text': "Plot Title",
         'y':0.9,
@@ -930,7 +933,43 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Top 10 States With The Heighest Current Vaccination Progress','xanchor': 'center',
+    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Highest Current Vaccination Progress in % People Vaccinated','xanchor': 'center',
         'yanchor': 'top'})
     
-    fig.write_html('/app/templates/multivaxxplot.html', full_html = False)
+    fig_top.write_html('../covidapp/templates/multivaxxplot_top.html', full_html = False)
+
+    #BOTTOM 10
+
+    fig_bottom = go.Figure()
+    fig_bottom.add_trace(go.Bar(
+    y=df_bottom['State'],
+    x=df_bottom['% ≥ 1 Dose'],
+    name='% ≥1 Dose',
+    orientation='h',
+    marker=dict(
+        color='#B8D4FE'
+        )
+    ))
+    
+    fig_bottom.add_trace(go.Bar(
+    y=df_bottom['State'],
+    x=df_bottom['% Fully Vaccinated'],
+    name='% Fully Vaccinated',
+    orientation='h',
+    marker=dict(
+        color='#F04629',
+        )
+    ))
+    
+    fig_bottom.update_layout(
+    title={
+        'text': "Plot Title",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+    
+    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Lowest Current Vaccination Progress in % People Vaccinated','xanchor': 'center',
+        'yanchor': 'top'})
+    
+    fig_bottom.write_html('../covidapp/templates/multivaxxplot_bottom.html', full_html = False)

@@ -709,6 +709,25 @@ def create_vaxx_data():
     vaxx_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/COVID19_Vaccination_Demographics.csv'
     vaxx_data = pd.read_csv(vaxx_url)
     
+    no_mo = {1:'January',
+                2:'February',
+                 3:'March',
+                 4:'April',
+                 5:'May',
+                 6:'June',
+                 7:'July',
+                 8:'August',
+                 9:'September',
+                 10:'October',
+                 11:'November',
+                 12:'December'
+                }
+    
+    raw_date = vaxx_data[vaxx_data['DEMOGRAPHIC_CATEGORY'] == 'TOTAL']['DATE'][0]
+    
+    year, month, day = [int(val) for val in raw_date.split('-')]
+    date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
+    
     states = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado",
       "Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois",
       "Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland",
@@ -861,13 +880,13 @@ def create_vaxx_data():
     
     vaxx_info['State'] = vaxx_info['State'].map(abbrev)
     
-    return vaxx_info
+    return date, vaxx_info
 
 def vaxx_plot(cty):
     
     state = cty.split(', ')[-1]
     
-    data = create_vaxx_data()
+    date, data = create_vaxx_data()
     
     df = data[data['State'] == state]
     
@@ -894,7 +913,7 @@ def vaxx_plot(cty):
         )
     ))
     
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state} in Terms of % People Vaccinated'.format(state = state)}, xaxis_title="% People Vaccinated", font_family="Raleway", hovermode = 'y', hoverlabel_font_family = 'Raleway')
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'{state} Vaccination Progress in % People Vaccinated as of {date}'.format(state = state, date = date)}, xaxis_title="% People Vaccinated", font_family="Raleway", hovermode = 'y', hoverlabel_font_family = 'Raleway')
 
     fig.write_html('/app/templates/{state}_vaxxplot.html'.format(state = state), full_html = False) 
 
@@ -902,8 +921,9 @@ def vaxx_plot(cty):
 
 def multivaxx_plot():
     
-    df_top = create_vaxx_data().sort_values(by = '% ≥ 1 Dose').tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
-    df_bottom = create_vaxx_data().sort_values(by = '% ≥ 1 Dose', ascending = False).tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
+    date, df = create_vaxx_data()
+    df_top = df.sort_values(by = '% ≥ 1 Dose').tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
+    df_bottom = df.sort_values(by = '% ≥ 1 Dose', ascending = False).tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
     
     #TOP 10
 
@@ -936,7 +956,7 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Highest Current Vaccination Progress in % People Vaccinated','xanchor': 'center',
+    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Highest Current Vaccination Progress in % People Vaccinated as of {date}'.format(date = date),'xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_top.write_html('/app/templates/multivaxxplot_top.html', full_html = False)
@@ -972,7 +992,7 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Lowest Current Vaccination Progress in % People Vaccinated','xanchor': 'center',
+    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Lowest Current Vaccination Progress in % People Vaccinated as of {date}'.format(date = date),'xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)

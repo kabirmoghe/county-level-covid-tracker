@@ -723,7 +723,7 @@ def create_vaxx_data():
                  12:'December'
                 }
     
-    raw_date = vaxx_data[vaxx_data['DEMOGRAPHIC_CATEGORY'] == 'TOTAL']['DATE'][0]
+    raw_date = vaxx_data[vaxx_data['DEMOGRAPHIC_CATEGORY'] == 'TOTAL']['DATE'].values[0]
     
     year, month, day = [int(val) for val in raw_date.split('-')]
     date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)

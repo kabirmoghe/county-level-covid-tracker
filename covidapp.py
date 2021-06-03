@@ -647,18 +647,21 @@ def county_stats(county_name):
             if rank < high25pct:
                 pct = 'top 25%'
                 rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
-                img = 'ratechart_top.png'
+                #rateimg = 'topratechart.png'
+                riskimg = 'riskcharttop.png'
             elif high25pct < rank < low25pct:
                 pct = 'middle 50%'
                 rec = 'There is a moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
-                img = 'ratechart_mid.png'
+                #rateimg = 'midratechart.png'
+                riskimg = 'riskchartmid.png'
             else:
                 pct = 'bottom 25%'
                 rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
-                img = 'ratechart_bot.png'
+                #rateimg = 'botratechart.png'
+                riskimg = 'riskchartbot.png'
             info = "With a rank of {rank} out of {ctynum} included counties, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, ctynum = ctynum + 1, county_name = county_name, pct = pct, inf_col = inf_col)
 
-            return otherinfo, stat, info, rec, img
+            return otherinfo, stat, info, rec, riskimg
         else:
             return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
 

@@ -17,8 +17,8 @@ def countyinfo():
 		allinfo = covidapp.county_stats(county)
 		if len(allinfo) == 5:
 			state = county.split(', ')[-1]
-			tbl, stat, info, rec, img = allinfo
-			return render_template("result.html", state = state, county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, img = img)
+			tbl, stat, info, rec, riskimg = allinfo
+			return render_template("result.html", state = state, county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, riskimg = riskimg)
 		else:
 			return render_template("undef_result.html", issue = allinfo)
 	else:

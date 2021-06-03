@@ -11,38 +11,44 @@
 	{% block titles %}Result{% endblock %}
 	{% block content %}
 	<br>
-	<h3>My Results</h3>
 	
-	<p>April 2021 Infection rate for {{county}}: <strong>{{stat}}</strong> (cases per 100,000)</p>
-	<p>{{info}}</p>
-	<div class = 'content'>
-		<img style="max-width: 45%; height: auto;" src="/static/{{riskimg}}" alt="Breakdown of Infection Rates Risk">
-	</div>
-	<!--<div class = 'content'>
-		<img style="max-width: 15%; height: auto;" src="/static/{{rateimg}}" alt="Breakdown of Infection Rates and Rankings">
-	</div>
-	<br><br>
--->
-	<strong>{{rec}}</strong></p>
-	<ul>
-		<li>Maintain a 6-foot distance</li>
-		<li>Wear a mask around others</li>
-		<li>Sign up for vaccinations if eligible</li>
-	</ul>
-	<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
-	<h5>Vaccination Progress for {{county}}*</h5>
-	<p><strong>*Note:</strong> The visualization below shows the percentage of partially vaccinated and fully vaccinated people within the state.</p>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<h3 id = 'title'>My Results</h3>
+	
+			<p>April 2021 Infection rate for {{county}}: <strong>{{stat}}</strong> (cases per 100,000)</p>
+			<p>{{info}}</p>
+			<div class = 'content'>
+				<img style="max-width: 70%; height: auto;" src="/static/{{riskimg}}" alt="Breakdown of Infection Rates Risk">
+			</div>
+			<br>
+			<!--<div class = 'content'>
+				<img style="max-width: 15%; height: auto;" src="/static/{{rateimg}}" alt="Breakdown of Infection Rates and Rankings">
+			</div>
+			<br><br>
+		-->
+			<strong>{{rec}}</strong></p>
+			<ul>
+				<li>Maintain a 6-foot distance</li>
+				<li>Wear a mask around others if comfortable</li>
+				<li>Sign up for vaccinations if eligible</li>
+			</ul>
+			<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
+			<h5>Vaccination Progress for {{county}}*</h5>
+			<p><strong>*Note:</strong> The visualization below shows the percentage of partially vaccinated and fully vaccinated people within the state.</p>
 
-	{% include state+"_vaxxplot.html" %}
+			{% include state+"_vaxxplot.html" %}
 
-	<h5>Significant Attributes of {{county}}</h5>
-	<div style="overflow-x:auto;background-color:#E4EEFD;">
-		{% for item in tbl%}
-	            {{ item|safe }}
-		{% endfor %}
+			<h5>Significant Attributes of {{county}}</h5>
+			<div style="overflow-x:auto;background-color:#E4EEFD;">
+				{% for item in tbl%}
+			            {{ item|safe }}
+				{% endfor %}
+			</div>
+			<br>
+			<button onclick="location.href = '/countyinfo';">Take me back</button>
+		</div>
 	</div>
-	<br>
-	<button onclick="location.href = '/countyinfo';">Take me back</button>
 	<p></p>
 	{% endblock %}
 </body>

@@ -887,14 +887,14 @@ def vaxx_plot(cty):
     y=df['State'],
     x=df['% Fully Vaccinated'],
     width=[0.1],
-    name='% Fully Vaccinated',
+    name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
         color='#69F68C',
         )
     ))
     
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state} in Terms of % People Vaccinated'.format(state = state)})
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Current Vaccination Progress for {state} in Terms of % People Vaccinated'.format(state = state)}, xaxis_title="% People Vaccinated", font_family="Raleway", hovermode = 'y', hoverlabel_font_family = 'Raleway')
 
     fig.write_html('/app/templates/{state}_vaxxplot.html'.format(state = state), full_html = False) 
 
@@ -921,7 +921,7 @@ def multivaxx_plot():
     fig_top.add_trace(go.Bar(
     y=df_top['State'],
     x=df_top['% Fully Vaccinated'],
-    name='% Fully Vaccinated',
+    name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
         color='#69F68C',
@@ -937,7 +937,7 @@ def multivaxx_plot():
         'yanchor': 'top'})
     
     fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Highest Current Vaccination Progress in % People Vaccinated','xanchor': 'center',
-        'yanchor': 'top'})
+        'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_top.write_html('/app/templates/multivaxxplot_top.html', full_html = False)
 
@@ -957,7 +957,7 @@ def multivaxx_plot():
     fig_bottom.add_trace(go.Bar(
     y=df_bottom['State'],
     x=df_bottom['% Fully Vaccinated'],
-    name='% Fully Vaccinated',
+    name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
         color='#F04629',
@@ -973,6 +973,6 @@ def multivaxx_plot():
         'yanchor': 'top'})
     
     fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Lowest Current Vaccination Progress in % People Vaccinated','xanchor': 'center',
-        'yanchor': 'top'})
+        'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)

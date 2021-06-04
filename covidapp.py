@@ -268,7 +268,7 @@ def create_covid_pop_data():
     deaths = deaths[deaths['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
     deaths['County Name'] = deaths['County Name']  + ', ' + deaths['State']
     deaths['County Name'] = deaths['County Name'].apply(county_cleaner)
-    deaths.drop(deaths.columns[-7:], axis = 1, inplace = True)
+    deaths.drop(deaths.columns[-3:], axis = 1, inplace = True)
 
     deaths2020 = deaths.iloc[:,:349]
     deaths2021 = deaths.iloc[:,349:]
@@ -642,24 +642,33 @@ def county_stats(county_name):
             
             stat = des_row[inf_col].iloc[0]
 
-            rank = sorted_data[sorted_data['County Name']==county_name].index.values[0]
+            rank = sorted_data[sorted_data['County Name']==county_name].index[0]+1
 
-            if rank < high25pct:
-                pct = 'top 25%'
-                rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
-                #rateimg = 'topratechart.png'
-                riskimg = 'riskcharttop.png'
-            elif high25pct < rank < low25pct:
-                pct = 'middle 50%'
-                rec = 'There is a moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
-                #rateimg = 'midratechart.png'
-                riskimg = 'riskchartmid.png'
-            else:
-                pct = 'bottom 25%'
+            pct = round((1-(rank/len(sorted_data)))*100, 2)
+
+            if pct == 0.0:
                 rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
-                #rateimg = 'botratechart.png'
                 riskimg = 'riskchartbot.png'
-            info = "With a rank of {rank} out of {ctynum} included counties, {county_name} falls within the {pct} of counties in terms of {inf_col}.".format(rank = rank+1, ctynum = ctynum + 1, county_name = county_name, pct = pct, inf_col = inf_col)
+                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the lowest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+            elif round(pct) == 100.0:
+                rec = 'There is a relatively high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)    
+                riskimg = 'riskcharttop.png'
+                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the highest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+            else:
+                if rank < high25pct:
+                    rec = 'There is a relatively high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
+                    #rateimg = 'topratechart.png'
+                    riskimg = 'riskcharttop.png'
+                elif high25pct < rank < low25pct:
+                    rec = 'There is a relatively moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
+                    #rateimg = 'midratechart.png'
+                    riskimg = 'riskchartmid.png'
+                else:
+                    rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
+                    #rateimg = 'botratechart.png'
+                    riskimg = 'riskchartbot.png'
+                
+                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
 
             return otherinfo, stat, info, rec, riskimg
         else:

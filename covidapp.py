@@ -689,10 +689,10 @@ def usplot():
                            hover_name = 'County Name',
                            hover_data=[last_inf_rate],
                            scope="usa",
-                           labels={'Log {name}'.format(name = last_inf_rate):'Current Log May Infection Rate'}
+                           labels={'Log {name}'.format(name = last_inf_rate):'Current Log Infection Rate'}
                           )
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    fig.update_traces(marker_line_width=0)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
+    fig.update_traces(marker_line_width=0, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
     fig.write_html("/app/templates/usplot.html", full_html = False)
     
     cols = data.columns
@@ -805,6 +805,25 @@ def create_vaxx_data():
     
     vaxx_data.drop('GEOGRAPHY_TYPE', axis = 1, inplace = True)
     vaxx_data = vaxx_data.drop_duplicates()
+    
+    # FIX TEXAS DATA (APPROX. TOTAL FROM MALE AND FEMALE AVG)
+    tx = vaxx_data[vaxx_data['STATE_NAME'] == 'Texas'].reset_index(drop = True)
+    partial_avg = (float(tx[tx['DEMOGRAPHIC_GROUP'] == 'FEMALE']['Full_or_Partial_Vaccinated_Percent'].iloc[0]) + float(tx[tx['DEMOGRAPHIC_GROUP'] == 'MALE']['Full_or_Partial_Vaccinated_Percent'].iloc[0]))/2
+    full_avg = (float(tx[tx['DEMOGRAPHIC_GROUP'] == 'FEMALE']['Fully_Vaccinated_Percent'].iloc[0]) + float(tx[tx['DEMOGRAPHIC_GROUP'] == 'MALE']['Fully_Vaccinated_Percent'].iloc[0]))/2
+
+    add_tx = pd.DataFrame(tx.iloc[-2].values).transpose()
+    add_tx.columns = vaxx_data.columns
+
+    add_tx['DEMOGRAPHIC_CATEGORY'] = ["TOTAL"]
+    add_tx['DEMOGRAPHIC_GROUP'] = ["TOTAL"]
+    add_tx['ACS_Population'] = [""]
+    add_tx['Administered_Dose1_recip'] = [""]
+    add_tx['Administered_Dose2_recip'] = [""]
+    add_tx['Full_or_Partial_Vaccinated_Percent'] = [partial_avg]
+    add_tx['Fully_Vaccinated'] = [""]
+    add_tx['Fully_Vaccinated_Percent'] = [full_avg]
+
+    vaxx_data = pd.concat([vaxx_data, add_tx]).reset_index(drop = True)
     
     vaxx_breakdown = vaxx_data[vaxx_data['DEMOGRAPHIC_CATEGORY'] == 'TOTAL'][['STATE_NAME','Full_or_Partial_Vaccinated_Percent', 'Fully_Vaccinated_Percent']].reset_index(drop = True).rename(columns = {'STATE_NAME': 'State', 'Full_or_Partial_Vaccinated_Percent': '% ≥ 1 Dose', 'Fully_Vaccinated_Percent': '% Fully Vaccinated'})
     
@@ -965,7 +984,7 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Highest Current Vaccination Progress in % People Vaccinated as of {date}'.format(date = date),'xanchor': 'center',
+    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'States with Highest Vaxx. Progress','xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_top.write_html('/app/templates/multivaxxplot_top.html', full_html = False)
@@ -1001,7 +1020,17 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'10 States With The Lowest Current Vaccination Progress in % People Vaccinated as of {date}'.format(date = date),'xanchor': 'center',
+    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'States with Lowest Vaxx. Progress'.format(date = date),'xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)
+
+    fig_map = px.choropleth(locations=df['State'], locationmode="USA-states", color=df['% ≥ 1 Dose'], scope="usa", color_continuous_scale='Bluered_r', hover_name = df['State'],
+                           hover_data=[df['% Fully Vaccinated']],
+                           labels={'locations': 'State', 'hover_data_0': '% Fully Vaccinated', 'color':'% At Least 1 Dose'})
+    fig_map.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway")
+    fig_map.update_traces(marker_line_width=0, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
+
+    fig_map.write_html('/app/templates/us_vaxxmap.html', full_html = False)
+
+    return date

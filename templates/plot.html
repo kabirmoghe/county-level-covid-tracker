@@ -14,7 +14,9 @@
 	<br>
 	<div class = 'content'>
 		<div class = 'title'>
-		<h3>Current US Infection Rates per County*</h3>
+		<h3>Noteworthy Nationwide Stats</h3>
+		<p>--</p>
+		<h4>Current US Infection Rates per County*</h4>
 		<p><strong>*Note:</strong> The visualization below uses logarithmic infection rates for this month for coloration.</p>
 		</div>
 	</div>
@@ -51,12 +53,16 @@
 	<br><br>
 	<div class = 'content'>
 		<div class = 'title'>
-		<h4>Current State-Wide Vaccination Progress</h4>
+		<h4>Current State-Wide Vaccination Progress as of {{date}}*</h4>
+		<p><strong>*Note:</strong> The Texas vaccination data is partially incomplete, and averages across demographics are used to approximate statewide information.</p>
 		</div>
 	</div>
+	{% include "us_vaxxmap.html" %}
+	<div class = 'content'>
+		{% include "multivaxxplot_top.html" %}
+		{% include "multivaxxplot_bottom.html" %}
+	</div>
 
-	{% include "multivaxxplot_top.html" %}
-	{% include "multivaxxplot_bottom.html" %}
 	{% endblock %}
 </body>
 </html>

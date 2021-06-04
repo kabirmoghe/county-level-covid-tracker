@@ -34,8 +34,8 @@ def about():
 @app.route("/stats")
 def stats():
 	top10, bot10 = covidapp.usplot()
-	covidapp.multivaxx_plot()
-	return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)])
+	date = covidapp.multivaxx_plot()
+	return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
 
 if __name__ == '__main__':
     app.run(debug = True)

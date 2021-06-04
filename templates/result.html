@@ -11,16 +11,18 @@
 	{% block titles %}Result{% endblock %}
 	{% block content %}
 	<br>
-	
+	<h3 id = 'title'>Results for {{county}}</h3>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-			<h3 id = 'title'>Results for {{county}}</h3>
-	
 			<p>Current monthly infection rate: <strong>{{stat}}</strong> (cases per 100,000)</p>
 			<p>{{info}}</p>
-			<div class = 'content'>
-				<img style="max-width: 70%; height: auto;" src="/static/{{riskimg}}" alt="Breakdown of Infection Rates Risk">
-			</div>
+		</div>
+	</div>
+	<div class = 'content'>
+		<img style="max-width: 70%; height: auto;" src="/static/{{riskimg}}" alt="Breakdown of Infection Rates Risk">
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
 			<br>
 			<!--<div class = 'content'>
 				<img style="max-width: 15%; height: auto;" src="/static/{{rateimg}}" alt="Breakdown of Infection Rates and Rankings">

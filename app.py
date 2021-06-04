@@ -39,7 +39,8 @@ def countyinfo():
 def about():
 	if path.exists("fulldataset.csv") == False:
 		dataset.main_function().to_csv('fulldataset.csv')
-    return render_template("about.html")
+
+	return render_template("about.html")
 
 @app.route("/stats")
 def stats():

@@ -16,6 +16,9 @@ def home():
 
 @app.route("/countyinfo", methods = ['POST', 'GET'])
 def countyinfo():
+	if path.exists("fulldataset.csv") == False:
+		dataset.main_function().to_csv('fulldataset.csv')
+
 	if request.method == "POST":
 		county = request.form["cty"]
 		embed_vaxx = covidapp.vaxx_plot(county)
@@ -34,10 +37,14 @@ def countyinfo():
 
 @app.route("/about")
 def about():
+	if path.exists("fulldataset.csv") == False:
+		dataset.main_function().to_csv('fulldataset.csv')
     return render_template("about.html")
 
 @app.route("/stats")
 def stats():
+	if path.exists("fulldataset.csv") == False:
+		dataset.main_function().to_csv('fulldataset.csv')
 	top10, bot10 = covidapp.usplot()
 	date = covidapp.multivaxx_plot()
 	return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)

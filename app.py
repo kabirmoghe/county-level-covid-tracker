@@ -1,13 +1,18 @@
 from flask import Flask, redirect, url_for, render_template, request
-from datetime import timedelta
 import covidapp
+import dataset
+import os.path
+from os import path
+
 
 app = Flask(__name__)
 app.secret_key = 'hello'
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+	if path.exists("fulldataset.csv") == False:
+		dataset.main_function().to_csv('fulldataset.csv')
+	return render_template("index.html")
 
 @app.route("/countyinfo", methods = ['POST', 'GET'])
 def countyinfo():

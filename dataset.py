@@ -226,6 +226,40 @@ def create_mask_data():
 # Data from usafacts.org (https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/)
 # URLs for cases, deaths, and population data from the above website
 
+def create_vaxx_data():
+
+    no_mo = {1:'January',
+                2:'February',
+                 3:'March',
+                 4:'April',
+                 5:'May',
+                 6:'June',
+                 7:'July',
+                 8:'August',
+                 9:'September',
+                 10:'October',
+                 11:'November',
+                 12:'December'
+                }
+
+    vaxx = pd.read_csv('https://data.cdc.gov/api/views/8xkx-amqh/rows.csv?accessType=DOWNLOAD')
+    
+    latest_date = vaxx['Date'][0]
+    
+    #year, month, day = [int(val) for val in latest_date.split('-')]
+    #date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
+
+    vaxx_data = vaxx[vaxx['Date'] == latest_date].sort_values(by = 'Recip_State').reset_index(drop = True)
+    vaxx_data['Recip_County'] = vaxx_data['Recip_County'] + ', ' + vaxx_data['Recip_State']
+    
+    for col in vaxx_data.columns:
+        if col != 'Recip_County' and 'Pct' not in col:
+            vaxx_data.drop(col, axis = 1, inplace = True)
+            
+    vaxx_data.columns = ['County Name', '% Fully Vaccinated', '% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65']
+
+    return vaxx_data
+
 def create_covid_pop_data():
 
     cases_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv'
@@ -577,11 +611,13 @@ def combiner():
     edu_data = create_edu_data()
     mask_data = create_mask_data()
     covid_data = create_covid_pop_data()
+    vaxx_data = create_vaxx_data()
     
     county_data = pd.merge(covid_data, inc_unemp_data, on = 'County Name')
     county_data = pd.merge(county_data, race_data, on = 'County Name')
     county_data = pd.merge(county_data, edu_data, on = 'County Name')
     county_data = pd.merge(county_data, mask_data, on = 'State')
+    county_data = pd.merge(county_data, vaxx_data, on = 'County Name')
     
     return county_data
 

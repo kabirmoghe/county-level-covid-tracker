@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 import chart_studio
 import chart_studio.plotly as py
 import chart_studio.tools as tls
+import covidapp
 
 def county_list():
     ctys = list(pd.read_csv('https://raw.githubusercontent.com/kabirmoghe/Demographic-Data/main/countynames.csv')['County Name'].values)
@@ -130,6 +131,7 @@ def usplot():
 
     return top10, bot10
 
+'''
 def create_vaxx_data():
     vaxx_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/COVID19_Vaccination_Demographics.csv'
     vaxx_data = pd.read_csv(vaxx_url)
@@ -325,70 +327,126 @@ def create_vaxx_data():
     vaxx_info['State'] = vaxx_info['State'].map(abbrev)
     
     return date, vaxx_info
-
+'''
 def vaxx_plot(cty):
     
-    state = cty.split(', ')[-1]
+    data = pd.read_csv('fulldataset.csv', index_col = 0)
     
-    date, data = create_vaxx_data()
+    df = data[data['County Name'] == cty]
     
-    df = data[data['State'] == state]
-    
-    fig = go.Figure()
+    fig = go.Figure()    
+
     fig.add_trace(go.Bar(
-    y=df['State'],
-    x=df['% ≥ 1 Dose'],
+    y=df['County Name'],
+    x=df['% Vaccinated ≥ 65'],
     width=[0.1],
-    name='% ≥1 Dose',
+    name='% 65+ Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#B8D4FE'
+        color='#FFC300',
+        )
+    ))
+
+    fig.add_trace(go.Bar(
+    y=df['County Name'],
+    x=df['% Vaccinated ≥ 18'],
+    width=[0.1],
+    name='% 18+ Fully Vaxx.',
+    orientation='h',
+    marker=dict(
+        color='#FF8195',
+        )
+    ))
+
+    fig.add_trace(go.Bar(
+    y=df['County Name'],
+    x=df['% Vaccinated ≥ 12'],
+    width=[0.1],
+    name='% 12+ Fully Vaxx.',
+    orientation='h',
+    marker=dict(
+        color='#81B8FF',
         )
     ))
     
     fig.add_trace(go.Bar(
-    y=df['State'],
+    y=df['County Name'],
     x=df['% Fully Vaccinated'],
     width=[0.1],
     name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#69F68C',
+        color='#69F68C'
         )
     ))
-    
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'{state} Vaccination Progress in % People Vaccinated as of {date}'.format(state = state, date = date)}, xaxis_title="% People Vaccinated", font_family="Raleway", hovermode = 'y', hoverlabel_font_family = 'Raleway')
 
-    fig.write_html('/app/templates/{state}_vaxxplot.html'.format(state = state), full_html = False) 
+    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Vaccination Progress in % People Vaccinated' ,'xanchor': 'center',
+        'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
+
+    fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
 
     #fig.write_html('../covidapp/templates/vaxxplot.html', full_html = False)
 
 def multivaxx_plot():
     
-    date, df = create_vaxx_data()
-    df_top = df.sort_values(by = '% ≥ 1 Dose').tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
-    df_bottom = df.sort_values(by = '% ≥ 1 Dose', ascending = False).tail(10)[['State', '% ≥ 1 Dose', '% Fully Vaccinated']].reset_index(drop = True)
+    data = pd.read_csv('fulldataset.csv', index_col = 0)
+
+    data = data[data['% Fully Vaccinated'] != 0].reset_index(drop = True)
+
+    data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
+
+    df_top = data.sort_values(by = '% Fully Vaccinated').tail(10)[['County Name', '% Fully Vaccinated', '% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65']].reset_index(drop = True)
+    df_bottom = data.sort_values(by = '% Fully Vaccinated', ascending = False).tail(10)[['County Name', '% Fully Vaccinated', '% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65']].reset_index(drop = True)
     
+    with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+        counties = json.load(response)
+    
+
     #TOP 10
 
-    fig_top = go.Figure()
+    fig_top = go.Figure()    
+
     fig_top.add_trace(go.Bar(
-    y=df_top['State'],
-    x=df_top['% ≥ 1 Dose'],
-    name='% ≥1 Dose',
+    y=df_top['County Name'],
+    x=df_top['% Vaccinated ≥ 65'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+    name='% 65+ Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#B8D4FE'
+        color='#FFC300',
+        )
+    ))
+
+    fig_top.add_trace(go.Bar(
+    y=df_top['County Name'],
+    x=df_top['% Vaccinated ≥ 18'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+    name='% 18+ Fully Vaxx.',
+    orientation='h',
+    marker=dict(
+        color='#FF8195',
+        )
+    ))
+
+    fig_top.add_trace(go.Bar(
+    y=df_top['County Name'],
+    x=df_top['% Vaccinated ≥ 12'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+    name='% 12+ Fully Vaxx.',
+    orientation='h',
+    marker=dict(
+        color='#81B8FF',
         )
     ))
     
     fig_top.add_trace(go.Bar(
-    y=df_top['State'],
+    y=df_top['County Name'],
     x=df_top['% Fully Vaccinated'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
     name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#69F68C',
+        color='#69F68C'
         )
     ))
     
@@ -400,31 +458,55 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'States with Highest Vaxx. Progress','xanchor': 'center',
+    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Counties with Highest Vaxx. Progress','xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_top.write_html('/app/templates/multivaxxplot_top.html', full_html = False)
 
     #BOTTOM 10
+    fig_bottom = go.Figure()    
 
-    fig_bottom = go.Figure()
     fig_bottom.add_trace(go.Bar(
-    y=df_bottom['State'],
-    x=df_bottom['% ≥ 1 Dose'],
-    name='% ≥1 Dose',
+    y=df_bottom['County Name'],
+    x=df_bottom['% Vaccinated ≥ 65'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+    name='% 65+ Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#B8D4FE'
+        color='#FFC300',
+        )
+    ))
+
+    fig_bottom.add_trace(go.Bar(
+    y=df_bottom['County Name'],
+    x=df_bottom['% Vaccinated ≥ 18'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+    name='% 18+ Fully Vaxx.',
+    orientation='h',
+    marker=dict(
+        color='#FF8195',
+        )
+    ))
+
+    fig_bottom.add_trace(go.Bar(
+    y=df_bottom['County Name'],
+    x=df_bottom['% Vaccinated ≥ 12'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+    name='% 12+ Fully Vaxx.',
+    orientation='h',
+    marker=dict(
+        color='#81B8FF',
         )
     ))
     
     fig_bottom.add_trace(go.Bar(
-    y=df_bottom['State'],
+    y=df_bottom['County Name'],
     x=df_bottom['% Fully Vaccinated'],
+    width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
     name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#F04629',
+        color='#69F68C'
         )
     ))
     
@@ -436,17 +518,21 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'States with Lowest Vaxx. Progress'.format(date = date),'xanchor': 'center',
+    
+    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Counties with Lowest Vaxx. Progress','xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
-    fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)
-
-    fig_map = px.choropleth(locations=df['State'], locationmode="USA-states", color=df['% ≥ 1 Dose'], scope="usa", color_continuous_scale='Bluered_r', hover_name = df['State'],
-                           hover_data=[df['% Fully Vaccinated']],
-                           labels={'locations': 'State', 'hover_data_0': '% Fully Vaccinated', 'color':'% At Least 1 Dose'})
-    fig_map.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway")
+    fig_bottom.write_html('../covidapp/templates/multivaxxplot_bottom.html', full_html = False)
+    
+    fig_map = px.choropleth(data, geojson=counties, locations='County FIPS', color='% Fully Vaccinated',
+                           color_continuous_scale="Bluered_r",
+                           hover_name = 'County Name',
+                           hover_data=['% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65'],
+                           scope="usa",
+                           labels={'% Fully Vaccinated':'Current % Fully Vaccinated'}
+                          )
+    fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
     fig_map.update_traces(marker_line_width=0, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
 
     fig_map.write_html('/app/templates/us_vaxxmap.html', full_html = False)
-
-    return date
+    

@@ -17,14 +17,14 @@
 			<h3>Nationwide Statistics</h3>
 			<br>
 			<h4>Current US Infection Rates per County*</h4>
-		<p><strong>*Note:</strong> The visualization below uses logarithmic infection rates for this month for coloration. Blank spots represent counties with incomplete data.</p>
+		<p><strong>*Note:</strong> The visualization below uses logarithmic cases per 100,000 in the past 7 days coloration. Blank spots represent counties with incomplete data.</p>
 		</div>
 	</div>
 	{% include "usplot.html" %}
 	<br>
 	<br>
 	<br>
-	<h4 id = 'title'>Top and Bottom 10 Counties in Terms of Current Monthly Infection Rate (per 100,000)</h4>
+	<h4 id = 'title'>Top and Bottom 10 Counties in Terms of Current Weekly Cases per 100,000</h4>
 	<div class = 'content'>
 		<div class = 'title'>
 			<img style="max-width: 30%; height: auto;" src="/static/top-bottom-legend.png" alt="Top vs. Bottom Legend">
@@ -54,7 +54,7 @@
 	<div class = 'content'>
 		<div class = 'title'>
 		<h4>Current State-Wide Vaccination Progress*</h4>
-		<p><strong>*Note:</strong> Texas vaccination data is not provided on a county-wide level, so no data is available for the state in terms of individual counties. Blank spots represent counties with incomplete information.</p>
+		<p><strong>*Note:</strong> Neither Hawaii nor Texas vaccination data is provided on the county level, so no data is available for the states in terms of individual counties. Blank spots represent counties with incomplete information.</p>
 		</div>
 	</div>
 	{% include "us_vaxxmap.html" %}

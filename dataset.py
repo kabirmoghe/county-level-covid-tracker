@@ -226,6 +226,8 @@ def create_mask_data():
 # Data from usafacts.org (https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/)
 # URLs for cases, deaths, and population data from the above website
 
+'''
+
 def create_covid_pop_data():
 
     cases_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv'
@@ -570,6 +572,104 @@ def create_covid_pop_data():
     
     return covid_data
 
+    '''
+
+def create_covid_pop_data():
+
+    no_mo = {1:'January',
+                2:'February',
+                 3:'March',
+                 4:'April',
+                 5:'May',
+                 6:'June',
+                 7:'July',
+                 8:'August',
+                 9:'September',
+                 10:'October',
+                 11:'November',
+                 12:'December'
+                }
+    
+    cases_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv'
+    deaths_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv'
+    pop_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_county_population_usafacts.csv'
+    
+    # Removes space in county names
+    
+    def county_cleaner(cty):
+        if cty.split(',')[0][-1] == ' ':
+            cty = '{County},{Abbr}'.format(County = cty.split(' ,')[0], Abbr = cty.split(' ,')[1])
+        return cty
+    
+    # Creates the cumulative cases dataframe
+    cases = pd.read_csv(cases_url)
+    cases['countyFIPS'] = cases['countyFIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
+    cases = cases[cases['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
+    cases['County Name'] = cases['County Name']  + ', ' + cases['State']
+    cases['County Name'] = cases['County Name'].apply(county_cleaner)
+    
+    
+    # Gets county names
+    
+    ctynames = cases['County Name']
+    
+    # Creates the cumulative deaths dataframe
+    deaths = pd.read_csv(deaths_url)
+    deaths['countyFIPS'] = deaths['countyFIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
+    deaths = deaths[deaths['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
+    deaths['County Name'] = deaths['County Name']  + ', ' + deaths['State']
+    deaths['County Name'] = deaths['County Name'].apply(county_cleaner)
+
+    def str_int(val):
+        if type(val) == str:
+            return int(val)
+        else:
+            return val
+
+    # Creates the population dataframe
+    
+    pop = pd.read_csv(pop_url)
+    pop['countyFIPS'] = pop['countyFIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
+    pop = pop[pop['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
+    pop['County Name'] = pop['County Name']  + ', ' + pop['State']
+    pop = pd.DataFrame(pop).rename(columns = {'population':'Population'})
+    pop['County Name'] = pop['County Name'].apply(county_cleaner)
+    
+    def week_compiler(df, c_or_d):
+
+        week = pd.concat([df[df.columns[:3]], df[df.columns[-8:]]], axis = 1)
+
+        rawdate = df.columns[-1] 
+        year, month, day = [int(value) for value in rawdate.split('-')]
+        
+        date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
+        
+        week['Weekly {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)] = week[week.columns[-1]] - week[week.columns[-8]]
+        week.drop(week.columns[3:11], axis = 1, inplace = True)
+        week.drop(['countyFIPS', 'State'], axis = 1, inplace = True)
+        week = pd.merge(pop, week, on = 'County Name')
+        week['Weekly {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] = round((week['Weekly {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)] / week['Population'])*100000, 2)
+        week.drop(week[week['Weekly {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] < 0].index, inplace = True)
+        week = week.reset_index(drop = True)
+
+        return week
+    
+    cs = week_compiler(cases, 'Cases')
+    ds = week_compiler(deaths, 'Deaths')
+    
+    covid_data = cs[cs.columns[:4]]
+    
+    cs.drop(ds.columns[[0,2,3]], axis = 1, inplace = True)
+    ds.drop(ds.columns[[0,2,3]], axis = 1, inplace = True)
+    
+    for i in range(1,3):
+        covid_data = pd.merge(covid_data, cs[cs.columns[[0,i]]], on = 'County Name')
+        covid_data = pd.merge(covid_data, ds[ds.columns[[0,i]]], on = 'County Name')
+        
+    covid_data = covid_data.rename(columns = {'countyFIPS': 'County FIPS'})
+
+    return covid_data
+
 def main_function():
     
     race_data = create_race_data()
@@ -577,7 +677,7 @@ def main_function():
     edu_data = create_edu_data()
     mask_data = create_mask_data()
     covid_data = create_covid_pop_data()
-    vaxx_data = pd.read_csv('vaxxdataset.csv')
+    vaxx_data = pd.read_csv('vaxxdataset.csv', index_col = 0)
     
     county_data = pd.merge(covid_data, inc_unemp_data, on = 'County Name')
     county_data = pd.merge(county_data, race_data, on = 'County Name')

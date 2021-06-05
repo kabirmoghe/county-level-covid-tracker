@@ -25,14 +25,15 @@ def county_stats(county_name):
 
         data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
 
-        infs = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()]
+        #infs = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()]
 
         cols = data.columns
 
         inf_col = 0
         for col in cols:
-            if "Infection" in col.split() and "as" in col.split():
+            if "Cases" in col.split() and "per" in col.split():
                 inf_col = col
+
 
         sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
 
@@ -53,7 +54,7 @@ def county_stats(county_name):
 
             des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
 
-            otherinfo = des_row.iloc[:, -11:]
+            otherinfo = des_row.iloc[:, -15:]
             
             stat = des_row[inf_col].iloc[0]
 
@@ -97,16 +98,16 @@ def usplot():
 
     data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
     
-    last_inf_rate = [column for column in data.columns if "Infection" in column.split() and "Cumulative" not in column.split() and "Predicted" not in column.split()][-1]
+    last_case_rate = [column for column in data.columns if "Cases" in column.split() and "per" in column.split()][0]
 
-    data['Log {name}'.format(name = last_inf_rate)] = data[last_inf_rate].apply(lambda value: np.log(value) if value != 0 else value)
+    data['Log {name}'.format(name = last_case_rate)] = data[last_case_rate].apply(lambda value: np.log(value) if value != 0 else value)
     
-    fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_inf_rate),
+    fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_case_rate),
                            color_continuous_scale="Plasma",
                            hover_name = 'County Name',
-                           hover_data=[last_inf_rate],
+                           hover_data=[last_case_rate],
                            scope="usa",
-                           labels={'Log {name}'.format(name = last_inf_rate):'Current Log Infection Rate'}
+                           labels={'Log {name}'.format(name = last_case_rate):'Current Log Infection Rate'}
                           )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
     fig.update_traces(marker_line_width=0, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
@@ -116,7 +117,7 @@ def usplot():
 
     inf_col = 0
     for col in cols:
-        if "Infection" in col.split() and "as" in col.split() and "Log" not in col.split():
+        if "Cases" in col.split() and "per" in col.split() and "Log" not in col.split():
             inf_col = col
 
     sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
@@ -384,8 +385,6 @@ def vaxx_plot(cty):
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
 
     fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
-
-    #fig.write_html('../covidapp/templates/vaxxplot.html', full_html = False)
 
 def multivaxx_plot():
     

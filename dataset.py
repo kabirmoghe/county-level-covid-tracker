@@ -577,7 +577,7 @@ def main_function():
     edu_data = create_edu_data()
     mask_data = create_mask_data()
     covid_data = create_covid_pop_data()
-    vaxx_data = pd.read_csv('../covidapp/vaxxdataset.csv')
+    vaxx_data = pd.read_csv('vaxxdataset.csv')
     
     county_data = pd.merge(covid_data, inc_unemp_data, on = 'County Name')
     county_data = pd.merge(county_data, race_data, on = 'County Name')

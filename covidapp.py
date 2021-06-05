@@ -522,7 +522,7 @@ def multivaxx_plot():
     fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Counties with Lowest Vaxx. Progress','xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
-    fig_bottom.write_html('../covidapp/templates/multivaxxplot_bottom.html', full_html = False)
+    fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)
     
     fig_map = px.choropleth(data, geojson=counties, locations='County FIPS', color='% Fully Vaccinated',
                            color_continuous_scale="Bluered_r",

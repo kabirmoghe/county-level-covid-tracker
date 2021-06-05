@@ -3,6 +3,7 @@ import covidapp
 import dataset
 import os.path
 from os import path
+import vaxx
 
 
 app = Flask(__name__)
@@ -10,17 +11,22 @@ app.secret_key = 'hello'
 
 @app.route("/")
 def home():
-	if path.exists("fulldataset.csv") == False:
-		dataset.main_function().to_csv('fulldataset.csv')
+	if path.exists("vaxxdataset.csv") == False:
+		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
 	return render_template("index.html")
+
 
 @app.route("/countyinfo", methods = ['POST', 'GET'])
 def countyinfo():
-	if path.exists("fulldataset.csv") == False:
-		dataset.main_function().to_csv('fulldataset.csv')
-
+	if path.exists("vaxxdataset.csv") == False:
+		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
+	
 	if request.method == "POST":
 		county = request.form["cty"]
+
+		if path.exists("fulldataset.csv") == False:
+			dataset.main_function().to_csv('fulldataset.csv')
+
 		embed_vaxx = covidapp.vaxx_plot(county)
 		allinfo = covidapp.county_stats(county)
 		if len(allinfo) == 5:
@@ -36,15 +42,14 @@ def countyinfo():
 
 @app.route("/about")
 def about():
-	if path.exists("fulldataset.csv") == False:
-		dataset.main_function().to_csv('fulldataset.csv')
+	if path.exists("vaxxdataset.csv") == False:
+		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
 
 	return render_template("about.html")
 
 @app.route("/stats")
 def stats():
-	if path.exists("fulldataset.csv") == False:
-		dataset.main_function().to_csv('fulldataset.csv')
+	# FIX LOAD DATASET
 	top10, bot10 = covidapp.usplot()
 	date = covidapp.multivaxx_plot()
 	return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)

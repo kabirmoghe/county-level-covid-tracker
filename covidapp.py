@@ -381,7 +381,7 @@ def vaxx_plot(cty):
         )
     ))
 
-    fig.update_layout(xaxis_range=[0,100], barmode='overlay', title ={'text':'Vaccination Progress in % People Vaccinated' ,'xanchor': 'center',
+    fig.update_layout(xaxis_range=[0,100], title ={'text':'Vaccination Progress in % People Vaccinated' ,'xanchor': 'center',
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
 
     fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
@@ -404,7 +404,7 @@ def multivaxx_plot():
     #TOP 10
 
     fig_top = go.Figure()    
-
+    '''
     fig_top.add_trace(go.Bar(
     y=df_top['County Name'],
     x=df_top['% Vaccinated ≥ 65'],
@@ -437,6 +437,7 @@ def multivaxx_plot():
         color='#81B8FF',
         )
     ))
+    '''
     
     fig_top.add_trace(go.Bar(
     y=df_top['County Name'],
@@ -457,14 +458,15 @@ def multivaxx_plot():
         'xanchor': 'center',
         'yanchor': 'top'})
     
-    fig_top.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Counties with Highest Vaxx. Progress','xanchor': 'center',
-        'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
+    
+    fig_top.update_layout(xaxis_range=[0,100], title = {'text':'Counties with Highest Vaxx. Progress','xanchor': 'center',
+        'yanchor': 'top'}, hovermode='y', xaxis_title="% People Fully Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_top.write_html('/app/templates/multivaxxplot_top.html', full_html = False)
 
     #BOTTOM 10
     fig_bottom = go.Figure()    
-
+    '''
     fig_bottom.add_trace(go.Bar(
     y=df_bottom['County Name'],
     x=df_bottom['% Vaccinated ≥ 65'],
@@ -475,7 +477,7 @@ def multivaxx_plot():
         color='#FFC300',
         )
     ))
-
+    
     fig_bottom.add_trace(go.Bar(
     y=df_bottom['County Name'],
     x=df_bottom['% Vaccinated ≥ 18'],
@@ -497,7 +499,7 @@ def multivaxx_plot():
         color='#81B8FF',
         )
     ))
-    
+    '''
     fig_bottom.add_trace(go.Bar(
     y=df_bottom['County Name'],
     x=df_bottom['% Fully Vaccinated'],
@@ -505,7 +507,7 @@ def multivaxx_plot():
     name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#69F68C'
+        color='#EC7063'
         )
     ))
     
@@ -518,8 +520,8 @@ def multivaxx_plot():
         'yanchor': 'top'})
     
     
-    fig_bottom.update_layout(xaxis_range=[0,100], barmode='overlay', title = {'text':'Counties with Lowest Vaxx. Progress','xanchor': 'center',
-        'yanchor': 'top'}, hovermode='y', xaxis_title="% People Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
+    fig_bottom.update_layout(xaxis_range=[0,100], title = {'text':'Counties with Lowest Vaxx. Progress','xanchor': 'center',
+        'yanchor': 'top'}, hovermode='y', xaxis_title="% People Fully Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
     fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)
     

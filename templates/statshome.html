@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Live County COVID-19 Data</title>
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename = 'style.css')}}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+	<script type="text/javascript">// <![CDATA[
+        function loading(){
+            $("#loading").show();
+            $("#content").hide();       
+        }
+// ]]></script>
+</head>
+<body>
+{% extends "base.html" %}
+{% block title %}Data{% endblock %}
+{% block content %}
+<br>
+<div id="loading" justify-content: center></div>
+
+<div id="content">
+	<div class = 'title'>
+		<h3>Nationwide Statistics</h3>
+			<p>To learn about the current COVID-19 situation on a nationwide scale, click the 'Load Stats' button below (results should load in ~10 seconds).</p>
+			<form action = "#" method = "post">
+				<!--<p><input type="text" id = 'box' name="cty" placeholder="County, State"></p>-->
+				<input type="submit" id = 'getresults' name="anything_submit" value = "Load Stats" onclick="loading();"></p>
+			</form>
+	</div>
+</div>
+{% endblock %}
+</body>
+</html>

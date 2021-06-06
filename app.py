@@ -47,12 +47,20 @@ def about():
 
 	return render_template("about.html")
 
-@app.route("/stats")
+@app.route("/stats", methods = ['POST', 'GET'])
 def stats():
-	# FIX LOAD DATASET
-	top10, bot10 = covidapp.usplot()
-	date = covidapp.multivaxx_plot()
-	return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
+	if path.exists("vaxxdataset.csv") == False:
+		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
+	if request.method == "POST":
+		if path.exists("fulldataset.csv") == False:
+			dataset.main_function().to_csv('fulldataset.csv')
+		# FIX LOAD DATASET
+		top10, bot10 = covidapp.usplot()
+		date = covidapp.multivaxx_plot()
+		return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
+	else:
+		return render_template("statshome.html")
+
 
 if __name__ == '__main__':
     app.run(debug = True)

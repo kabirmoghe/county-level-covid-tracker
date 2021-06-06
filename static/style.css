@@ -27,9 +27,10 @@ div#loading {
     }
 
 button {
-  background-color: #ededed;
+  background-color: #3D96F2;
 	border: none;
   border-radius: 5px;
+  color: #FFFFFF;
 }
 
 input#box {
@@ -41,9 +42,11 @@ input#box {
 
 input#getresults {
   border: none;
-  background-color: #ededed; 
+  background-color: #3D96F2;
   border-radius: 5px;
+  color: #FFFFFF;
 }
+
 
 ::placeholder {
    font-style: italic;

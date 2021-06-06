@@ -18,8 +18,18 @@
 			<p>{{info}}</p>
 		</div>
 	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+  				<h6 style="margin-left: {{ctyrisk_pos}}px"><u><strong>{{county}}</strong></u></h6>
+  				<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px" src="{{url_for('static', filename='riskline.png')}}" alt="Change in Infection Rate Over Time">
+  				<h6 style="margin-left: {{lnrisk_pos}}px"><strong>> {{pct}}%</strong></h6>
+  				<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px" src="{{url_for('static', filename='riskarrow.png')}}" alt="Change in Infection Rate Over Time">
+		</div>
+	</div>
 	<div class = 'content'>
-		<img style="max-width: 70%; height: auto;" src="/static/{{riskimg}}" alt="Breakdown of Infection Rates Risk">
+		<div class = 'title'>
+			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='riskchart.png')}}" alt="Breakdown of Infection Rates Risk">
+		</div>
 	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
@@ -42,6 +52,7 @@
 			{% include county+"_vaxxplot.html" %}
 
 			<h5>Significant Attributes of {{county}}</h5>
+			<p>(Scroll right to see more)</p>
 			<div style="overflow-x:auto;background-color:#E4EEFD;">
 				{% for item in tbl%}
 			            {{ item|safe }}

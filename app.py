@@ -29,9 +29,11 @@ def countyinfo():
 
 		embed_vaxx = covidapp.vaxx_plot(county)
 		allinfo = covidapp.county_stats(county)
-		if len(allinfo) == 5:
-			tbl, stat, info, rec, riskimg = allinfo
-			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, riskimg = riskimg)
+		if len(allinfo) == 6:
+			tbl, stat, info, rec, risk_pos, pct = allinfo
+			ctyrisk_pos = risk_pos - 80
+			lnrisk_pos = risk_pos - 20
+			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, lnrisk_pos = lnrisk_pos)
 		else:
 			return render_template("undef_result.html", issue = allinfo)
 	else:

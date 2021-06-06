@@ -31,6 +31,6 @@ def create_vaxx_data():
         if col != 'Recip_County' and 'Pct' not in col:
             vaxx_data.drop(col, axis = 1, inplace = True)
             
-    vaxx_data.columns = ['County Name', '% Fully Vaccinated', '% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65']
+    vaxx_data.columns = ['County Name', '% Fully Vaccinated','% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated']
 
     return vaxx_data

@@ -48,7 +48,7 @@ def county_stats(county_name):
             county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
             
             sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
-            plt.savefig('../covidapp/static/countyplot.png')
+            plt.savefig('/app/static/countyplot.png')
             '''
             des_row = data[data['County Name'] == str(county_name)]
 
@@ -60,33 +60,37 @@ def county_stats(county_name):
 
             rank = sorted_data[sorted_data['County Name']==county_name].index[0]+1
 
-            pct = round((1-(rank/len(sorted_data)))*100, 2)
+            prop = (1-(rank/len(sorted_data)))
+
+            pct = round(prop*100, 2)
 
             if pct == 0.0:
                 rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
-                riskimg = 'riskchartbot.png'
+                #riskimg = 'riskchartbot.png'
+                risk_pos = (round(171+(339*prop),2))
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the lowest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
             elif round(pct) == 100.0:
-                rec = 'There is a relatively high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)    
-                riskimg = 'riskcharttop.png'
+                rec = 'There is a relatively high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
+                risk_pos = (round(171+(339*prop),2))
+                #riskimg = 'riskcharttop.png'
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the highest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
             else:
                 if rank < high25pct:
                     rec = 'There is a relatively high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
-                    #rateimg = 'topratechart.png'
-                    riskimg = 'riskcharttop.png'
+                    risk_pos = (round(171+(339*prop),2))
+                    #riskimg = 'riskcharttop.png'
                 elif high25pct < rank < low25pct:
                     rec = 'There is a relatively moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
-                    #rateimg = 'midratechart.png'
-                    riskimg = 'riskchartmid.png'
+                    risk_pos = (round(171+(339*prop),2))
+                    #riskimg = 'riskchartmid.png'
                 else:
                     rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
-                    #rateimg = 'botratechart.png'
-                    riskimg = 'riskchartbot.png'
+                    risk_pos = (round(171+(339*prop),2))
+                    #riskimg = 'riskchartbot.png'
                 
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
 
-            return otherinfo, stat, info, rec, riskimg
+            return otherinfo, stat, info, rec, risk_pos, pct#, riskimg
         else:
             return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
 
@@ -339,18 +343,29 @@ def vaxx_plot(cty):
 
     fig.add_trace(go.Bar(
     y=df['County Name'],
-    x=df['% Vaccinated ≥ 65'],
+    x=df['% Fully Vaccinated'],
     width=[0.1],
-    name='% 65+ Fully Vaxx.',
+    name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#FFC300',
+        color='#69F68C'
         )
     ))
 
     fig.add_trace(go.Bar(
     y=df['County Name'],
-    x=df['% Vaccinated ≥ 18'],
+    x=df['% ≥ 12 Fully Vaccinated'],
+    width=[0.1],
+    name='% 12+ Fully Vaxx.',
+    orientation='h',
+    marker=dict(
+        color='#81B8FF',
+        )
+    ))
+
+    fig.add_trace(go.Bar(
+    y=df['County Name'],
+    x=df['% ≥ 18 Fully Vaccinated'],
     width=[0.1],
     name='% 18+ Fully Vaxx.',
     orientation='h',
@@ -361,23 +376,12 @@ def vaxx_plot(cty):
 
     fig.add_trace(go.Bar(
     y=df['County Name'],
-    x=df['% Vaccinated ≥ 12'],
+    x=df['% ≥ 65 Fully Vaccinated'],
     width=[0.1],
-    name='% 12+ Fully Vaxx.',
+    name='% 65+ Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#81B8FF',
-        )
-    ))
-    
-    fig.add_trace(go.Bar(
-    y=df['County Name'],
-    x=df['% Fully Vaccinated'],
-    width=[0.1],
-    name='% Fully Vaxx.',
-    orientation='h',
-    marker=dict(
-        color='#69F68C'
+        color='#FFC300',
         )
     ))
 
@@ -394,8 +398,8 @@ def multivaxx_plot():
 
     data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
 
-    df_top = data.sort_values(by = '% Fully Vaccinated').tail(10)[['County Name', '% Fully Vaccinated', '% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65']].reset_index(drop = True)
-    df_bottom = data.sort_values(by = '% Fully Vaccinated', ascending = False).tail(10)[['County Name', '% Fully Vaccinated', '% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65']].reset_index(drop = True)
+    df_top = data.sort_values(by = '% Fully Vaccinated').tail(10)[['County Name', '% Fully Vaccinated', '% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated']].reset_index(drop = True)
+    df_bottom = data.sort_values(by = '% Fully Vaccinated', ascending = False).tail(10)[['County Name', '% Fully Vaccinated', '% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated']].reset_index(drop = True)
     
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
         counties = json.load(response)
@@ -526,9 +530,9 @@ def multivaxx_plot():
     fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)
     
     fig_map = px.choropleth(data, geojson=counties, locations='County FIPS', color='% Fully Vaccinated',
-                           color_continuous_scale="Bluered_r",
+                           color_continuous_scale=['#FF3C33', '#FBF30B', '#41B26A'],
                            hover_name = 'County Name',
-                           hover_data=['% Vaccinated ≥ 12', '% Vaccinated ≥ 18', '% Vaccinated ≥ 65'],
+                           hover_data=['% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated'],
                            scope="usa",
                            labels={'% Fully Vaccinated':'Current % Fully Vaccinated'}
                           )

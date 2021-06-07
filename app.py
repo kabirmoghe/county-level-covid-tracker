@@ -31,7 +31,7 @@ def countyinfo():
 		allinfo = covidapp.county_stats(county)
 		if len(allinfo) == 6:
 			tbl, stat, info, rec, risk_pos, pct = allinfo
-			ctyrisk_pos = risk_pos - 80
+			ctyrisk_pos = risk_pos - 65
 			lnrisk_pos = risk_pos - 20
 			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, lnrisk_pos = lnrisk_pos)
 		else:

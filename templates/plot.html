@@ -50,15 +50,17 @@
 		{% endfor %}
 		</div>
 	</div>
-	{% include "us_vaxxmap.html" %}
 	<br><br>
 	<div class = 'content'>
 		<div class = 'title'>
-		<h4>Current State-Wide Vaccination Progress*</h4>
-		<p><strong>*Note:</strong> Neither Hawaii nor Texas vaccination data is provided on the county level, so no data is available for the states in terms of individual counties. Blank spots represent counties with incomplete information.</p>
+		<h4>Current State-Wide Vaccination Progress</h4>
 		</div>
 	</div>
+	{% include "us_vaxxmap.html" %}
 	<div class = 'content'>
+		<div class = 'title'>
+			<p><strong>Note:</strong> Neither Hawaii nor Texas vaccination data is provided on the county level, so no data is available for the states in terms of individual counties. Blank spots represent counties with incomplete information.</p>
+		</div>
 		{% include "multivaxxplot_top.html" %}
 		{% include "multivaxxplot_bottom.html" %}
 	</div>

@@ -536,8 +536,7 @@ def multivaxx_plot():
                            scope="usa",
                            labels={'% Fully Vaccinated':'Current % Fully Vaccinated'}
                           )
-    fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway", title ={'text':'Current County-Level Vaccination Progress' ,'xanchor': 'center',
-        'yanchor': 'top'})
+    fig_map.update_layout(margin={"t":45}, font_family = "Raleway", hoverlabel_font_family = "Raleway", title_text = 'Current County-Level Vaccination Progress', title_x=0.5, title_font_size = 24)
     fig_map.update_traces(marker_line_width=0, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
 
     fig_map.write_html('/app/templates/us_vaxxmap.html', full_html = False)

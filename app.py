@@ -23,6 +23,8 @@ def countyinfo():
 	
 	if request.method == "POST":
 		county = request.form["cty"]
+		if county == '':
+			return render_template('empty.html')
 
 		if path.exists("fulldataset.csv") == False:
 			dataset.main_function().to_csv('fulldataset.csv')

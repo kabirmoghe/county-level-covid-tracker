@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Live County COVID-19 Data</title>
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename = 'style.css')}}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+
+</head>
+<body>
+	{% extends "base.html" %}
+	{% block titles %}Result{% endblock %}
+	{% block content%}
+	<br>
+	<div class = 'content'>
+		<div class = 'title'>
+			<h3 id = 'title'>My Results</h3>
+			<p>Please enter a non-empty value.</p>
+			<button onclick="location.href = '/countyinfo';">Take me back</button>
+			<p></p>
+		</div>
+	</div>
+	{% endblock %}
+</body>
+</html>

@@ -66,12 +66,14 @@ a#dot {
   width: 700px;
 }
 
-.wcontent{
+.wtitle{
+  width: 1200px;
+}
+
+.content{
   display: flex;
   justify-content: center;
   text-align: center;
-  padding-left: 25px;
-  padding-right: 25px;
 }
 
 h3#title, h4#title, h5#title {
@@ -83,12 +85,6 @@ h3#title, h4#title, h5#title {
   display: flex;
   justify-content: center;
 
-}
-
-.content {
-  display: flex;
-  justify-content: center;
-  text-align: center;
 }
 
 

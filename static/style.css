@@ -66,8 +66,13 @@ a#dot {
   width: 700px;
 }
 
-.wtitle{
-  width: 1200px;
+.wcontent{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding-left: 25px;
+  padding-right: 25px;
+}
 
 h3#title, h4#title, h5#title {
   text-align: center;

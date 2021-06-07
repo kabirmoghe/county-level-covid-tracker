@@ -47,6 +47,13 @@ input#getresults {
   color: #FFFFFF;
 }
 
+select#options {
+  background-color: #f2f6fa; 
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+}
+
 
 ::placeholder {
    font-style: italic;

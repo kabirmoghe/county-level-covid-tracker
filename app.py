@@ -59,9 +59,16 @@ def stats():
 		if path.exists("fulldataset.csv") == False:
 			dataset.main_function().to_csv('fulldataset.csv')
 		# FIX LOAD DATASET
-		top10, bot10 = covidapp.usplot()
-		date = covidapp.multivaxx_plot()
-		return render_template("stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
+		choice = request.form["choice"]
+		if choice == 'covid':
+			top10, bot10 = covidapp.usplot()
+			date = covidapp.multivaxx_plot()
+
+			return render_template("covidstats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
+
+		else:
+			return render_template("vaxxstats.html")
+
 	else:
 		return render_template("statshome.html")
 

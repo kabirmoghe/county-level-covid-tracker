@@ -61,7 +61,7 @@ def stats():
 		# FIX LOAD DATASET
 		top10, bot10 = covidapp.usplot()
 		date = covidapp.multivaxx_plot()
-		return render_template("plot.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
+		return render_template("stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
 	else:
 		return render_template("statshome.html")
 

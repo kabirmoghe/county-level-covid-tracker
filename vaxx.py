@@ -21,6 +21,9 @@ def create_vaxx_data():
     
     latest_date = vaxx['Date'][0]
     
+    month, day, year = [int(value) for value in latest_date.split('/')]
+    date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
+    
     #year, month, day = [int(val) for val in latest_date.split('-')]
     #date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
 
@@ -31,6 +34,6 @@ def create_vaxx_data():
         if col != 'Recip_County' and 'Pct' not in col:
             vaxx_data.drop(col, axis = 1, inplace = True)
             
-    vaxx_data.columns = ['County Name', '% Fully Vaccinated','% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated']
+    vaxx_data.columns = ['County Name', '% Fully Vaccinated as of {}'.format(date),'% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date)]
 
     return vaxx_data

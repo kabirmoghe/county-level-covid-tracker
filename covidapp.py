@@ -94,47 +94,88 @@ def county_stats(county_name):
         else:
             return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
 
-def usplot():
+def usplot(c_or_d):
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
         counties = json.load(response)
     
     data = pd.read_csv('fulldataset.csv', index_col = 0)
 
     data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
-    
-    last_case_rate = [column for column in data.columns if "Cases" in column.split() and "per" in column.split()][0]
+    if c_or_d == 'c':
 
-    data['Log {name}'.format(name = last_case_rate)] = data[last_case_rate].apply(lambda value: np.log(value) if value != 0 else value)
-    
-    fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_case_rate),
-                           color_continuous_scale="Plasma",
-                           hover_name = 'County Name',
-                           hover_data=[last_case_rate],
-                           scope="usa",
-                           labels={'Log {name}'.format(name = last_case_rate):'Current Log Infection Rate'}
-                          )
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
-    fig.update_traces(marker_line_width=0, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
-    fig.write_html("/app/templates/usplot.html", full_html = False)
-    
-    cols = data.columns
+        last_case_rate = [column for column in data.columns if "Cases" in column.split() and "per" in column.split()][0]
 
-    inf_col = 0
-    for col in cols:
-        if "Cases" in col.split() and "per" in col.split() and "Log" not in col.split():
-            inf_col = col
+        date = last_case_rate.split('as of ')[1]
 
-    sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
+        def log_maker(value):
+            if value != 0:
+                if np.log(value) < 0:
+                    return 0
+                else:
+                    return np.log(value)
+            else:
+                return value
+                
 
-    top10 = sorted_data.head(10)[['County Name', inf_col]].reset_index(drop = True)
-    bot10 = sorted_data.tail(10)[['County Name', inf_col]].reset_index(drop = True)
+        data['Log {name}'.format(name = last_case_rate)] = data[last_case_rate].apply(lambda value: log_maker(value))
+        
+        fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_case_rate),
+                               color_continuous_scale="Plasma",
+                               hover_name = 'County Name',
+                               hover_data=[last_case_rate],
+                               scope="usa",
+                               labels={'Log {name}'.format(name = last_case_rate):'Current Log. Daily Cases per 100k'}
+                              )
+        fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
+        fig.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
+        fig.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
+        fig.write_html("/app/templates/c_usplot.html", full_html = False)
+        
+        sorted_data = data.sort_values(by = last_case_rate, ascending = False)[['County Name', last_case_rate]].reset_index(drop = True)
+
+        top10 = sorted_data.head(10)[['County Name', last_case_rate]].reset_index(drop = True)
+        bot10 = sorted_data.tail(10)[['County Name', last_case_rate]].reset_index(drop = True)
+
+    else:
+
+        last_death_rate = [column for column in data.columns if "Deaths" in column.split() and "per" in column.split()][0]
+
+        date = last_death_rate.split('as of ')[1]
+
+        def log_maker(value):
+            if value != 0:
+                if np.log(value) < 0:
+                    return 0
+                else:
+                    return np.log(value)
+            else:
+                return value
+
+        data['Log {name}'.format(name = last_death_rate)] = data[last_death_rate].apply(lambda value: log_maker(value))
+        
+        fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_death_rate),
+                               color_continuous_scale="Plasma",
+                               hover_name = 'County Name',
+                               hover_data=[last_death_rate],
+                               scope="usa",
+                               labels={'Log {name}'.format(name = last_death_rate):'Current Log. Daily Deaths per 100k'}
+                              )
+        fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
+        fig.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
+        fig.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
+        fig.write_html("/app/templates/d_usplot.html", full_html = False)
+
+        sorted_data = data.sort_values(by = last_death_rate, ascending = False)[['County Name', last_death_rate]].reset_index(drop = True)
+
+        top10 = sorted_data.head(10)[['County Name', last_death_rate]].reset_index(drop = True)
+        bot10 = sorted_data.tail(10)[['County Name', last_death_rate]].reset_index(drop = True)
 
     #top10lst = []
     
     #for i in range(10):
     #    top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = round(float(top10[inf_col].iloc[i]),2)))
 
-    return top10, bot10
+    return top10, bot10, date
 
 '''
 def create_vaxx_data():
@@ -337,13 +378,15 @@ def vaxx_plot(cty):
     
     data = pd.read_csv('fulldataset.csv', index_col = 0)
     
+    date = [col for col in data.columns if 'Fully' in col][-1].split('as of ')[1]
+
     df = data[data['County Name'] == cty]
     
     fig = go.Figure()    
 
     fig.add_trace(go.Bar(
     y=df['County Name'],
-    x=df['% Fully Vaccinated'],
+    x=df['% Fully Vaccinated as of {}'.format(date)],
     width=[0.1],
     name='% Fully Vaxx.',
     orientation='h',
@@ -354,7 +397,7 @@ def vaxx_plot(cty):
 
     fig.add_trace(go.Bar(
     y=df['County Name'],
-    x=df['% ≥ 12 Fully Vaccinated'],
+    x=df['% ≥ 12 Fully Vaccinated as of {}'.format(date)],
     width=[0.1],
     name='% 12+ Fully Vaxx.',
     orientation='h',
@@ -365,7 +408,7 @@ def vaxx_plot(cty):
 
     fig.add_trace(go.Bar(
     y=df['County Name'],
-    x=df['% ≥ 18 Fully Vaccinated'],
+    x=df['% ≥ 18 Fully Vaccinated as of {}'.format(date)],
     width=[0.1],
     name='% 18+ Fully Vaxx.',
     orientation='h',
@@ -376,7 +419,7 @@ def vaxx_plot(cty):
 
     fig.add_trace(go.Bar(
     y=df['County Name'],
-    x=df['% ≥ 65 Fully Vaccinated'],
+    x=df['% ≥ 65 Fully Vaccinated as of {}'.format(date)],
     width=[0.1],
     name='% 65+ Fully Vaxx.',
     orientation='h',
@@ -385,7 +428,7 @@ def vaxx_plot(cty):
         )
     ))
 
-    fig.update_layout(xaxis_range=[0,100], title ={'text':'Vaccination Progress in % People Vaccinated' ,'xanchor': 'center',
+    fig.update_layout(xaxis_range=[0,100], title ={'text':'Vaccination Progress in % People Vaccinated as of {}'.format(date) ,'xanchor': 'center',
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
 
     fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
@@ -394,16 +437,17 @@ def multivaxx_plot():
     
     data = pd.read_csv('fulldataset.csv', index_col = 0)
 
-    data = data[data['% Fully Vaccinated'] != 0].reset_index(drop = True)
+    date = [col for col in data.columns if 'Fully' in col][-1].split('as of ')[1]
+
+    data = data[data['% Fully Vaccinated as of {}'.format(date)] != 0].reset_index(drop = True)
 
     data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
 
-    df_top = data.sort_values(by = '% Fully Vaccinated').tail(10)[['County Name', '% Fully Vaccinated', '% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated']].reset_index(drop = True)
-    df_bottom = data.sort_values(by = '% Fully Vaccinated', ascending = False).tail(10)[['County Name', '% Fully Vaccinated', '% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated']].reset_index(drop = True)
+    df_top = data.sort_values(by = '% Fully Vaccinated as of {}'.format(date)).tail(10)[['County Name', '% Fully Vaccinated as of {}'.format(date)]].reset_index(drop = True)
+    df_bottom = data.sort_values(by = '% Fully Vaccinated as of {}'.format(date), ascending = False).tail(10)[['County Name', '% Fully Vaccinated as of {}'.format(date)]].reset_index(drop = True)
     
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
         counties = json.load(response)
-    
 
     #TOP 10
 
@@ -445,7 +489,7 @@ def multivaxx_plot():
     
     fig_top.add_trace(go.Bar(
     y=df_top['County Name'],
-    x=df_top['% Fully Vaccinated'],
+    x=df_top['% Fully Vaccinated as of {}'.format(date)],
     width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
     name='% Fully Vaxx.',
     orientation='h',
@@ -506,7 +550,7 @@ def multivaxx_plot():
     '''
     fig_bottom.add_trace(go.Bar(
     y=df_bottom['County Name'],
-    x=df_bottom['% Fully Vaccinated'],
+    x=df_bottom['% Fully Vaccinated as of {}'.format(date)],
     width=[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
     name='% Fully Vaxx.',
     orientation='h',
@@ -529,15 +573,17 @@ def multivaxx_plot():
     
     fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)
     
-    fig_map = px.choropleth(data, geojson=counties, locations='County FIPS', color='% Fully Vaccinated',
+    fig_map = px.choropleth(data, geojson=counties, locations='County FIPS', color='% Fully Vaccinated as of {}'.format(date),
                            color_continuous_scale=['#FF3C33', '#FBF30B', '#41B26A'],
                            hover_name = 'County Name',
-                           hover_data=['% ≥ 12 Fully Vaccinated', '% ≥ 18 Fully Vaccinated', '% ≥ 65 Fully Vaccinated'],
+                           hover_data=['% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date)],
                            scope="usa",
-                           labels={'% Fully Vaccinated':'Current % Fully Vaccinated'}
+                           labels={'% Fully Vaccinated as of {}'.format(date):'Current % Fully Vaccinated', '% ≥ 12 Fully Vaccinated as of {}'.format(date):'Current % 12+ Fully Vaccinated', '% ≥ 18 Fully Vaccinated as of {}'.format(date):'Current % 18+ Fully Vaccinated', '% ≥ 65 Fully Vaccinated as of {}'.format(date):'Current % 65+ Fully Vaccinated'}
                           )
-    fig_map.update_layout(margin={"t":45}, font_family = "Raleway", hoverlabel_font_family = "Raleway", title_text = 'Current County-Level Vaccination Progress', title_x=0.5, title_font_size = 24)
-    fig_map.update_traces(marker_line_width=0, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
+    fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
+    fig_map.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
+    fig_map.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
 
     fig_map.write_html('/app/templates/us_vaxxmap.html', full_html = False)
-    
+
+    return date

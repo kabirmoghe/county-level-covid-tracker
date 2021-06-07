@@ -60,14 +60,17 @@ def stats():
 			dataset.main_function().to_csv('fulldataset.csv')
 		# FIX LOAD DATASET
 		choice = request.form["choice"]
-		if choice == 'covid':
-			top10, bot10 = covidapp.usplot()
+		if choice == 'vaxx':
 			date = covidapp.multivaxx_plot()
-
-			return render_template("covidstats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], date = date)
-
+			return render_template("vaxx_stats.html", date = date)
 		else:
-			return render_template("vaxxstats.html")
+			if choice == 'c':
+				top10, bot10, date = covidapp.usplot('c')
+				return render_template("cases_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date)
+				#date = covidapp.multivaxx_plot()
+			else:
+				top10, bot10, date = covidapp.usplot('d')
+				return render_template("deaths_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date)
 
 	else:
 		return render_template("statshome.html")

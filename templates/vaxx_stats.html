@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Live County COVID-19 Data</title>
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename = 'style.css')}}"></head>
+	<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+	<meta name = 'viewport' content = "width = device-width, initial-scale=1.0">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+	{% extends "base.html" %}
+	{% block titles %}Stats{% endblock %}
+	{% block content %}
+	<br>
+	<div class = 'content'>
+		<div class = 'title'>
+			<h3>Nationwide Vaccination Statistics</h3>
+			<br>
+			<h4>Current Vaccination Progress as of {{date}}*</h4>
+			<p><strong>Note:</strong> Neither Hawaii nor Texas vaccination data is provided on the county level, so no data is available for the states in terms of individual counties. Blank spots represent counties with incomplete information.</p>
+		</div>
+	</div>
+	{% include "us_vaxxmap.html" %}
+	<br><br>
+	<h4 id = 'title'>Top and Bottom 10 Counties in Terms of Current Vaccination Progress </h4>
+	<div class = 'content'>
+		<div class = 'title'>
+		{% include "multivaxxplot_top.html" %}
+		{% include "multivaxxplot_bottom.html" %}
+		</div>
+	</div>
+	<div class = 'content'>
+		<button onclick="location.href = '/';">Home</button><p>&nbsp;&nbsp;</p>
+		<button onclick="location.href = '/stats';">Back to Stats</button>
+	</div>
+	<br>
+	{% endblock %}
+</body>
+</html>

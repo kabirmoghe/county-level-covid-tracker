@@ -648,8 +648,8 @@ def create_covid_pop_data():
         week.drop(week.columns[3:11], axis = 1, inplace = True)
         week.drop(['countyFIPS', 'State'], axis = 1, inplace = True)
         week = pd.merge(pop, week, on = 'County Name')
-        week['Weekly {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] = round((week['Weekly {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)] / week['Population'])*100000, 2)
-        week.drop(week[week['Weekly {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] < 0].index, inplace = True)
+        week['7-Day Daily {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] = round(((week['Weekly {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)]/7)/ week['Population'])*100000, 2)
+        week.drop(week[week['7-Day Daily {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] < 0].index, inplace = True)
         week = week.reset_index(drop = True)
 
         return week

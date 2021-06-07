@@ -27,7 +27,7 @@ div#loading {
     }
 
 button {
-  background-color: #3D96F2;
+  background-color: #A6B9FF;
 	border: none;
   border-radius: 5px;
   color: #FFFFFF;
@@ -42,7 +42,7 @@ input#box {
 
 input#getresults {
   border: none;
-  background-color: #3D96F2;
+  background-color: #A6B9FF;
   border-radius: 5px;
   color: #FFFFFF;
 }

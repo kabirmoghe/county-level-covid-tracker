@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Live County COVID-19 Data</title>
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename = 'style.css')}}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+	<script type="text/javascript">// <![CDATA[
+        function loading(){
+            $("#loading").show();
+            $("#content").hide();       
+        }
+// ]]></script>
+</head>
+<body>
+{% extends "base.html" %}
+{% block title %}Data{% endblock %}
+{% block content %}
+<br>
+<div id="loading" justify-content: center></div>
+
+<div id="content">
+		<div class = 'title'>
+			<h3>Explore Home</h3>
+				<p>Select any two county attributes below and decide whether to include a trendline, and once you click <strong>"Explore"</strong> you will be able to explore an interactive scatterplot of the two attributes (results should load in ~10 seconds).</p>
+			<div style="display:block;">
+				<form action = "#" method = "post">
+					<i>Attribute #1:</i> <select class="options" name="choice1">
+						{% for col in cols %}
+						<option value= "{{col}}">{{col}}</option>"
+						{% endfor %}
+					</select>
+					<p></p>
+					<i>Attribute #2:</i> <select class="options" name="choice2">
+						{% for col in cols %}
+						<option value= "{{col}}">{{col}}</option>"
+					    {% endfor %}
+					</select>
+					<p></p>
+					<i>Trendline:</i> <select class="options" name="trendline">
+					    <option value= "y">Yes</option>"
+					    <option value= "y">No</option>"
+					</select>
+					<p></p>
+					<input type="submit" id = 'getresults' name="anything_submit" value = "Explore" onclick="loading();"></p>
+				</form>
+			</div>
+	</div>
+</div>
+{% endblock %}
+</body>
+</html>

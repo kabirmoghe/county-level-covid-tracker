@@ -27,7 +27,7 @@ div#loading {
     }
 
 button {
-  background-color: #A6B9FF;
+  background-color: #0370FF;
 	border: none;
   border-radius: 5px;
   color: #FFFFFF;
@@ -42,9 +42,16 @@ input#box {
 
 input#getresults {
   border: none;
-  background-color: #A6B9FF;
+  background-color: #0370FF;
   border-radius: 5px;
   color: #FFFFFF;
+}
+
+select.options {
+  background-color: #f2f6fa; 
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 select#options {

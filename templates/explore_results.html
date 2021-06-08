@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Live County COVID-19 Data</title>
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename = 'style.css')}}"></head>
+	<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+	<meta name = 'viewport' content = "width = device-width, initial-scale=1.0">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+	{% extends "base.html" %}
+	{% block titles %}Stats{% endblock %}
+	{% block content %}
+	<br>
+	<div class = 'content'>
+		<div class = 'title'>
+			<h3>{{attr1}} vs. {{attr2}}</h3>
+			<br>
+		</div>
+	</div>
+	{% include attr1+"_"+attr2+".html" %}
+	<div class = 'content'>
+		<button onclick="location.href = '/';">Home</button><p>&nbsp;&nbsp;</p>
+		<button onclick="location.href = '/explore';">Back to Explore</button>
+	</div>
+	<br>
+	{% endblock %}
+</body>
+</html>

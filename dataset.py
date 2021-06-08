@@ -23,7 +23,7 @@ def create_race_data():
     
     race_data = pd.merge(pop, stat_data)
     
-    race_cols = ['African American', 'Hispanic', 'Asian American', 'White American', 'Native American/Alaska Native', 'Native Hawaiian/Pacific Islander']
+    race_cols = ['African American', 'Hispanic', 'Asian American', 'White American', 'Native American or Alaska Native', 'Native Hawaiian or Pacific Islander']
 
     for col in race_cols:
         race_data['% ' + str(col)] = round(race_data[col + ' Population'] / race_data['Population'] * 100,2)

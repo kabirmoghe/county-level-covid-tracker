@@ -122,7 +122,7 @@ def usplot(c_or_d):
         fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_case_rate),
                                color_continuous_scale="Plasma",
                                hover_name = 'County Name',
-                               hover_data=[last_case_rate],
+                               hover_data=[last_case_rate, 'Population'],
                                scope="usa",
                                labels={'Log {name}'.format(name = last_case_rate):'Current Log. Daily Cases per 100k'}
                               )
@@ -156,7 +156,7 @@ def usplot(c_or_d):
         fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_death_rate),
                                color_continuous_scale="Plasma",
                                hover_name = 'County Name',
-                               hover_data=[last_death_rate],
+                               hover_data=[last_death_rate, 'Population'],
                                scope="usa",
                                labels={'Log {name}'.format(name = last_death_rate):'Current Log. Daily Deaths per 100k'}
                               )
@@ -576,7 +576,7 @@ def multivaxx_plot():
     fig_map = px.choropleth(data, geojson=counties, locations='County FIPS', color='% Fully Vaccinated as of {}'.format(date),
                            color_continuous_scale=['#FF3C33', '#FBF30B', '#41B26A'],
                            hover_name = 'County Name',
-                           hover_data=['% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date)],
+                           hover_data=['Population','% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date)],
                            scope="usa",
                            labels={'% Fully Vaccinated as of {}'.format(date):'Current % Fully Vaccinated', '% ≥ 12 Fully Vaccinated as of {}'.format(date):'Current % 12+ Fully Vaccinated', '% ≥ 18 Fully Vaccinated as of {}'.format(date):'Current % 18+ Fully Vaccinated', '% ≥ 65 Fully Vaccinated as of {}'.format(date):'Current % 65+ Fully Vaccinated'}
                           )
@@ -587,3 +587,22 @@ def multivaxx_plot():
     fig_map.write_html('/app/templates/us_vaxxmap.html', full_html = False)
 
     return date
+
+def scatter(x, y, trendline):
+
+    data = pd.read_csv('fulldataset.csv')
+    vaxx_col = [col for col in data.columns if "Fully" in col and "≥" not in col][0]
+    data = data[data[vaxx_col] != 0]
+
+    if trendline == 'y': 
+        fig = px.scatter(x=data[x], y=data[y], trendline="ols", labels={
+                     "x": x,
+                     "y": y}, title="Scatterplot of {} and {}".format(x, y))
+    else:
+        fig = px.scatter(x=data[x], y=data[y], labels={
+                     "x": x,
+                     "y": y}, title="Scatterplot of {} and {}".format(x, y))
+    fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
+    
+    fig.write_html('/app/templates/{}_{}.html'.format(x, y), full_html = False)
+

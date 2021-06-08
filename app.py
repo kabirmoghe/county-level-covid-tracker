@@ -59,7 +59,6 @@ def stats():
 	if request.method == "POST":
 		if path.exists("fulldataset.csv") == False:
 			dataset.main_function().to_csv('fulldataset.csv')
-		# FIX LOAD DATASET
 		choice = request.form["choice"]
 		if choice == 'vaxx':
 			date = covidapp.multivaxx_plot()
@@ -78,11 +77,9 @@ def stats():
 
 @app.route("/explore", methods = ['POST', 'GET'])
 def explore():
-	if path.exists("vaxxdataset.csv") == False:
-		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
+	if path.exists("fulldataset.csv") == False:
+		dataset.main_function().to_csv('fulldataset.csv')
 	if request.method == "POST":
-		if path.exists("fulldataset.csv") == False:
-			dataset.main_function().to_csv('fulldataset.csv')
 		# FIX LOAD DATASET
 		attr1 = request.form["choice1"]
 		attr2 = request.form["choice2"]

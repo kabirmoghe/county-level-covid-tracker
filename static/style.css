@@ -26,11 +26,15 @@ div#loading {
   	background-size: 45px 45px;
     }
 
-button {
+button{
   background-color: #0370FF;
 	border: none;
   border-radius: 5px;
   color: #FFFFFF;
+}
+
+button.img{ 
+  background:  none;
 }
 
 input#box {
@@ -80,10 +84,6 @@ a#dot {
   width: 700px;
 }
 
-.wtitle{
-  width: 1200px;
-}
-
 .content{
   display: flex;
   justify-content: center;
@@ -111,4 +111,17 @@ div#content {
 .list {
   text-align: center;
   list-style-position: inside;
+}
+
+.row {
+  display: flex;
+  width:  700px;
+  background-color: #EEF1F8;
+  border-radius: 5px;
+  padding-top: 9px;
+}
+
+.column {
+  flex: 33.33%;
+  padding: 5px;
 }

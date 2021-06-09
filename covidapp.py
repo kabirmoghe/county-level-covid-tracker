@@ -604,5 +604,5 @@ def scatter(x, y, trendline):
                      "y": y}, title="Scatterplot of {} and {}".format(x, y))
     fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
     
-    fig.write_html('/app/templates/{}_{}.html'.format(x, y), full_html = False)
+    fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
 

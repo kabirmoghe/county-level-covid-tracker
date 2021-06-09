@@ -87,7 +87,7 @@ def explore():
 
 		covidapp.scatter(attr1, attr2, trendline)
 
-		return render_template("explore_results.html", attr1 = attr1, attr2 = attr2)
+		return render_template("explore_results.html", attr1 = attr1, attr2 = attr2, trendline = trendline)
 		
 	else:
 		cols = [col for col in pd.read_csv('fulldataset.csv').columns[3:] if col != 'State' and "Mask" not in col]

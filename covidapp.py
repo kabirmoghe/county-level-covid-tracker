@@ -119,6 +119,8 @@ def usplot(c_or_d):
 
         data['Log {name}'.format(name = last_case_rate)] = data[last_case_rate].apply(lambda value: log_maker(value))
         
+        num0 = len(data[data[last_case_rate] == 0])
+
         fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_case_rate),
                                color_continuous_scale="Plasma",
                                hover_name = 'County Name',
@@ -152,6 +154,8 @@ def usplot(c_or_d):
                 return value
 
         data['Log {name}'.format(name = last_death_rate)] = data[last_death_rate].apply(lambda value: log_maker(value))
+
+        num0 = len(data[data[last_death_rate] == 0])
         
         fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_death_rate),
                                color_continuous_scale="Plasma",
@@ -175,7 +179,7 @@ def usplot(c_or_d):
     #for i in range(10):
     #    top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = round(float(top10[inf_col].iloc[i]),2)))
 
-    return top10, bot10, date
+    return top10, bot10, date, num0
 
 '''
 def create_vaxx_data():

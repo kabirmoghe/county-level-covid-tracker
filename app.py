@@ -65,12 +65,12 @@ def stats():
 			return render_template("vaxx_stats.html", date = date)
 		else:
 			if choice == 'c':
-				top10, bot10, date = covidapp.usplot('c')
-				return render_template("cases_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date)
+				top10, bot10, date, num0 = covidapp.usplot('c')
+				return render_template("cases_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date, num0 = num0)
 				#date = covidapp.multivaxx_plot()
 			else:
-				top10, bot10, date = covidapp.usplot('d')
-				return render_template("deaths_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date)
+				top10, bot10, date, num0 = covidapp.usplot('d')
+				return render_template("deaths_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date, num0 = num0)
 
 	else:
 		return render_template("statshome.html")

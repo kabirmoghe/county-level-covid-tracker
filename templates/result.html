@@ -20,34 +20,51 @@
 	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-  				<h6 style="margin-left: {{ctyrisk_pos}}px"><u><strong>{{county}}</strong></u></h6>
-  				<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px" src="{{url_for('static', filename='riskline.png')}}" alt="Change in Infection Rate Over Time">
-  				<h6 style="margin-left: {{lnrisk_pos}}px"><strong>> {{pct}}%</strong></h6>
-  				<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px" src="{{url_for('static', filename='riskarrow.png')}}" alt="Change in Infection Rate Over Time">
+			<img style="max-width: 40%; height: auto;" src="{{url_for('static', filename='riskkey.png')}}" alt="Key for Infection Rate Risk">
+			<p></p>
+		</div>
+	</div>
+
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<p></p>
+  				<h6 class = 'bubble' style="margin-left: {{ctyrisk_pos}}px; background-color: {{color}};"><strong>{{county}}: {{stat}}</strong></h6><br>
+  				<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px" src="{{url_for('static', filename='riskarrow.png')}}" alt="Infection Rate Risk">
 		</div>
 	</div>
 	<div class = 'content'>
-		<div class = 'title'>
+		<div class = 'title'>`
 			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='riskchart.png')}}" alt="Breakdown of Infection Rates Risk">
 		</div>
 	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-			<br>
-			<!--<div class = 'content'>
-				<img style="max-width: 15%; height: auto;" src="/static/{{rateimg}}" alt="Breakdown of Infection Rates and Rankings">
-			</div>
-			<br><br>
-		-->
-			<strong>{{rec}}</strong></p>
+				<p><strong>{{rec}}</strong></p>
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title'>
+			<img style="max-width: 20%; height: auto;" src="{{url_for('static', filename=y_n_mask+'_mask.png')}}" alt="mask image">
+			<p></p>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<p>{{mask_details}}<br><br>It is still important to follow the following guidelines (if comfortable) to prevent a rise in spread:</p>
+
 			<ul>
 				<li>Maintain a 6-foot distance</li>
-				<li>Wear a mask around others if comfortable</li>
+				<li>Wear a mask around others (especially in indoor spaces)</li>
 				<li>Sign up for vaccinations if eligible</li>
 			</ul>
+			</div>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
 			<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
 			<h5>Vaccination Progress for {{county}}*</h5>
-			<p><strong>*Note:</strong> The visualization below shows the percentage of fully vaccinated people within the county broken down by age group.</p>
+			<p><strong>*Note:</strong> {{note}}</p>
 
 			{% include county+"_vaxxplot.html" %}
 

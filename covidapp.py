@@ -42,6 +42,14 @@ def county_stats(county_name):
         high25pct = round(ctynum*0.25)
         low25pct = round(ctynum*0.75)
 
+        #sets thresholds for different COVID risk levels
+
+        green = 1 # low
+        yellow = 10 # moder. low
+        orange = 25 # moder. high
+
+        #red is greater than 25, high
+
         if county_name in data['County Name'].values:
             '''county_df = data[data['County Name'] == county_name][infs].transpose().reset_index()
             county_df['Time'] = ["Jan '20", "Feb '20", "Mar '20", "Apr '20", "May '20", "Jun '20", "Jul '20", "Aug '20", "Sept '20", "Oct '20", "Nov '20", "Dec '20", "Jan '21", "Feb '21", "Mar '21", "Apr '21", "May '21"]
@@ -54,43 +62,73 @@ def county_stats(county_name):
 
             des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
 
-            otherinfo = des_row.iloc[:, -15:]
-            
+            mask_info= [des_row[col].values[0] for col in des_row.columns if 'mask' in col.lower()]
+
+            y_n_mask, mask_details = mask_info
+
+            des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
+
+            otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:]], axis = 1)
+
             stat = des_row[inf_col].iloc[0]
 
             rank = sorted_data[sorted_data['County Name']==county_name].index[0]+1
+
+            css_prop = stat/27
+
+            if css_prop <= 1:
+                css_prop = css_prop
+            else:
+                css_prop = 1.0
+
+            #pct = round(prop*100,2)
 
             prop = (1-(rank/len(sorted_data)))
 
             pct = round(prop*100, 2)
 
+            
+
             if pct == 0.0:
-                rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
-                #riskimg = 'riskchartbot.png'
-                risk_pos = (round(171+(339*prop),2))
-                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the lowest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+                rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, precaution should be taken and social distancing guidelines should be followed.'.format(county_name = county_name)
+                
+                color = '#7cff02'
+
+                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is one of the lowest counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+         
             elif round(pct) == 100.0:
-                rec = 'There is a relatively high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
-                risk_pos = (round(171+(339*prop),2))
-                #riskimg = 'riskcharttop.png'
+                rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
+                
+                color = '#ff0600'
+
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the highest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
             else:
-                if rank < high25pct:
-                    rec = 'There is a relatively high risk of infection in {county_name}, so precaution should be taken and social distancing guidelines should be followed strictly:'.format(county_name = county_name)
-                    risk_pos = (round(171+(339*prop),2))
-                    #riskimg = 'riskcharttop.png'
-                elif high25pct < rank < low25pct:
-                    rec = 'There is a relatively moderate risk of infection in {county_name}, so precaution should still be taken and social distancing guidelines should still be followed:'.format(county_name = county_name)
-                    risk_pos = (round(171+(339*prop),2))
-                    #riskimg = 'riskchartmid.png'
+                if stat < green:
+                    rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, precaution should be taken and social distancing guidelines should be followed.'.format(county_name = county_name)
+
+                    color = '#7cff02'
+
+                elif green <= stat < yellow:
+                    rec = '{county_name} has a moderately low risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Precaution should be taken and social distancing guidelines should be followed.'.format(county_name = county_name)
+                    
+                    color = '#fff800'
+
+                elif yellow <= stat < orange:
+                    rec = '{county_name} has a moderately high risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Stay-at-home orders are advised unless viral testing and contact tracing capacity are implementable at levels meeting surge indicator standards. Precaution should be taken and social distancing guidelines should be followed.'.format(county_name = county_name)
+
+                    color = '#ffab00'
+
                 else:
-                    rec = 'Though there is a relatively low risk of infection in {county_name}, precaution should still be taken, and following social distancing guidelines is important in preventing a rise in spread:'.format(county_name = county_name)
-                    risk_pos = (round(171+(339*prop),2))
-                    #riskimg = 'riskchartbot.png'
-                
+                    rec = '{county_name} has a high risk of infection, and stay-at-home orders may be necessary. Precaution should be taken and social distancing guidelines should be followed.'.format(county_name = county_name)
+
+                    color = '#ff0600'
+
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
 
-            return otherinfo, stat, info, rec, risk_pos, pct#, riskimg
+            riskimg = 'riskchart.png'
+            risk_pos = (round(182+(346*css_prop),2))
+                
+            return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color#, riskimg
         else:
             return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
 

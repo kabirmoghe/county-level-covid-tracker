@@ -33,6 +33,22 @@ button{
   color: #FFFFFF;
 }
 
+h6.bubble{
+  display:inline-block;
+  color: #000000;
+  padding: 3px;
+  margin: 0px;
+}
+
+.bubble{
+  background-color: #EEF1F8;
+  border: none;
+  border-radius: 4px;
+  color: #000000;
+  padding: 6px;
+  display:inline-block;
+}
+
 button.img{ 
   background:  none;
 }

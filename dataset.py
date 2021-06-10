@@ -218,8 +218,18 @@ def create_mask_data():
     st['State'] = st['State'].map(states)
 
     md = pd.DataFrame(cm, columns = ['Statewide Mask Mandate (Updated {})'.format(date_updated)])
+    
+    loc = 0
 
-    mask_data = pd.concat([st,md], axis = 1)
+    for i in range(len(ps)):
+        if 'Here’s where each state stands on the use of face masks' in ps[i].split(','):
+            loc = i+2
+        
+    newps = ps[loc:]
+
+    mask_info = pd.DataFrame([val for val in newps if len(val) >150 and 'you' not in val.lower()], columns = ['Mask Mandate Details'])
+            
+    mask_data = pd.concat([st,md, mask_info], axis = 1)
     
     return mask_data
 

@@ -148,7 +148,7 @@ def usplot(c_or_d):
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
         fig.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
         fig.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
-        fig.write_html("/users/kabirmoghe/Desktop/c_usplot.html", full_html = False)
+        fig.write_html("/app/templates/c_usplot.html", full_html = False)
         
         sorted_data = data.sort_values(by = last_case_rate, ascending = False)[['County Name', last_case_rate]].reset_index(drop = True)
 

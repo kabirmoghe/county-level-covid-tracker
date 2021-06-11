@@ -89,7 +89,7 @@ def county_stats(county_name):
 
             
 
-            if pct == 0.0:
+            if stat == 0.0:
                 rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, precaution should be taken and social distancing guidelines should be followed.'.format(county_name = county_name)
                 
                 color = '#7cff02'
@@ -647,7 +647,7 @@ def scatter(x, y, trendline):
     fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
     
     fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
-
+'''
 def violinplot(x, y, points):
 
     data = pd.read_csv('fulldataset.csv')
@@ -665,4 +665,4 @@ def violinplot(x, y, points):
     fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
     
     fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
-
+'''

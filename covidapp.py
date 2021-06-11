@@ -155,6 +155,8 @@ def usplot(c_or_d):
         top10 = sorted_data.head(10)[['County Name', last_case_rate]].reset_index(drop = True)
         bot10 = sorted_data.tail(10)[['County Name', last_case_rate]].reset_index(drop = True)
 
+        return top10, bot10, num0
+
     else:
 
         last_death_rate = [column for column in data.columns if "Deaths" in column.split() and "per" in column.split()][0]
@@ -196,7 +198,7 @@ def usplot(c_or_d):
     #for i in range(10):
     #    top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = round(float(top10[inf_col].iloc[i]),2)))
 
-    return top10, bot10, date, num0
+        return top10, bot10, date, num0
 
 '''
 def create_vaxx_data():

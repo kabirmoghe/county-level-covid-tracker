@@ -1,8 +1,6 @@
-import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
 
 # Creates COVID-19 County Level Dataset
 

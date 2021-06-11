@@ -1,16 +1,8 @@
-import numpy as np
 import pandas as pd
 import requests
-from bs4 import BeautifulSoup
-from urllib.request import urlopen
 import json
 import plotly.express as px
-import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.graph_objects as go
-import chart_studio
-import chart_studio.plotly as py
-import chart_studio.tools as tls
 import covidapp
 
 def county_list():
@@ -134,42 +126,28 @@ def county_stats(county_name):
 
 def usplot(c_or_d):
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-        counties = json.load(response)
+    counties = json.load(response)
     
-    data = pd.read_csv('fulldataset.csv', index_col = 0)
+    data = pd.read_csv('/users/kabirmoghe/Desktop/covidapp/fulldataset.csv', index_col = 0)
+    
+    data = data[data['State'] != 'NE']
 
     data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
     if c_or_d == 'c':
 
         last_case_rate = [column for column in data.columns if "Cases" in column.split() and "per" in column.split()][0]
-
-        date = last_case_rate.split('as of ')[1]
-
-        def log_maker(value):
-            if value != 0:
-                if np.log(value) < 0:
-                    return 0
-                else:
-                    return np.log(value)
-            else:
-                return value
-                
-
-        data['Log {name}'.format(name = last_case_rate)] = data[last_case_rate].apply(lambda value: log_maker(value))
         
         num0 = len(data[data[last_case_rate] == 0])
 
-        fig = px.choropleth(data, geojson=counties, locations='County FIPS', color='Log {name}'.format(name = last_case_rate),
-                               color_continuous_scale="Plasma",
+        fig = px.choropleth(data, geojson=counties, locations='County FIPS', color=last_case_rate,
+                               color_continuous_scale=['#3EAC58', '#F6E520','#F6E520','#F6E520','#F6E520', '#ED9A0C', '#ED9A0C','#ED9A0C', '#ED9A0C', '#ED9A0C','#E64B01'],
                                hover_name = 'County Name',
                                hover_data=[last_case_rate, 'Population'],
-                               scope="usa",
-                               labels={'Log {name}'.format(name = last_case_rate):'Current Log. Daily Cases per 100k'}
-                              )
+                               scope="usa", range_color=[0,25])
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
         fig.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
         fig.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
-        fig.write_html("/app/templates/c_usplot.html", full_html = False)
+        fig.write_html("/users/kabirmoghe/Desktop/c_usplot.html", full_html = False)
         
         sorted_data = data.sort_values(by = last_case_rate, ascending = False)[['County Name', last_case_rate]].reset_index(drop = True)
 

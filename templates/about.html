@@ -14,8 +14,41 @@
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<h3>About this project</h3>
-			<p>My name is Kabir, and I created this tool to provide information on a granular level about the spread and local impact of COVID-19. The app allows users to understand the current situation of the pandemic in their county. <a href="https://towardsdatascience.com/county-based-covid-19-dataset-and-analytical-trends-ff1617030ba8" target="_blank">Click here</a> to learn about some analysis I performed last August using the data from then.</p>
+			<p>Hi! I'm Kabir, and I created this application to provide information on a granular level about the spread and local impact of COVID-19. The app allows users to understand the current situation of the pandemic in their county, understand vaccination data, and explore the relationship between various county attributes and COVID-19 data. 
+			<br>
+			<h4>Sources</h4>
+			<p>The self-updating data set compiles data from the sources below:</p>
+				<ol>
+					<li>Cumulative COVID-19 Case and Death Tallies: <a href="https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/" target = '_blank'>USAFacts</a></li>
+					<li>Vaccinations: <a href="https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-County/8xkx-amqh" target = '_blank'>CDC</a></li>
+					<li>Mask/Social-Distancing Policies: <a href="https://www.aarp.org/health/healthy-living/info-2020/states-mask-mandates-coronavirus.html" target = '_blank'>AARP</a></li>
+					<li>Race Demographics: <a href="https://www2.census.gov/programs-surveys/popest/datasets/2010-2020/counties/totals/" target = '_blank'>US Census Bureau</a></li>
+					<li>Unemployment, Income, and Education: <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/" target = '_blank'>USDA</a></li>
+					<li>Calculated Population Density: <a href="https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/" target = "_blank">USAFacts</a> and <a href="https://hub.arcgis.com/datasets/esri::usa-counties/about" target = "_blank">ArcGIS</a></li>
+				</ol>
+			<h4>Methodology</h4>
+			<p>In order to determine the "risk of infection" in a certain county, the 7-Day <a href="https://www.georgiaruralhealth.org/blog/what-is-a-moving-average-and-why-is-it-useful/" target = '_blank'>rolling average</a> was used, which is the average number of new cases each day over the past week per 100,000 people. Since county-wide population varies, 100,000 is a commonly used number to have normalized rates across all counties, so simple percentages are scaled to a number of cases out of 100,000.</p>
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title'>
+			<p></p>
+			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='risklabeled.png')}}" alt="Breakdown of Infection Rates Risk">
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+		    <br><br>To calculate risk from the rolling average, the methods from the <a href="https://ethics.harvard.edu/files/center-for-ethics/files/key_metrics_and_indicators_v4.pdf" target = '_blank'>Harvard Global Health Institute</a> were used. Specifically, as shown by the key above, "low" risk (green) was determined as < 1 new cases per day, "moderately low" risk (yellow) as 1 or more but less than 10 new cases per day, "moderately high" risk (orange) as 10 or more but less than 25 new cases per day, and "high" risk (red) as 25 or more new cases per day (all according to the 7-day rolling average).</p>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<h4>Other Notes</h4>
+			<p>
+			<a href="https://towardsdatascience.com/county-based-covid-19-dataset-and-analytical-trends-ff1617030ba8" target="_blank">Click here</a> to learn about some analysis I performed last August using the data from then.</p>
 			<p>The code for this web app can also be accessed <a href="https://github.com/kabirmoghe/covidapp" target="_blank">here</a>.</p>
+			<p>Contact me at <a href="mailto: kabirmoghe@gmail.com">kabirmoghe@gmail.com</a> with any questions. Thanks!</p>
+			<br>
 		</div>
 	</div>
 <!--

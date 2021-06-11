@@ -648,3 +648,21 @@ def scatter(x, y, trendline):
     
     fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
 
+def violinplot(x, y, points):
+
+    data = pd.read_csv('fulldataset.csv')
+    vaxx_col = [col for col in data.columns if "Fully" in col and "≥" not in col][0]
+    data = data[data[vaxx_col] != 0]
+
+    if trendline == 'y': 
+        fig = px.scatter(x=data[x], y=data[y], trendline="ols", labels={
+                     "x": x,
+                     "y": y}, title="Scatterplot of {} and {}".format(x, y))
+    else:
+        fig = px.scatter(x=data[x], y=data[y], labels={
+                     "x": x,
+                     "y": y}, title="Scatterplot of {} and {}".format(x, y))
+    fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
+    
+    fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
+

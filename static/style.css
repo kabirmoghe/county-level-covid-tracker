@@ -36,7 +36,8 @@ button{
 h6.bubble{
   display:inline-block;
   color: #000000;
-  padding: 3px;
+  padding: 4px;
+  border-radius: 7px;
   margin: 0px;
 }
 
@@ -115,6 +116,12 @@ h3#title, h4#title, h5#title {
   display: flex;
   justify-content: center;
 
+}
+
+.rcontent {
+  display: flex;
+  justify-content: center;
+  text-align: right;
 }
 
 

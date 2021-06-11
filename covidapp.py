@@ -126,7 +126,7 @@ def county_stats(county_name):
 
 def usplot(c_or_d):
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-    counties = json.load(response)
+        counties = json.load(response)
     
     data = pd.read_csv('/users/kabirmoghe/Desktop/covidapp/fulldataset.csv', index_col = 0)
     

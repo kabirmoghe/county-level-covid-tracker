@@ -133,6 +133,7 @@ def usplot(c_or_d):
     data = pd.read_csv('fulldataset.csv', index_col = 0)
     
     data = data[data['State'] != 'NE']
+    data = data[data['State'] != 'FL']
 
     data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
     if c_or_d == 'c':
@@ -148,7 +149,7 @@ def usplot(c_or_d):
                                hover_name = 'County Name',
                                hover_data=[last_case_rate, 'Population'],
                                scope="usa", range_color=[0,25],
-                               labels={last_case_rate:'Risk (Daily Cases per 100k'}
+                               labels={last_case_rate:'Infection Risk (Daily Cases per 100k)'}
 
                                )
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")

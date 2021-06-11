@@ -138,13 +138,18 @@ def usplot(c_or_d):
 
         last_case_rate = [column for column in data.columns if "Cases" in column.split() and "per" in column.split()][0]
         
+        date = last_case_rate.split('as of ')[1]
+
         num0 = len(data[data[last_case_rate] == 0])
 
         fig = px.choropleth(data, geojson=counties, locations='County FIPS', color=last_case_rate,
                                color_continuous_scale=['#3EAC58', '#F6E520','#F6E520','#F6E520','#F6E520', '#ED9A0C', '#ED9A0C','#ED9A0C', '#ED9A0C', '#ED9A0C','#E64B01'],
                                hover_name = 'County Name',
                                hover_data=[last_case_rate, 'Population'],
-                               scope="usa", range_color=[0,25])
+                               scope="usa", range_color=[0,25],
+                               labels={last_case_rate:'Risk (Daily Cases per 100k'}
+
+                               )
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
         fig.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
         fig.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
@@ -154,8 +159,6 @@ def usplot(c_or_d):
 
         top10 = sorted_data.head(10)[['County Name', last_case_rate]].reset_index(drop = True)
         bot10 = sorted_data.tail(10)[['County Name', last_case_rate]].reset_index(drop = True)
-
-        return top10, bot10, num0
 
     else:
 
@@ -198,7 +201,7 @@ def usplot(c_or_d):
     #for i in range(10):
     #    top10lst.append('{cty}: {stat}'.format(cty = top10['County Name'].iloc[i], stat = round(float(top10[inf_col].iloc[i]),2)))
 
-        return top10, bot10, date, num0
+    return top10, bot10, date, num0
 
 '''
 def create_vaxx_data():

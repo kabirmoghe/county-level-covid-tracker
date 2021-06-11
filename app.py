@@ -50,13 +50,6 @@ def countyinfo():
 		#return render_template("data.html", states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'])
 		
 
-@app.route("/about")
-def about():
-	if path.exists("vaxxdataset.csv") == False:
-		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
-
-	return render_template("about.html")
-
 @app.route("/stats", methods = ['POST', 'GET'])
 def stats():
 	if path.exists("vaxxdataset.csv") == False:
@@ -70,8 +63,8 @@ def stats():
 			return render_template("vaxx_stats.html", date = date)
 		else:
 			if choice == 'c':
-				top10, bot10, num0 = covidapp.usplot('c')
-				return render_template("cases_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, num0 = num0)
+				top10, bot10, date, num0 = covidapp.usplot('c')
+				return render_template("cases_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date, num0 = num0)
 				#date = covidapp.multivaxx_plot()
 			else:
 				top10, bot10, date, num0 = covidapp.usplot('d')
@@ -102,6 +95,12 @@ def explore():
 			cols.reverse()
 			return render_template("explorehome.html", cols = cols)
 
+@app.route("/about")
+def about():
+	if path.exists("vaxxdataset.csv") == False:
+		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
+
+	return render_template("about.html")
 
 if __name__ == '__main__':
     app.run(debug = True)

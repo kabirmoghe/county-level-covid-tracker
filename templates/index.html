@@ -16,22 +16,22 @@
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<strong><h3>Learn about the spread of COVID-19 in your county</h3></strong>	
-			<p>This web app allows you to explore current  across 95% of counties in the United States, barring a few counties with incomplete information. The data on the COVID-19 pandemic includes the current 7-day rolling average for cases and deaths per 100,000 as well as up-to-date vaccination information, all on the county level. Along with information on COVID-19, the app includes several other county attributes that may be relevant to the spread of the virus: median household income, unemployment, education, race demographics, and the presence of statewide mask requirements. All of these attributes are up-to-date, and the mask-requirements are updated almost daily.</p>
-			<p>To find information about a county, go to the <strong>Data</strong> tab and enter your county (in the form <i>"Your County Name", "Capitalized State Abbreviation"</i>) and select the correct county. To learn about the nationwide situation of COVID-19 on a county-level, go to the <strong>Stats</strong> tab and load data on an aspect of your choice. Finally, to carry out your own exploration between two county attributes, head to the <strong>Explore</strong> page.</p>
+			<p>This web app allows you to explore current  across 95% of counties in the United States, barring a few counties with incomplete information. The data on the COVID-19 pandemic includes the current 7-day moving average for cases and deaths per 100,000 as well as up-to-date vaccination information, all on the county level. Along with information on COVID-19, the app includes several other county attributes that may be relevant to the spread of the virus: median household income, unemployment, education, race demographics, and the presence of statewide mask requirements. All of these attributes are up-to-date, and the mask-requirements are updated almost daily.</p>
+			<p>To find information about a county, go to the <strong>Data</strong> tab and enter your county (in the form <i>"Your County Name", "Capitalized State Abbreviation"</i>) and select the correct county. To learn about the nationwide situation of COVID-19 on a county-level, go to the <strong>Stats</strong> tab and load data on an aspect of your choice. Finally, to carry out your own exploration between two county attributes, head to the <strong>Explore</strong> tab.</p>
 		</div>
 	</div>
 	<div class = 'content'>
 	<div class="row">
 	  <div class="column">
-	  	<a href='/countyinfo' target="_blank"><img style="max-width: 90%; height: auto;" src="{{url_for('static', filename='data.jpg')}}" alt="Data Page" title = 'Data'></a>
+	  	<a href='/countyinfo'><img style="max-width: 90%; height: auto;" src="{{url_for('static', filename='data.jpg')}}" alt="Data Page" title = 'Data'></a>
 	  	<h6><i>Data</i></h6>
 	  </div>
 	  <div class="column">
-	  	<a href='/stats' target="_blank"><img style="max-width: 90%; height: auto;" src="{{url_for('static', filename='stats.jpg')}}" alt="Stats Page" title = 'Stats'></a>
+	  	<a href='/stats'><img style="max-width: 90%; height: auto;" src="{{url_for('static', filename='stats.jpg')}}" alt="Stats Page" title = 'Stats'></a>
 	  	<h6><i>Stats</i></h6>
 	  </div>
 	  <div class="column">
-	  	<a href='/explore' target="_blank"><img style="max-width: 90%; height: auto;" src="{{url_for('static', filename='explore.jpg')}}" alt="Explore Page" title = 'Explore'></a>
+	  	<a href='/explore'><img style="max-width: 90%; height: auto;" src="{{url_for('static', filename='explore.jpg')}}" alt="Explore Page" title = 'Explore'></a>
 	  	<h6><i>Explore</i></h6>
 		</div>
 	  </div>

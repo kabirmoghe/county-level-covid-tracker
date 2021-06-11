@@ -17,7 +17,7 @@ def home():
 	return render_template("index.html")
 
 
-@app.route("/countyinfo", methods = ['POST', 'GET'])
+@app.route("/data", methods = ['POST', 'GET'])
 def countyinfo():
 	if path.exists("vaxxdataset.csv") == False:
 		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
@@ -26,7 +26,6 @@ def countyinfo():
 		county = request.form["cty"]
 		if county == '':
 			return render_template('empty.html')
-
 		if path.exists("fulldataset.csv") == False:
 			dataset.main_function().to_csv('fulldataset.csv')
 
@@ -83,22 +82,25 @@ def stats():
 
 @app.route("/explore", methods = ['POST', 'GET'])
 def explore():
-	if path.exists("fulldataset.csv") == False:
-		dataset.main_function().to_csv('fulldataset.csv')
-	if request.method == "POST":
-		# FIX LOAD DATASET
-		attr1 = request.form["choice1"]
-		attr2 = request.form["choice2"]
-		trendline = request.form["trendline"]
-
-		covidapp.scatter(attr1, attr2, trendline)
-
-		return render_template("explore_results.html", attr1 = attr1, attr2 = attr2, trendline = trendline)
-		
+	if path.exists('vaxxdataset.csv') == False:
+		return redirect(url_for('home'))
 	else:
-		cols = [col for col in pd.read_csv('fulldataset.csv').columns[3:] if col != 'State' and "Mask" not in col]
-		cols.reverse()
-		return render_template("explorehome.html", cols = cols)
+		if path.exists("fulldataset.csv") == False:
+			dataset.main_function().to_csv('fulldataset.csv')
+		if request.method == "POST":
+			# FIX LOAD DATASET
+			attr1 = request.form["choice1"]
+			attr2 = request.form["choice2"]
+			trendline = request.form["trendline"]
+
+			covidapp.scatter(attr1, attr2, trendline)
+
+			return render_template("explore_results.html", attr1 = attr1, attr2 = attr2, trendline = trendline)
+			
+		else:
+			cols = [col for col in pd.read_csv('fulldataset.csv').columns[3:] if col != 'State' and "Mask" not in col]
+			cols.reverse()
+			return render_template("explorehome.html", cols = cols)
 
 
 if __name__ == '__main__':

@@ -26,8 +26,18 @@
 					<li>Unemployment, Income, and Education: <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/" target = '_blank'>USDA</a></li>
 					<li>Calculated Population Density: <a href="https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/" target = "_blank">USAFacts</a> and <a href="https://hub.arcgis.com/datasets/esri::usa-counties/about" target = "_blank">ArcGIS</a></li>
 				</ol>
-			<h4>Methodology</h4>
-			<p>In order to determine the "risk of infection" in a certain county, the 7-Day <a href="https://www.georgiaruralhealth.org/blog/what-is-a-moving-average-and-why-is-it-useful/" target = '_blank'>rolling average</a> was used, which is the average number of new cases each day over the past week per 100,000 people. Since county-wide population varies, 100,000 is a commonly used number to have normalized rates across all counties, so simple percentages are scaled to a number of cases out of 100,000.</p>
+			<h4 id = 'methodology'><br>Methodology</h4>
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title'><p></p>
+			<img style="max-width: 100%; height: auto;" src="{{url_for('static', filename='movingavg.png')}}" alt="Moving Average Calculation">
+			<p></p>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<p>In order to determine the "risk of infection" in a certain county, the 7-Day <a href="https://www.georgiaruralhealth.org/blog/what-is-a-moving-average-and-why-is-it-useful/" target = '_blank'>moving average</a> was used, which is the average number of new cases each day over the past week per 100,000 people. Since county-wide population varies, 100,000 is a commonly used number to have normalized rates across all counties, so simple percentages are scaled to a number of cases out of 100,000.</p>
 		</div>
 	</div>
 	<div class = 'content'>
@@ -38,7 +48,7 @@
 	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-		    <br><br>To calculate risk from the rolling average, the methods from the <a href="https://ethics.harvard.edu/files/center-for-ethics/files/key_metrics_and_indicators_v4.pdf" target = '_blank'>Harvard Global Health Institute</a> were used. Specifically, as shown by the key above, "low" risk (green) was determined as < 1 new cases per day, "moderately low" risk (yellow) as 1 or more but less than 10 new cases per day, "moderately high" risk (orange) as 10 or more but less than 25 new cases per day, and "high" risk (red) as 25 or more new cases per day (all according to the 7-day rolling average).</p>
+		    <br><br>To calculate risk from the moving average, the methods from the <a href="https://ethics.harvard.edu/files/center-for-ethics/files/key_metrics_and_indicators_v4.pdf" target = '_blank'>Harvard Global Health Institute</a> were used. Specifically, as shown by the key above, <strong>low</strong> risk (green) was determined as < 1 new cases per day, <strong>moderately low</strong> risk (yellow) as 1 or more but less than 10 new cases per day, <strong>moderately high</strong> risk (orange) as 10 or more but less than 25 new cases per day, and <strong>high</strong> risk (red) as 25 or more new cases per day (all according to the 7-day moving average).</p>
 		</div>
 	</div>
 	<div class = 'ncontent'>

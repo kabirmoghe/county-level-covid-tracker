@@ -1,4 +1,4 @@
-import numpu as np
+import numpy as np
 import pandas as pd
 import requests
 import json

@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import json
+from urllib.request import urlopen
 import plotly.express as px
 import plotly.graph_objects as go
 import covidapp

@@ -27,7 +27,7 @@ div#loading {
     }
 
 button{
-  background-color: #0370FF;
+  background-color: #64B1FC;
 	border: none;
   border-radius: 5px;
   color: #FFFFFF;
@@ -37,7 +37,7 @@ h6.bubble{
   display:inline-block;
   color: #000000;
   padding: 4px;
-  border-radius: 7px;
+  border-radius: 7px, 7px, 0px, 0px;
   margin: 0px;
 }
 
@@ -47,7 +47,8 @@ h6.bubble{
   border-radius: 4px;
   color: #000000;
   padding: 6px;
-  display:inline-block;
+  display: flex;
+  justify-content: center;
 }
 
 button.img{ 
@@ -63,7 +64,7 @@ input#box {
 
 input#getresults {
   border: none;
-  background-color: #0370FF;
+  background-color: #64B1FC;
   border-radius: 5px;
   color: #FFFFFF;
 }
@@ -147,4 +148,20 @@ div#content {
 .column {
   flex: 33.33%;
   padding: 5px;
+}
+
+.gif {
+  max-width: 15%; 
+  height: auto;
+  float: left;
+  padding-right: 10px;
+  position: relative;
+}
+
+.hide {
+  display: none;
+}
+
+.myDIV:hover + .hide {
+  display: block;
 }

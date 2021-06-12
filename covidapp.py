@@ -89,40 +89,53 @@ def county_stats(county_name):
                 color = '#7cff02'
 
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is one of the lowest counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
-         
+            
+                risk = 'Low'
+
             elif round(pct) == 100.0:
                 rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and guidelines should be followed strictly (see details below).'.format(county_name = county_name)
                 
                 color = '#ff0600'
 
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the highest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+            
+                risk = 'High'
+
             else:
                 if stat < green:
                     rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, some precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
 
                     color = '#7cff02'
 
+                    risk = 'Low'
+
                 elif green <= stat < yellow:
                     rec = '{county_name} has a moderately low risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Precaution should be still be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
                     
                     color = '#fff800'
+
+                    risk = 'Moderately Low'
 
                 elif yellow <= stat < orange:
                     rec = '{county_name} has a moderately high risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Stay-at-home orders are advised unless viral testing and contact tracing capacity are implementable at levels meeting surge indicator standards. Precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
 
                     color = '#ffab00'
 
+                    risk = 'Moderately High'
+
                 else:
                     rec = '{county_name} has a high risk of infection, and stay-at-home orders may be necessary. Extra precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
 
                     color = '#ff0600'
 
+                    risk = 'High'
+
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
 
             riskimg = 'riskchart.png'
-            risk_pos = (round(182+(346*css_prop),2))
+            risk_pos = (round(182+(338*css_prop),2))
                 
-            return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color#, riskimg
+            return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk#, riskimg
         else:
             return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
 

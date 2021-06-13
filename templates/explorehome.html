@@ -24,24 +24,32 @@
 				<p>Select any two county attributes below and decide whether to include an Original Least Squares trendline, and once you click <strong>"Explore,"</strong> you will be able to explore an interactive scatterplot of the two attributes. <br><br>For example, input a race demographic like <i>African American</i> or a general attribute like <i>Median Household Income</i> along with a vaccine attribute like <i>% Fully Vaccinated</i>, and check out the results.</p>
 			<div style="display:block;">
 				<form action = "#" method = "post">
-					<i>Attribute #1:</i> <select class="options" name="choice1">
+					<i>Attribute #1:</i> 
+					<select class="options" name="choice1" style = 'width: 48.6%'>
 						{% for col in cols %}
 						<option value= "{{col}}">{{col}}</option>"
 						{% endfor %}
 					</select>
+
 					<p></p>
-					<i>Attribute #2:</i> <select class="options" name="choice2">
+
+					<i>Attribute #2:</i> 
+					<select class="options" name="choice2" style = 'width: 48.6%'>
 						{% for col in cols %}
 						<option value= "{{col}}">{{col}}</option>"
 					    {% endfor %}
 					</select>
+
 					<p></p>
+
 					<i>Trendline:</i> <select class="options" name="trendline">
 					    <option value= "y">Yes</option>"
 					    <option value= "n">No</option>"
 					</select>
+
 					<p></p>
-					<input type="submit" id = 'getresults' name="anything_submit" value = "Explore" onclick="loading();"></p>
+
+					<input type="submit" id = 'getresults' name="anything_submit" value = "Explore" onclick="loading();">
 				</form>
 			</div>
 	</div>

@@ -33,7 +33,7 @@ def countyinfo():
 		allinfo = covidapp.county_stats(county)
 		if len(allinfo) == 10:
 			tbl, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk = allinfo
-			ctyrisk_pos = risk_pos - 90
+			ctyrisk_pos = risk_pos - 12.5
 
 			if round(pct) == 100.0:
 				ptile = 'Top ~99%'
@@ -49,7 +49,7 @@ def countyinfo():
 			else:
 				note = 'The visualization below shows the percentage of fully vaccinated people within the county broken down by age group.'
 
-			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk)
+			return render_template("testresult.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk)
 		else:
 			return render_template("undef_result.html", issue = allinfo)
 	else:

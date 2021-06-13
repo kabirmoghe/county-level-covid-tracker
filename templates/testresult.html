@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Live County COVID-19 Data</title>
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename = 'style.css')}}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<script type="text/javascript">
+	$('.gifplayer');
+	$('.gifplayer').gifplayer();
+
+	$gifs = $('.gif');
+
+	$gifs.each(function (i, gif) {
+	    $(gif).data('isPlaying', false);
+	});
+
+
+	$(window).scroll(function () {
+	    $gifs = $('.gif');
+
+	    $gifs.each(function (i, gif) {
+	        $gif = $(gif);
+
+	        if ($gif.visible(true)) {
+	            if (!$gif.data('isPlaying')) {
+	                $gif.find('.gifplayer').gifplayer('play');
+	                $gif.data('isPlaying', true);
+	            }
+
+	            if ($gif.find('.gp-gif-element').length > 1) {
+	                $gif.find('.gp-gif-element').first().remove();
+	            }
+	        } else {
+	            if ($gif.data('isPlaying')) {
+	                $gif.find('.gifplayer').gifplayer('stop');
+	                $gif.data('isPlaying', false);
+	            }
+	        }
+	    });
+	});	
+	</script>
+</head>
+<body>
+	{% extends "base.html" %}
+	{% block titles %}Result{% endblock %}
+	{% block content %}
+	<br>
+	<h3 id = 'title'>{{county}}</h3>
+	<div class = 'content'>
+		<div class = 'title'>
+			<button onclick="location.href = '/data';">Take me back</button>
+			<br>
+		</div>
+	</div>
+	<br>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<h4>COVID-19 Infection Risk</h4>
+			<p>7-Day Moving Average: <strong>{{stat}} daily cases per 100,000</strong>&nbsp;</strong><span class="dot" style = 'height: 11px; width: 11px; background-color: {{color}}; border-radius: 50%; display: inline-block;'></span></p>
+			<p>{{info}}<br><br>
+				Hover over (or click on a mobile device) the colored bar below (formatted as <strong>'Your county name: infection rate'</strong>) to show more info, and click on the labeled key to learn about the methodology.</p>
+		</div>
+	</div>
+	<!--
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<p></p>
+			<a href="/about#methodology"><img style="max-width: 25%; height: auto;" src="{{url_for('static', filename='riskkey.png')}}" alt="Key for Infection Rate Risk"></a>
+			<a href="/about#methodology"><img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='movingavg.png')}}" alt="Moving Average Calculation"></a>
+			<p></p>
+		</div>
+	</div>
+	-->
+	 
+	
+	<div class = 'ncontent'>
+		<div class = 'title' style = 'background-color: #EEF1F8; border: none; border-radius: 8px 8px 0px 0px; color: #000000;padding: 6px;'>
+				<p></p>
+		  		<div class="myDIV">
+		  			<h6 class = 'bubble' style=";margin-left: {{ctyrisk_pos}}%; background-color: {{color}};"><strong>{{county}}: {{stat}}</strong></h6>
+		  		</div>
+		  		
+			  	<div class="hide">
+			  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}%;" src="{{url_for('static', filename='riskline.png')}}" alt="Infection Rate Risk">
+			  		<h6 class = 'bubble' style = 'margin-left: {{ctyrisk_pos}}%; background-color: #FFFFFF;'>
+			  			Daily Cases per 100k: <strong>{{stat}}</strong><br><br>
+			  			Percentile: <strong>{{ptile}}</strong><br><br>
+			  			Risk: <span style = "padding: 5px; border-radius: 7px; background-image: repeating-linear-gradient(45deg, {{color}} 0px, {{color}} 7px, transparent 3px, transparent 10px, {{color}} 10px);"><strong>{{risk}}</strong></span>
+			  		</p>
+			  	</div>
+		  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}%;" src="{{url_for('static', filename='riskarrow.png')}}" alt="Infection Rate Risk">
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title' style = 'background-color: #EEF1F8;border: none; border-radius: 0px 0px 8px 8px; color: #000000;padding: 6px;'>
+			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='riskchart.png')}}" alt="Breakdown of Infection Rates Risk">
+				
+			<a href="/about#methodology" target = "_blank"><img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='riskkey.png')}}" alt="Breakdown of Infection Rates Risk"></a>
+		</div>
+	</div>
+
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<p></p>
+				<p><strong>{{rec}}</strong></p><br>
+				<h4>Mandates and Policies for {{county}}</h4>
+				<p>(General guidelines across the state)</p>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+				<p></p>
+				<img class = 'gif' src="{{url_for('static', filename=y_n_mask+'_mask.gif')}}" alt="mask image">
+				<p>{{mask_details}}</p>
+				<p></p>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<p></p>
+				<strong>It is still important to follow the following guidelines (if comfortable) to prevent a rise in spread:</strong></p>
+				<p></p>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<ul>
+				<li>Maintain social distancing</li>
+				<li>Wear a mask around others (see mask mandate details above)</li>
+				<li><a href="https://www.vaccines.gov/search/" target = '_blank' data = 'Sign up for a vaccine'>Sign up</a> for vaccinations if eligible</li>
+			</ul>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
+			<p></p>
+			<h4>Vaccination Progress for {{county}}*</h4>
+			<p><strong>*Note:</strong> {{note}}</p>
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			{% include county+"_vaxxplot.html" %}
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		<div class = 'title'>
+			<h4>Significant Attributes of {{county}}</h4>
+			<p>(Scroll right to see more)</p>
+			<div style="overflow-x:auto;background-color:#E4EEFD; width = ">
+				{% for item in tbl%}
+			            {{ item|safe }}
+				{% endfor %}
+			</div>
+			<br>
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title'>
+			<button onclick="location.href = '/data';">Take me back</button>
+			<p></p>
+		</div>
+	</div>
+	{% endblock %}
+</body>
+</html>

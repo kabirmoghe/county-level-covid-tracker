@@ -133,7 +133,7 @@ def county_stats(county_name):
                 info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
 
             riskimg = 'riskchart.png'
-            risk_pos = (round(182+(338*css_prop),2))
+            risk_pos = (round(26.5+(49*css_prop),2))
                 
             return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk#, riskimg
         else:
@@ -469,7 +469,7 @@ def vaxx_plot(cty):
         )
     ))
 
-    fig.update_layout(xaxis_range=[0,100], title ={'text':'Vaccination Progress in % People Vaccinated as of {}'.format(date) ,'xanchor': 'center',
+    fig.update_layout(xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(date) ,'xanchor': 'center',
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
 
     fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)

@@ -58,7 +58,7 @@
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<h4>COVID-19 Infection Risk</h4>
-			<p>7-Day Moving Average: <span style="background-image: repeating-linear-gradient(45deg, {{color}} 0px, {{color}} 5px, transparent 5px, transparent 10px, {{color}} 10px); padding: 5px; border-radius: 7px"><strong>{{stat}} daily cases per 100,000</strong></span></p>
+			<p>7-Day Moving Average: <strong>{{stat}} daily cases per 100,000</strong>&nbsp;</strong><span class="dot" style = 'height: 11px; width: 11px; background-color: {{color}}; border-radius: 50%; display: inline-block;'></span></p>
 			<p>{{info}}</p>
 		</div>
 	</div>
@@ -86,7 +86,7 @@
 			  		<p style = 'margin-left: {{ctyrisk_pos}}px;width: 250px;background-color: #FCFDFE; border: none; border-radius: 7px;color: #000000; padding: 6px; margin-bottom: 0px;'>
 			  			Daily Cases per 100k: <strong>{{stat}}</strong><br><br>
 			  			Percentile: <strong>{{ptile}}</strong><br><br>
-			  			Risk: <strong>{{risk}}&nbsp;&nbsp;</strong><span class="dot" style = 'height: 11px; width: 11px; background-color: {{color}}; border-radius: 50%; display: inline-block;'></span>
+			  			Risk: <span style = "padding: 5px; border-radius: 7px; background-image: repeating-linear-gradient(45deg, {{color}} 0px, {{color}} 7px, transparent 3px, transparent 10px, {{color}} 10px);"><strong>{{risk}}</strong></span>
 			  		</p>
 			  	</div>
 		  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px;" src="{{url_for('static', filename='riskarrow.png')}}" alt="Infection Rate Risk">

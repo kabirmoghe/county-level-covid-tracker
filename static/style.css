@@ -34,7 +34,7 @@ button{
   color: #FFFFFF;
 }
 
-h6.bubble{
+h6.bubble, span.bubble{
   display:inline-block;
   color: #000000;
   padding: 4px;

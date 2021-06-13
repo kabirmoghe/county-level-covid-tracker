@@ -140,7 +140,7 @@ div#content {
 
 .row {
   display: flex;
-  width:  700px;
+  width:  48.6%;
   background-color: #EEF1F8;
   border-radius: 10px;
   padding-top: 9px;
@@ -165,17 +165,4 @@ div#content {
 
 .myDIV:hover + .hide {
   display: block;
-}
-
-@media only screen and (max-width: 479px){
-    .title {
-      width: 90%;
-      } 
-    .row {
-      display: flex;
-      width:  90%;
-      background-color: #EEF1F8;
-      border-radius: 10px;
-      padding-top: 9px;
-    }
 }

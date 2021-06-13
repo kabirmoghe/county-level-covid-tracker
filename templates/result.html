@@ -79,18 +79,18 @@
 		<div class = 'title' style = 'background-color: #EEF1F8; border: none; border-radius: 8px 8px 0px 0px; color: #000000;padding: 6px;'>
 				<p></p>
 		  		<div class="myDIV">
-		  			<h6 class = 'bubble' style=";margin-left: {{ctyrisk_pos}}px; background-color: {{color}};"><strong>{{county}}: {{stat}}</strong></h6>
+		  			<h6 class = 'bubble' style=";margin-left: {{ctyrisk_pos}}%; background-color: {{color}};"><strong>{{county}}: {{stat}}</strong></h6>
 		  		</div>
 		  		
 			  	<div class="hide">
-			  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px;" src="{{url_for('static', filename='riskline.png')}}" alt="Infection Rate Risk">
-			  		<p style = 'margin-left: {{ctyrisk_pos}}px;width: 250px;background-color: #FCFDFE; border: none; border-radius: 7px;color: #000000; padding: 6px; margin-bottom: 0px;'>
+			  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}%;" src="{{url_for('static', filename='riskline.png')}}" alt="Infection Rate Risk">
+			  		<h6 class = 'bubble' style = 'margin-left: {{ctyrisk_pos}}%; background-color: #FFFFFF;'>
 			  			Daily Cases per 100k: <strong>{{stat}}</strong><br><br>
 			  			Percentile: <strong>{{ptile}}</strong><br><br>
 			  			Risk: <span style = "padding: 5px; border-radius: 7px; background-image: repeating-linear-gradient(45deg, {{color}} 0px, {{color}} 7px, transparent 3px, transparent 10px, {{color}} 10px);"><strong>{{risk}}</strong></span>
 			  		</p>
 			  	</div>
-		  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}px;" src="{{url_for('static', filename='riskarrow.png')}}" alt="Infection Rate Risk">
+		  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}%;" src="{{url_for('static', filename='riskarrow.png')}}" alt="Infection Rate Risk">
 		</div>
 	</div>
 	<div class = 'content'>
@@ -98,7 +98,6 @@
 			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='riskchart.png')}}" alt="Breakdown of Infection Rates Risk">
 				
 			<a href="/about#methodology" target = "_blank"><img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='riskkey.png')}}" alt="Breakdown of Infection Rates Risk"></a>
-			</div>
 		</div>
 	</div>
 
@@ -132,7 +131,6 @@
 				<li>Wear a mask around others (see mask mandate details above)</li>
 				<li><a href="https://www.vaccines.gov/search/" target = '_blank' data = 'Sign up for a vaccine'>Sign up</a> for vaccinations if eligible</li>
 			</ul>
-			</div>
 		</div>
 	</div>
 	<div class = 'ncontent'>
@@ -152,7 +150,7 @@
 		<div class = 'title'>
 			<h4>Significant Attributes of {{county}}</h4>
 			<p>(Scroll right to see more)</p>
-			<div style="overflow-x:auto;background-color:#E4EEFD;">
+			<div style="overflow-x:auto;background-color:#E4EEFD; width = ">
 				{% for item in tbl%}
 			            {{ item|safe }}
 				{% endfor %}

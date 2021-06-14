@@ -99,8 +99,8 @@ a#dot {
   color: #34C654;
 }
 
-.title{
-  width: 48.6%;
+.title {
+  width: 700px;
 }
 
 .content{
@@ -140,7 +140,8 @@ div#content {
 
 .row {
   display: flex;
-  width:  48.6%;
+  /*width:  48.6%;*/
+  width:  700px;
   background-color: #EEF1F8;
   border-radius: 10px;
   padding-top: 9px;

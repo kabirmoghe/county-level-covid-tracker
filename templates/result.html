@@ -119,7 +119,7 @@
 	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-			<p></p>
+			<p>
 				<strong>It is still important to follow the following guidelines (if comfortable) to prevent a rise in spread:</strong></p>
 				<p></p>
 		</div>
@@ -150,13 +150,17 @@
 		<div class = 'title'>
 			<h4>Significant Attributes of {{county}}</h4>
 			<p>(Scroll right to see more)</p>
-			<div style="overflow-x:auto;background-color:#E4EEFD; width = ">
+		</div>
+	</div>
+	<div class = 'ncontent'>
+		
+			<div style="overflow-x:auto;background-color:#E4EEFD; width:700px">
 				{% for item in tbl%}
 			            {{ item|safe }}
 				{% endfor %}
 			</div>
 			<br>
-		</div>
+		
 	</div>
 	<div class = 'content'>
 		<div class = 'title'>

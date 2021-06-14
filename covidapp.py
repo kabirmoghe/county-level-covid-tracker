@@ -470,7 +470,7 @@ def vaxx_plot(cty):
     ))
 
     fig.update_layout(xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(date) ,'xanchor': 'center',
-        'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
+        'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5, yaxis_visible=False)
 
     fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
 

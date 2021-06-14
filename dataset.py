@@ -685,8 +685,16 @@ def main_function():
     edu_data = create_edu_data()
     mask_data = create_mask_data()
     covid_data = create_covid_pop_data()
-    vaxx_data = pd.read_csv('vaxxdataset.csv', index_col = 0)
     
+    # VAXX DATA
+
+    vaxx_data = pd.read_csv('vaxxdataset.csv', index_col = 0)
+    date = list(vaxx_data['Date'])[-1]
+
+    vaxx_data = vaxx_data[vaxx_data['Date'] == date].drop('Date', axis = 1).reset_index(drop = True)
+    
+    # Combines all
+
     county_data = pd.merge(covid_data, inc_unemp_data, on = 'County Name')
     county_data = pd.merge(county_data, race_data, on = 'County Name')
     county_data = pd.merge(county_data, edu_data, on = 'County Name')

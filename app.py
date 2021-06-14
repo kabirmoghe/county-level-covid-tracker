@@ -47,7 +47,7 @@ def countyinfo():
 				note = 'Neither Hawaii nor Texas provide county-level data on vaccinations, hence why the visualization below is empty.'
 
 			else:
-				note = 'The visualization below shows the percentage of fully vaccinated people within the county broken down by age group.'
+				note = 'The visualizations below show the percentage of fully vaccinated people within the county broken down by age group.'
 
 			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk)
 		else:

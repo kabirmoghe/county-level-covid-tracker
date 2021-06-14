@@ -14,8 +14,11 @@ app.secret_key = 'hello'
 def home():
 	if path.exists("vaxxdataset.csv") == False:
 		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
-	return render_template("index.html")
+		return render_template("index.html")
 
+	else:
+		return render_template("index.html")
+	
 
 @app.route("/data", methods = ['POST', 'GET'])
 def countyinfo():
@@ -33,6 +36,7 @@ def countyinfo():
 		allinfo = covidapp.county_stats(county)
 		if len(allinfo) == 10:
 			tbl, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk = allinfo
+
 			ctyrisk_pos = risk_pos - 12.5
 
 			if round(pct) == 100.0:

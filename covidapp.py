@@ -550,8 +550,8 @@ def vaxx_plot(cty):
                 color='#FFC300')
         ))
     fig.update_layout(
-        yaxis_title='% Fully Vaccinated',
-        title='Vaccination Progress for {}, {}'.format(cty, full_date),title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway'
+        yaxis_title='% Fully Vaccinated', yaxis_range=[0,100], xaxis_title = 'Month',
+        title='Vaccination Progress for {}, {}'.format(cty, full_date), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway'
     )
     
     #--
@@ -563,9 +563,9 @@ def vaxx_plot(cty):
     fig2 = go.Figure()    
 
     fig2.add_trace(go.Bar(
-    y=data['County Name'],
+    y=['All'],
     x=data['% Fully Vaccinated as of {}'.format(full_date)],
-    width=[0.1],
+    width=[0.5],
     name='% Fully Vaxx.',
     orientation='h',
     marker=dict(
@@ -574,9 +574,9 @@ def vaxx_plot(cty):
     ))
 
     fig2.add_trace(go.Bar(
-    y=data['County Name'],
+    y=['12+'],
     x=data['% ≥ 12 Fully Vaccinated as of {}'.format(full_date)],
-    width=[0.1],
+    width=[0.5],
     name='% 12+ Fully Vaxx.',
     orientation='h',
     marker=dict(
@@ -585,9 +585,9 @@ def vaxx_plot(cty):
     ))
 
     fig2.add_trace(go.Bar(
-    y=data['County Name'],
+    y=['18+'],
     x=data['% ≥ 18 Fully Vaccinated as of {}'.format(full_date)],
-    width=[0.1],
+    width=[0.5],
     name='% 18+ Fully Vaxx.',
     orientation='h',
     marker=dict(
@@ -596,9 +596,9 @@ def vaxx_plot(cty):
     ))
 
     fig2.add_trace(go.Bar(
-    y=data['County Name'],
+    y = ['65+'],
     x=data['% ≥ 65 Fully Vaccinated as of {}'.format(full_date)],
-    width=[0.1],
+    width=[0.5],
     name='% 65+ Fully Vaxx.',
     orientation='h',
     marker=dict(
@@ -607,7 +607,7 @@ def vaxx_plot(cty):
     ))
 
     fig2.update_layout(xaxis_range=[0,100], title ={'text':'Current % Vaccinated, {}'.format(full_date) ,'xanchor': 'center',
-        'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5, yaxis_visible=False)
+        'yanchor': 'top'}, xaxis_title="% People Vaccinated", yaxis_title = 'Age Demographic', font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
 
 
     fig.write_html('/app/templates/{cty}_vaxxprogressplot.html'.format(cty = cty), full_html = False)

@@ -40,7 +40,7 @@
 	        }
 	    });
 	});	
-	</script>
+	</script>	
 </head>
 <body>
 	{% extends "base.html" %}
@@ -87,7 +87,7 @@
 			  		<h6 class = 'bubble' style = 'margin-left: {{ctyrisk_pos}}%; background-color: #FFFFFF;'>
 			  			Daily Cases per 100k: <strong>{{stat}}</strong><br><br>
 			  			Percentile: <strong>{{ptile}}</strong><br><br>
-			  			Risk: <span style = "padding: 5px; border-radius: 7px; background-image: repeating-linear-gradient(45deg, {{color}} 0px, {{color}} 7px, transparent 3px, transparent 10px, {{color}} 10px);"><strong>{{risk}}</strong></span>
+			  			Risk: <span style = "padding: 5px; border-radius: 7px;background-image: repeating-linear-gradient(45deg, {{color}} 0px, {{color}} 10px, transparent 10px, transparent 12px, {{color}} 12px);"><strong>{{risk}}</strong></span>
 			  		</p>
 			  	</div>
 		  		<img style="max-width: 50%; height: auto; margin-left: {{risk_pos}}%;" src="{{url_for('static', filename='riskarrow.png')}}" alt="Infection Rate Risk">
@@ -168,9 +168,8 @@
 			</div>
 	</div>
 	<div class = 'content'>
-		<div class = 'title'>
-			<p></p>
-			<button onclick="location.href = '/data';">Take me back</button>
+		<div class = 'title'><br>
+			<p><a href="/about#feedback" target = "_blank"><img style="max-width: 3%; height: auto" src="{{url_for('static', filename='issue.png')}}" alt="issue"></a>   Issues? Click the icon to the left to leave feedback.</p>
 			<p></p>
 		</div>
 	</div>

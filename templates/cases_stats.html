@@ -15,6 +15,15 @@
 	<div class = 'content'>
 		<div class = 'title'>
 			<h3>Nationwide COVID-19 Statistics</h3>
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title'>
+			<button onclick="location.href = '/stats';">Back to Stats</button>
+		</div>
+	</div>
+	<div class = 'content'>
+		<div class = 'title'>
 			<br>
 			<h4>Current US 7-Day Infection Trend as of {{date}}*</h4>
 			<p><strong>*Note:</strong> The visualization below uses displays the average daily cases per 100,000 in the past 7 days, using risk for coloration. Neither Nebraska nor Florida provides county-level data on COVID-19. Blank spots represent counties with incomplete data.</p>
@@ -44,10 +53,10 @@
 		{% endfor %}
 		</div>
 	</div>
-	<br><br>
 	<div class = 'content'>
-		<button onclick="location.href = '/';">Home</button><p>&nbsp;&nbsp;</p>
-		<button onclick="location.href = '/stats';">Back to Stats</button>
+		<div class = 'title'><br>
+			<p><a href="/about#feedback" target = '_blank'><img style="max-width: 3%; height: auto" src="{{url_for('static', filename='issue.png')}}" alt="issue"></a>   Issues? Click the icon to the left to leave feedback.</p>
+		</div>
 	</div>
 	<br>
 	{% endblock %}

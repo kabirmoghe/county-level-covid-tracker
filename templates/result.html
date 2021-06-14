@@ -112,14 +112,14 @@
 	<div class = 'ncontent'>
 		<div class = 'title'>
 				<p></p>
-				<img class = 'gif' src="{{url_for('static', filename=y_n_mask+'_mask.gif')}}" alt="mask image">
+				<img class = 'gif' style="max-width: 14%; height: auto" src="{{url_for('static', filename=y_n_mask+'_mask.gif')}}" alt="mask image">
 				<p>{{mask_details}}</p>
 				<p></p>
 		</div>
 	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-			<p>
+				<p></p>
 				<strong>It is still important to follow the following guidelines (if comfortable) to prevent a rise in spread:</strong></p>
 				<p></p>
 		</div>
@@ -159,11 +159,10 @@
 			            {{ item|safe }}
 				{% endfor %}
 			</div>
-			<br>
-		
 	</div>
 	<div class = 'content'>
 		<div class = 'title'>
+			<p></p>
 			<button onclick="location.href = '/data';">Take me back</button>
 			<p></p>
 		</div>

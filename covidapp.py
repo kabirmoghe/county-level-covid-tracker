@@ -531,7 +531,6 @@ def vaxx_plot(cty):
 
     fig.add_trace(go.Scatter(
             name='% Fully Vaccinated',
-            hoverinfo = x['Date'],
             x=data['Date'],
             y=data['% Fully Vaccinated as of {}'.format(full_date)],
             marker=dict(

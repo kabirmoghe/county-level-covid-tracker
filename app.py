@@ -24,6 +24,8 @@ def home():
 def countyinfo():
 	if path.exists("vaxxdataset.csv") == False:
 		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
+	if path.exists("fulldataset.csv") == False and path.exists("vaxxdataset.csv") == True:
+		dataset.main_function().to_csv('fulldataset.csv')
 	
 	if request.method == "POST":
 		county = request.form["cty"]

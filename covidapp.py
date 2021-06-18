@@ -5,7 +5,6 @@ import json
 from urllib.request import urlopen
 import plotly.express as px
 import plotly.graph_objects as go
-import covidapp
 
 def county_list():
     ctys = list(pd.read_csv('https://raw.githubusercontent.com/kabirmoghe/Demographic-Data/main/countynames.csv')['County Name'].values)

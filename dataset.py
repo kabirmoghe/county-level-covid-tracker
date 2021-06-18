@@ -665,7 +665,8 @@ def create_covid_pop_data():
                             
         for g_date in g_dates:
             f_date, p_date = g_date+6, g_date-1
-            week['{}, Week of {}'.format(c_or_d, cols[g_date])] = df[cols[f_date]] - df[cols[p_date]]    
+            week['{}, Week of {}'.format(c_or_d, cols[g_date])] = df[cols[f_date]] - df[cols[p_date]]
+            week['{}, Week of {}'.format(c_or_d, cols[g_date])] = week['{}, Week of {}'.format(c_or_d, cols[g_date])].apply(lambda value: 0 if value < 0 else value)
         
         week['Weekly New {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)] = week[week.columns[-6]] - week[week.columns[-13]]
         week.drop(week.columns[3:11], axis = 1, inplace = True)

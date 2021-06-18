@@ -16,6 +16,7 @@ def county_stats(county_name):
         return "Please enter a county name (i.e. Orange County, CA)."
     else:
         data = pd.read_csv('fulldataset.csv', index_col = 0)
+        vaxx_data = pd.read_csv('vaxxdataset.csv', index_col = 0)
 
         data['County FIPS'] = data['County FIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
 
@@ -44,101 +45,98 @@ def county_stats(county_name):
 
         #red is greater than 25, high
 
-        if county_name in data['County Name'].values:
-            '''county_df = data[data['County Name'] == county_name][infs].transpose().reset_index()
-            county_df['Time'] = ["Jan '20", "Feb '20", "Mar '20", "Apr '20", "May '20", "Jun '20", "Jul '20", "Aug '20", "Sept '20", "Oct '20", "Nov '20", "Dec '20", "Jan '21", "Feb '21", "Mar '21", "Apr '21", "May '21"]
-            county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
+
+        '''county_df = data[data['County Name'] == county_name][infs].transpose().reset_index()
+        county_df['Time'] = ["Jan '20", "Feb '20", "Mar '20", "Apr '20", "May '20", "Jun '20", "Jul '20", "Aug '20", "Sept '20", "Oct '20", "Nov '20", "Dec '20", "Jan '21", "Feb '21", "Mar '21", "Apr '21", "May '21"]
+        county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
             
-            sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
-            plt.savefig('/app/static/countyplot.png')
-            '''
-            des_row = data[data['County Name'] == str(county_name)]
+        sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
+        plt.savefig('/app/static/countyplot.png')
+        '''
+        des_row = data[data['County Name'] == str(county_name)]
 
-            des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
+        des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
 
-            mask_info= [des_row[col].values[0] for col in des_row.columns if 'mask' in col.lower()]
+        mask_info= [des_row[col].values[0] for col in des_row.columns if 'mask' in col.lower()]
 
-            y_n_mask, mask_details = mask_info
+        y_n_mask, mask_details = mask_info
 
-            des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
+        des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
 
-            otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:]], axis = 1)
+        otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:]], axis = 1)
 
-            stat = des_row[inf_col].iloc[0]
+        stat = des_row[inf_col].iloc[0]
 
-            rank = sorted_data[sorted_data['County Name']==county_name].index[0]+1
+        rank = sorted_data[sorted_data['County Name']==county_name].index[0]+1
 
-            css_prop = stat/27
+        css_prop = stat/27
 
-            if css_prop <= 1:
-                css_prop = css_prop
-            else:
-                css_prop = 1.0
+        if css_prop <= 1:
+            css_prop = css_prop
+        else:
+            css_prop = 1.0
 
-            #pct = round(prop*100,2)
+        #pct = round(prop*100,2)
 
-            prop = (1-(rank/len(sorted_data)))
+        prop = (1-(rank/len(sorted_data)))
 
-            pct = round(prop*100, 2)
+        pct = round(prop*100, 2)
 
-            
 
-            if stat == 0.0:
-                rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, some precaution should be taken and the guidelines below should be followed (see details below).'.format(county_name = county_name)
+        if stat == 0.0:
+            rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, some precaution should be taken and the guidelines below should be followed (see details below).'.format(county_name = county_name)
                 
+            color = '#7cff02'
+
+            info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is one of the lowest counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+            
+            risk = 'Low'
+
+        elif round(pct) == 100.0:
+            rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and guidelines should be followed strictly (see details below).'.format(county_name = county_name)
+                
+            color = '#ff0600'
+
+            info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the highest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+            
+            risk = 'High'
+
+        else:
+            if stat < green:
+                rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, some precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
+
                 color = '#7cff02'
 
-                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is one of the lowest counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
-            
                 risk = 'Low'
 
-            elif round(pct) == 100.0:
-                rec = 'There is a high risk of infection in {county_name}, so precaution should be taken and guidelines should be followed strictly (see details below).'.format(county_name = county_name)
-                
-                color = '#ff0600'
+            elif green <= stat < yellow:
+                rec = '{county_name} has a moderately low risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Precaution should be still be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
+                    
+                color = '#fff800'
 
-                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is the highest county in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
-            
-                risk = 'High'
+                risk = 'Moderately Low'
+
+            elif yellow <= stat < orange:
+                rec = '{county_name} has a moderately high risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Stay-at-home orders are advised unless viral testing and contact tracing capacity are implementable at levels meeting surge indicator standards. Precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
+
+                color = '#ffab00'
+
+                risk = 'Moderately High'
 
             else:
-                if stat < green:
-                    rec = '{county_name} has a low risk of infection and is on track for containment. Regardless, some precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
+                rec = '{county_name} has a high risk of infection, and stay-at-home orders may be necessary. Extra precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
 
-                    color = '#7cff02'
+                color = '#ff0600'
 
-                    risk = 'Low'
+                risk = 'High'
 
-                elif green <= stat < yellow:
-                    rec = '{county_name} has a moderately low risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Precaution should be still be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
-                    
-                    color = '#fff800'
+            info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
 
-                    risk = 'Moderately Low'
-
-                elif yellow <= stat < orange:
-                    rec = '{county_name} has a moderately high risk of infection, and strategic choices must be made about which package of non-pharmaceutical interventions to use for control. Stay-at-home orders are advised unless viral testing and contact tracing capacity are implementable at levels meeting surge indicator standards. Precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
-
-                    color = '#ffab00'
-
-                    risk = 'Moderately High'
-
-                else:
-                    rec = '{county_name} has a high risk of infection, and stay-at-home orders may be necessary. Extra precaution should be taken and guidelines should be followed (see details below).'.format(county_name = county_name)
-
-                    color = '#ff0600'
-
-                    risk = 'High'
-
-                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
-
-            riskimg = 'riskchart.png'
-            risk_pos = (round(26.5+(49*css_prop),2))
+        riskimg = 'riskchart.png'
+        risk_pos = (round(26.5+(49*css_prop),2))
                 
-            return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk#, riskimg
-        else:
-            return "Please enter a valid county name (i.e. Orange County, CA). The county you entered, '{county_name}', may not have complete information.".format(county_name = county_name)
-
+        return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk#, riskimg
+        
 def usplot(c_or_d):
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
         counties = json.load(response)
@@ -478,12 +476,100 @@ def create_vaxx_data():
 
 '''
 
+def avg_plot(cty):
+
+    data = pd.read_csv('fulldataset.csv')
+    data = pd.concat([data['County Name'], data[[col for col in data.columns if 'Cases' in col and 'Moving Avg.' in col]]], axis = 1)
+
+    data = data[data['County Name'] == cty]
+
+    data = data.transpose().iloc[1:].reset_index()
+
+    data.columns = ['Date', 'Moving Avg']
+
+    data['Date (Week of)'] = data['Date'].apply(lambda value: value.split('Avg. ')[-1])
+    data.drop('Date', axis = 1, inplace = True)
+
+    yval = 3
+
+    for value in data['Moving Avg']:
+        if value >= 25:
+            if (value-27)+3 > yval:
+                yval = (value-27)+3
+            else:
+                None
+        else:
+            None
+
+    fig = go.Figure()
+    
+    fig.add_trace(go.Scatter(
+        x=data['Date (Week of)'], 
+        y=[1,1,1,1,1],
+        name = 'Low',
+        hoverinfo='skip',
+        mode='lines',
+        line=dict(width=0.5, color='#69F68C'),
+        stackgroup='one' # define stack group
+    ))
+    
+    fig.add_trace(go.Scatter(
+        name = 'Mod. Low',
+        x=data['Date (Week of)'], 
+        y=[9,9,9,9,9],
+        hoverinfo='skip',
+        mode='lines',
+        line=dict(width=0.5, color='#fff800'),
+        stackgroup='one' # define stack group
+    ))
+    
+    fig.add_trace(go.Scatter(
+        x=data['Date (Week of)'], 
+        y=[15,15,15,15,15],
+        hoverinfo='skip',
+        name = 'Mod. High',
+        mode='lines',
+        line=dict(width=0.5, color='#ffab00'),
+        stackgroup='one' # define stack group
+    ))
+    
+    fig.add_trace(go.Scatter(
+        x=data['Date (Week of)'], 
+        y=[yval for i in range(5)],
+        hoverinfo='skip',
+        mode='lines',
+        name = 'High',
+        line=dict(width=0.5, color='#ff0600'),
+        stackgroup='one' # define stack group
+    ))
+    
+    fig.add_trace(go.Scatter(
+            name='Moving Avg',
+            x=data['Date (Week of)'],
+            y=data['Moving Avg'],
+            hoverinfo = 'name+y',
+            mode = 'lines',
+            line=dict(
+                color='#64B1FC')
+        ))
+    
+    fig.update_layout(
+        yaxis_title='Moving Average', yaxis_range=[0,25+yval], xaxis_title = 'Date (Week of)',
+        title='Moving Average Past 5 weeks', title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway'
+    )
+
+
+    fig.write_html('/app/templates/{cty}_movingavgplot.html'.format(cty = cty), full_html = False)
+
 def vaxx_plot(cty):
     
     data = pd.read_csv('vaxxdataset.csv', index_col = 0)
     
     data = data[data['County Name'] == cty]
     
+    if len(data) == 0:
+        return 
+
     full_date = list(data['Date'])[-1]
     
     data.reset_index(drop = True, inplace = True)

@@ -642,9 +642,9 @@ def create_covid_pop_data():
     pop['County Name'] = pop['County Name']  + ', ' + pop['State']
     pop = pd.DataFrame(pop).rename(columns = {'population':'Population'})
     pop['County Name'] = pop['County Name'].apply(county_cleaner)
-    
-    def week_compiler(df, c_or_d):
 
+    def week_compiler(df, c_or_d):
+        
         week = pd.concat([df[df.columns[:3]], df[df.columns[-8:]]], axis = 1)
 
         rawdate = df.columns[-1] 
@@ -652,25 +652,52 @@ def create_covid_pop_data():
         
         date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
         
-        week['Weekly {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)] = week[week.columns[-1]] - week[week.columns[-8]]
+        cols = df[df.columns[-36:]].columns
+        
+        g_dates = []
+
+        for i in range(1,len(cols)):
+            if i == 1:
+                g_dates.append(i)
+            else:
+                if (i-1)%7 == 0:
+                    g_dates.append(i)
+                            
+        for g_date in g_dates:
+            f_date, p_date = g_date+6, g_date-1
+            week['{}, Week of {}'.format(c_or_d, cols[g_date])] = df[cols[f_date]] - df[cols[p_date]]    
+        
+        week['Weekly New {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)] = week[week.columns[-6]] - week[week.columns[-13]]
         week.drop(week.columns[3:11], axis = 1, inplace = True)
         week.drop(['countyFIPS', 'State'], axis = 1, inplace = True)
         week = pd.merge(pop, week, on = 'County Name')
-        week['7-Day Daily {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] = round(((week['Weekly {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)]/7)/ week['Population'])*100000, 2)
+        
+        case_cols = [col for col in week.columns if c_or_d in col and 'Weekly' not in col]
+        
+        for col in case_cols:
+            raw_date = col.split()[-1]
+            year, month, day = raw_date.split('-')
+            c_date = '{} {}, {}'.format(no_mo[int(month)], int(day), year)
+            
+            week['{} Moving Avg. {}'.format(c_or_d, c_date)] = round((((week[col]/7)/week['Population'])*100000),2)
+            
+            week.drop(col, axis = 1, inplace = True)
+        
+        week['7-Day Daily {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] = round(((week['Weekly New {c_or_d} as of {date}'.format(c_or_d = c_or_d, date = date)]/7)/ week['Population'])*100000, 2)
         week.drop(week[week['7-Day Daily {c_or_d} per 100,000 as of {date}'.format(c_or_d = c_or_d, date = date)] < 0].index, inplace = True)
         week = week.reset_index(drop = True)
-
+        
         return week
     
     cs = week_compiler(cases, 'Cases')
     ds = week_compiler(deaths, 'Deaths')
     
     covid_data = cs[cs.columns[:4]]
-    
+       
     cs.drop(ds.columns[[0,2,3]], axis = 1, inplace = True)
     ds.drop(ds.columns[[0,2,3]], axis = 1, inplace = True)
-    
-    for i in range(1,3):
+        
+    for i in range(1,8):
         covid_data = pd.merge(covid_data, cs[cs.columns[[0,i]]], on = 'County Name')
         covid_data = pd.merge(covid_data, ds[ds.columns[[0,i]]], on = 'County Name')
         

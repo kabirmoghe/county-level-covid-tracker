@@ -29,33 +29,40 @@ def countyinfo():
 		county = request.form["cty"]
 		if county == '':
 			return render_template('empty.html')
-		if path.exists("fulldataset.csv") == False:
-			dataset.main_function().to_csv('fulldataset.csv')
-
-		embed_vaxx = covidapp.vaxx_plot(county)
-		allinfo = covidapp.county_stats(county)
-		if len(allinfo) == 10:
-			tbl, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk = allinfo
-
-			ctyrisk_pos = risk_pos - 12.5
-
-			if round(pct) == 100.0:
-				ptile = 'Top ~99%'
-			else:
-				if pct >= 50:
-					ptile = 'Top ~{}%'.format(str(round(100.0-pct)))
-				else:
-					ptile = 'Bottom ~{}%'.format(str(round(pct)))
-
-			if county.split(', ')[1] == 'TX' or county.split(', ')[1] == 'HI':
-				note = 'Neither Hawaii nor Texas provide county-level data on vaccinations, hence why the visualization below is empty.'
-
-			else:
-				note = 'The visualizations below show the percentage of fully vaccinated people within the county broken down by age group.'
-
-			return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk)
 		else:
-			return render_template("undef_result.html", issue = allinfo)
+			if path.exists("fulldataset.csv") == False:
+				dataset.main_function().to_csv('fulldataset.csv')
+
+			data1, data2 = pd.read_csv('fulldataset.csv'), pd.read_csv('vaxxdataset.csv')
+
+			if county in data1['County Name'].values and county in data2['County Name'].values:
+
+				covidapp.vaxx_plot(county)
+				covidapp.avg_plot(county)
+				allinfo = covidapp.county_stats(county)
+				
+				tbl, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk = allinfo
+
+				ctyrisk_pos = risk_pos - 12.5
+
+				if round(pct) == 100.0:
+					ptile = 'Top ~99%'
+				else:
+					if pct >= 50:
+						ptile = 'Top ~{}%'.format(str(round(100.0-pct)))
+					else:
+						ptile = 'Bottom ~{}%'.format(str(round(pct)))
+
+				if county.split(', ')[1] == 'TX' or county.split(', ')[1] == 'HI':
+					note = 'Neither Hawaii nor Texas provide county-level data on vaccinations, hence why the visualization below is empty.'
+
+				else:
+					note = 'The visualizations below show the percentage of fully vaccinated people within the county broken down by age group.'
+
+				return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk)
+		
+			else:
+				return render_template("undef_result.html", issue = 'Please enter a valid county name (i.e. Orange County, CA). The county you entered, {}, may not have complete information.'.format(county))
 	else:
 		ctys = covidapp.county_list()
 		return render_template("data.html", ctys = ctys)

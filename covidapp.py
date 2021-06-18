@@ -607,7 +607,7 @@ def vaxx_plot(cty):
             name='Target Adults % Fully Vaxx.',
             x=data['Date'],
             hoverinfo = 'y',
-            y=[48.27 for i in range(len(data))],
+            y=[76.51 for i in range(len(data))],
             line=dict(
                 color='#FF8195', dash = 'dash', width = 3
             ),

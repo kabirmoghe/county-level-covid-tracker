@@ -22,18 +22,15 @@ def home():
 
 @app.route("/data", methods = ['POST', 'GET'])
 def countyinfo():
-	if path.exists("vaxxdataset.csv") == False:
-		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
 	if path.exists("fulldataset.csv") == False and path.exists("vaxxdataset.csv") == True:
 		dataset.main_function().to_csv('fulldataset.csv')
-	
+	if path.exists("vaxxdataset.csv") == False:
+		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
 	if request.method == "POST":
 		county = request.form["cty"]
 		if county == '':
 			return render_template('empty.html')
 		else:
-			if path.exists("fulldataset.csv") == False:
-				dataset.main_function().to_csv('fulldataset.csv')
 
 			data1, data2 = pd.read_csv('fulldataset.csv'), pd.read_csv('vaxxdataset.csv')
 

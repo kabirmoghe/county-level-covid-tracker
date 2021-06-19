@@ -866,20 +866,23 @@ def multivaxx_plot():
 
     return date
 
+
 def scatter(x, y, trendline):
 
-    data = pd.read_csv('fulldataset.csv')
+    data = pd.read_csv('fulldataset.csv', index_col = 0)
     vaxx_col = [col for col in data.columns if "Fully" in col and "≥" not in col][0]
     data = data[data[vaxx_col] != 0]
-
+    
     if trendline == 'y': 
-        fig = px.scatter(x=data[x], y=data[y], trendline="ols", labels={
+        fig = px.scatter(data_frame = data, x = x, y=y, trendline="ols", labels={
                      "x": x,
-                     "y": y}, title="Scatterplot of {} and {}".format(x, y))
+                     "y": y}, title="Scatterplot of {} and {}".format(x, y),
+                     hover_name = 'County Name')
     else:
-        fig = px.scatter(x=data[x], y=data[y], labels={
+        fig = px.scatter(data_frame = data, x=x, y=y, labels={
                      "x": x,
-                     "y": y}, title="Scatterplot of {} and {}".format(x, y))
+                     "y": y}, title="Scatterplot of {} and {}".format(x, y),
+                     hover_name = 'County Name')
     fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
     
     fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)

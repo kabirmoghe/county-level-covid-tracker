@@ -100,3 +100,6 @@ def create_vaxx_data():
     data['Date'] = data['Date'].apply(lambda date: word_name(date))
 
     data.to_csv('vaxxdataset.csv')
+
+if __name__ == '__main__':
+    create_vaxx_data()

@@ -50,7 +50,7 @@ def county_stats(county_name):
         county_df['Infection Rate per 100,000 for {county_name}'.format(county_name = county_name)] = county_df.iloc[:,1]
             
         sns.barplot(x = "Time", y = 'Infection Rate per 100,000 for {county_name}'.format(county_name = county_name), data = county_df, palette = 'plasma').get_figure()
-        plt.savefig('/app/static/countyplot.png')
+        plt.savefig('../covidapp/static/countyplot.png')
         '''
         des_row = data[data['County Name'] == str(county_name)]
 
@@ -165,7 +165,7 @@ def usplot(c_or_d):
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
         fig.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
         fig.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
-        fig.write_html("/app/templates/c_usplot.html", full_html = False)
+        fig.write_html("../covidapp/templates/c_usplot.html", full_html = False)
         
         sorted_data = data.sort_values(by = last_case_rate, ascending = False)[['County Name', last_case_rate]].reset_index(drop = True)
 
@@ -201,7 +201,7 @@ def usplot(c_or_d):
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, font_family = "Raleway", hoverlabel_font_family = "Raleway")
         fig.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
         fig.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
-        fig.write_html("/app/templates/d_usplot.html", full_html = False)
+        fig.write_html("../covidapp/templates/d_usplot.html", full_html = False)
 
         sorted_data = data.sort_values(by = last_death_rate, ascending = False)[['County Name', last_death_rate]].reset_index(drop = True)
 
@@ -471,7 +471,7 @@ def create_vaxx_data():
     fig.update_layout(xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(date) ,'xanchor': 'center',
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5, yaxis_visible=False)
 
-    fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
+    fig.write_html('../covidapp/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
 
 '''
 
@@ -558,7 +558,7 @@ def avg_plot(cty):
     )
 
 
-    fig.write_html('/app/templates/{cty}_movingavgplot.html'.format(cty = cty), full_html = False)
+    fig.write_html('../covidapp/templates/{cty}_movingavgplot.html'.format(cty = cty), full_html = False)
 
 def vaxx_plot(cty):
     
@@ -707,8 +707,8 @@ def vaxx_plot(cty):
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", yaxis_title = 'Age Demographic', font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
 
 
-    fig.write_html('/app/templates/{cty}_vaxxprogressplot.html'.format(cty = cty), full_html = False)
-    fig2.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
+    fig.write_html('../covidapp/templates/{cty}_vaxxprogressplot.html'.format(cty = cty), full_html = False)
+    fig2.write_html('../covidapp/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
 
 
 def multivaxx_plot():
@@ -788,7 +788,7 @@ def multivaxx_plot():
     fig_top.update_layout(xaxis_range=[0,100], title = {'text':'Counties with Highest Vaxx. Progress','xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Fully Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
-    fig_top.write_html('/app/templates/multivaxxplot_top.html', full_html = False)
+    fig_top.write_html('../covidapp/templates/multivaxxplot_top.html', full_html = False)
 
     #BOTTOM 10
     fig_bottom = go.Figure()    
@@ -849,7 +849,7 @@ def multivaxx_plot():
     fig_bottom.update_layout(xaxis_range=[0,100], title = {'text':'Counties with Lowest Vaxx. Progress','xanchor': 'center',
         'yanchor': 'top'}, hovermode='y', xaxis_title="% People Fully Vaccinated", font_family = "Raleway", hoverlabel_font_family = "Raleway")
     
-    fig_bottom.write_html('/app/templates/multivaxxplot_bottom.html', full_html = False)
+    fig_bottom.write_html('../covidapp/templates/multivaxxplot_bottom.html', full_html = False)
     
     fig_map = px.choropleth(data, geojson=counties, locations='County FIPS', color='% Fully Vaccinated as of {}'.format(date),
                            color_continuous_scale=['#FF3C33', '#FBF30B', '#41B26A'],
@@ -862,7 +862,7 @@ def multivaxx_plot():
     fig_map.update_traces(marker_line_width=0, marker_opacity=0.8, hoverlabel_bgcolor='#e3f1ff', hoverlabel_bordercolor = '#e3f1ff', hoverlabel_font_color='#000066')
     fig_map.update_geos(showsubunits=True, subunitcolor="black", subunitwidth = 1.4)
 
-    fig_map.write_html('/app/templates/us_vaxxmap.html', full_html = False)
+    fig_map.write_html('../covidapp/templates/us_vaxxmap.html', full_html = False)
 
     return date
 
@@ -885,7 +885,7 @@ def scatter(x, y, trendline):
                      hover_name = 'County Name')
     fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
     
-    fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
+    fig.write_html('../covidapp/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
 '''
 def violinplot(x, y, points):
 
@@ -903,5 +903,5 @@ def violinplot(x, y, points):
                      "y": y}, title="Scatterplot of {} and {}".format(x, y))
     fig.update_layout(font_family = "Raleway", hoverlabel_font_family = "Raleway", title_x = 0.5)
     
-    fig.write_html('/app/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
+    fig.write_html('../covidapp/templates/{}_{}_{}.html'.format(trendline, x, y), full_html = False)
 '''

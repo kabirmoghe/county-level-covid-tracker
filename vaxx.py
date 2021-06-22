@@ -98,5 +98,5 @@ def create_vaxx_data():
     data.reset_index(drop = True, inplace = True)
     
     data['Date'] = data['Date'].apply(lambda date: word_name(date))
-    
-    return data
+
+    data.to_csv('vaxxdataset.csv')

@@ -12,6 +12,9 @@ app.secret_key = 'hello'
 
 @app.route("/")
 def home():
+	if path.exists('vaxxdataset.csv') == False:
+		vaxx.create_vaxx_data()
+
 	return render_template("index.html")
 	
 
@@ -114,9 +117,10 @@ def explore():
 @app.route("/about")
 def about():
 	if path.exists("vaxxdataset.csv") == False:
-		vaxx.create_vaxx_data().to_csv('vaxxdataset.csv')
+		return redirect(url_for('home'))
 
-	return render_template("about.html")
+	else:
+		return render_template("about.html")
 
 if __name__ == '__main__':
     app.run(debug = True)

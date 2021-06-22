@@ -12,8 +12,6 @@ app.secret_key = 'hello'
 
 @app.route("/")
 def home():
-	if path.exists("vaxxdataset.csv") == False:
-		vaxx.create_vaxx_data()
 	return render_template("index.html")
 	
 

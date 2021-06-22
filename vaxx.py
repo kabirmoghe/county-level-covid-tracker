@@ -100,6 +100,3 @@ def create_vaxx_data():
     data['Date'] = data['Date'].apply(lambda date: word_name(date))
 
     data.to_csv('vaxxdataset.csv')
-
-    x = pd.read_csv('vaxxdataset.csv')
-    return x.columns[1]

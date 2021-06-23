@@ -1,5 +1,8 @@
+import io
+from io import StringIO
+import os
+import boto3
 import pandas as pd
-
 
 '''
 def create_vaxx_data():
@@ -41,6 +44,9 @@ def create_vaxx_data():
 '''
 
 def create_vaxx_data():
+    
+    aws_access_key_id = 'AKIA2RCGHBDMFYOMRPOY'
+    aws_secret_access_key = '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'
     
     data = pd.read_csv('https://data.cdc.gov/api/views/8xkx-amqh/rows.csv?accessType=DOWNLOAD')
     
@@ -99,7 +105,17 @@ def create_vaxx_data():
     
     data['Date'] = data['Date'].apply(lambda date: word_name(date))
 
-    data.to_csv('vaxxdataset.csv')
+    #data.to_csv('vaxxdataset.csv')
+    
+    filename = 'vaxxdataset.csv'
+    bucketname = 'coviddatakm'
+    
+    csv_buffer = StringIO()
+    data.to_csv(csv_buffer)
+    
+    client = boto3.client('s3')
+    
+    response = client.put_object(Body = csv_buffer.getvalue(), Bucket = bucketname, Key = filename)
 
 if __name__ == '__main__':
     create_vaxx_data()

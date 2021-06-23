@@ -4,6 +4,7 @@ import dataset
 import os.path
 from os import path
 import vaxx
+import readvaxx
 import pandas as pd
 
 
@@ -13,8 +14,7 @@ app.secret_key = 'hello'
 @app.route("/")
 def home():
 	if path.exists('vaxxdataset.csv') == False:
-		vaxx.create_vaxx_data()
-
+		readvaxx.readvaxx()
 	return render_template("index.html")
 	
 

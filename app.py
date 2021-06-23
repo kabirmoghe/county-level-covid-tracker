@@ -11,13 +11,19 @@ app.secret_key = 'hello'
 
 @app.route("/")
 def home():
+
+	readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
+	readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
+
 	return render_template("index.html")
 	
 
 @app.route("/data", methods = ['POST', 'GET'])
 def countyinfo():
-	readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
-	readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
+
+	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
+		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
+		readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
 	
 	if request.method == "POST":
 		county = request.form["cty"]
@@ -63,8 +69,10 @@ def countyinfo():
 
 @app.route("/stats", methods = ['POST', 'GET'])
 def stats():
-	readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
-	readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
+	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
+		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
+		readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
+		
 	if request.method == "POST":
 		choice = request.form["choice"]
 		if choice == 'vaxx':
@@ -84,8 +92,10 @@ def stats():
 
 @app.route("/explore", methods = ['POST', 'GET'])
 def explore():
-	readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
-	readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
+	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
+		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
+		readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
+
 	if request.method == "POST":
 		# FIX LOAD DATASET
 		attr1 = request.form["choice1"]

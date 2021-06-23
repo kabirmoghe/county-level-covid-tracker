@@ -13,8 +13,7 @@ app.secret_key = 'hello'
 
 @app.route("/")
 def home():
-	if path.exists('vaxxdataset.csv') == False:
-		readvaxx.readvaxx()
+	readvaxx.readvaxx()
 	return render_template("index.html")
 	
 

@@ -1,6 +1,12 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import io
+from io import StringIO
+import os
+import boto3
+import readbucketdata
+
 
 # Creates COVID-19 County Level Dataset
 
@@ -706,7 +712,83 @@ def create_covid_pop_data():
 
     return covid_data
 
-def main_function():
+def create_vaxx_data():
+    def data():
+        data = pd.read_csv('https://data.cdc.gov/api/views/8xkx-amqh/rows.csv?accessType=DOWNLOAD')
+
+        no_mo = {1:'January',
+                 2:'February',
+                 3:'March',
+                 4:'April',
+                 5:'May',
+                 6:'June',
+                 7:'July',
+                 8:'August',
+                 9:'September',
+                 10:'October',
+                 11:'November',
+                 12:'December'
+             }
+
+        latest_date = data['Date'][0]
+
+        def word_name(date):
+            month, day, year = [int(value) for value in date.split('/')]
+            date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
+
+            return date
+
+        date = word_name(latest_date)
+
+        data['Recip_County'] = data['Recip_County'] + ', ' + data['Recip_State']
+
+        dates = list(data['Date'])
+
+        def get_months():
+
+            m_dates = []
+
+            l_month = 0
+
+            for date in dates:
+                month = int(date.split('/')[0])
+                if month != l_month:
+                    m_dates.append(date)
+                l_month = month
+
+            return m_dates
+
+        data = data[data['Date'].isin(get_months())]
+
+        for col in data.columns:
+            if col != 'Recip_County' and 'Pct' not in col and col != 'Date':
+                data.drop(col, axis = 1, inplace = True)
+
+        data.columns = ['Date', 'County Name', '% Fully Vaccinated as of {}'.format(date),'% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date)]
+
+        dates = list(data['Date'])
+
+        data = data.iloc[::-1]
+
+        data.reset_index(drop = True, inplace = True)
+
+        data['Date'] = data['Date'].apply(lambda date: word_name(date))
+        
+        return data
+
+    data = data()
+    
+    filename = 'vaxxdataset.csv'
+    bucketname = 'coviddatakm'
+    
+    csv_buffer = StringIO()
+    data.to_csv(csv_buffer)
+    
+    client = boto3.client('s3')
+    
+    response = client.put_object(Body = csv_buffer.getvalue(), Bucket = bucketname, Key = filename)
+
+def combiner():
     
     race_data = create_race_data()
     inc_unemp_data = create_inc_unemp_data()
@@ -716,7 +798,14 @@ def main_function():
     
     # VAXX DATA
 
-    vaxx_data = pd.read_csv('vaxxdataset.csv', index_col = 0)
+    # puts vaxx data into bucket
+
+    create_vaxx_data()
+
+    # Reads vaxx data
+
+    vaxx_data = readbucketdata.readbucketdata('vaxx')
+
     date = list(vaxx_data['Date'])[-1]
 
     vaxx_data = vaxx_data[vaxx_data['Date'] == date].drop('Date', axis = 1).reset_index(drop = True)
@@ -728,5 +817,21 @@ def main_function():
     county_data = pd.merge(county_data, edu_data, on = 'County Name')
     county_data = pd.merge(county_data, mask_data, on = 'State')
     county_data = pd.merge(county_data, vaxx_data, on = 'County Name')
-    
+
     return county_data
+
+def main_function():
+    data = combiner()
+    
+    filename = 'fulldataset.csv'
+    bucketname = 'coviddatakm'
+    
+    csv_buffer = StringIO()
+    data.to_csv(csv_buffer)
+    
+    client = boto3.client('s3')
+    
+    response = client.put_object(Body = csv_buffer.getvalue(), Bucket = bucketname, Key = filename)
+
+if __name__ == '__main__':
+    main_function()

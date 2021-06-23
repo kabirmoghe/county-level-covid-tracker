@@ -1,9 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request
 import covidapp
-import dataset
 import os.path
 from os import path
-import vaxx
 import readbucketdata
 import pandas as pd
 

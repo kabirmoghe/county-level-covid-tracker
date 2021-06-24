@@ -648,7 +648,7 @@ def vaxx_plot(cty):
         ))
     fig.update_layout(
         yaxis_title='% Fully Vaccinated', yaxis_range=[0,100], xaxis_title = 'Month',
-        title='Vaccination Progress for {}, {}'.format(cty, full_date), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway'
+        title='Vaccination Progress for {}'.format(cty), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway'
     )
     
     #--

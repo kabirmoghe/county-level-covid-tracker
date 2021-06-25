@@ -761,8 +761,9 @@ def create_vaxx_data():
         data = data[data['Date'].isin(get_months())]
 
         for col in data.columns:
-            if col != 'Recip_County' and 'Pct' not in col and col != 'Date':
-                data.drop(col, axis = 1, inplace = True)
+            if col != 'Recip_County' and col != 'Date':
+                if 'Pop_Pct' not in col or 'Series' not in col:
+                    data.drop(col, axis = 1, inplace = True)
 
         data.columns = ['Date', 'County Name', '% Fully Vaccinated as of {}'.format(date),'% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date)]
 

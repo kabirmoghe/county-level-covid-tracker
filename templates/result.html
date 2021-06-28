@@ -58,6 +58,7 @@
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<h4>COVID-19 Infection Risk</h4>
+			<p style = 'color: #99A1AA'><em>Updated {{c_update}}</em></p>
 			<p>7-Day Moving Average: <strong>{{stat}} daily cases per 100,000</strong>&nbsp;</strong><span class="dot" style = 'height: 11px; width: 11px; background-color: {{color}}; border-radius: 50%; display: inline-block;'></span></p>
 			<p>{{info}}<br><br>
 				Hover over (or click on a mobile device) the colored bar below (formatted as <strong>'Your county name: infection rate'</strong>) to show more info, and click on the labeled key to learn about the methodology.</p>
@@ -112,7 +113,7 @@
 			<p></p>
 				<p><strong>{{rec}}</strong></p><br>
 				<h4>Mandates and Policies for {{county}}</h4>
-				<p>(General guidelines across the state)</p>
+				<p style = 'color: #99A1AA;'><em>{{m_update}}</em></p>
 		</div>
 	</div>
 	<div class = 'ncontent'>
@@ -144,6 +145,7 @@
 			<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
 			<p></p>
 			<h4>Vaccination Progress for {{county}}*</h4>
+			<p style = 'color: #99A1AA'><em>Updated {{v_update}}</em></p>
 			<p><strong>*Note:</strong> {{note}} Additionally, President Biden has set a <a href="https://www.nbcnews.com/politics/white-house/graphic-track-biden-fourth-july-vaccination-goals-n1268803" target = '_blank'>goal</a> of having 160 million adults fully vaccinated by July 4, <strong>~76.51% of adults</strong>, shown by the red dashed line.</p>
 		</div>
 	</div>

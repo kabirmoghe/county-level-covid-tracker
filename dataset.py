@@ -710,6 +710,8 @@ def create_covid_pop_data():
         
     covid_data = covid_data.rename(columns = {'countyFIPS': 'County FIPS'})
 
+    covid_data = covid_data[covid_data['County Name'] != 'Chattahoochee County, GA']
+
     return covid_data
 
 def create_vaxx_data():
@@ -778,6 +780,8 @@ def create_vaxx_data():
         return data
 
     data = data()
+
+    data = data[data['County Name'] != 'Chattahoochee County, GA']
     
     filename = 'vaxxdataset.csv'
     bucketname = 'coviddatakm'

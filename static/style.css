@@ -27,10 +27,10 @@ div#loading {
     }
 
 button{
-  background-color: #64B1FC;
+  background-color: #B7E1F9;
 	border: none;
   border-radius: 5px;
-  color: #FFFFFF;
+  color: #3B4149;
 }
 
 h6.bubble, span.bubble{
@@ -64,9 +64,9 @@ input#box {
 
 input#getresults {
   border: none;
-  background-color: #64B1FC;
+  background-color: #B7E1F9;
   border-radius: 5px;
-  color: #FFFFFF;
+  color: #3B4149;
 }
 
 select.options {

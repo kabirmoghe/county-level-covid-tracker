@@ -29,6 +29,8 @@ def county_stats(county_name):
                 inf_col = col
 
 
+        c_update = inf_col.split('of ')[-1]
+
         sorted_data = data.sort_values(by = inf_col, ascending = False)[['County Name', inf_col]].reset_index(drop = True)
 
         ctynum = len(sorted_data)
@@ -58,11 +60,13 @@ def county_stats(county_name):
 
         mask_info= [des_row[col].values[0] for col in des_row.columns if 'mask' in col.lower()]
 
+        m_update = [col.split('(')[-1].split(')')[0] for col in data.columns if "mandate" in col.lower() and 'statewide' in col.lower()][0]
+
         y_n_mask, mask_details = mask_info
 
         des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
 
-        otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:]], axis = 1)
+        otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:-5]], axis = 1)
 
         stat = des_row[inf_col].iloc[0]
 
@@ -128,13 +132,15 @@ def county_stats(county_name):
                 color = '#ff0600'
 
                 risk = 'High'
-
-            info = "With a rank of {rank} out of {ctynum} included counties, {county_name} is higher than {pct}% of counties in terms of {inf_col}.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct, inf_col = inf_col)
+            if pct >= 50:
+                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} has a moving average higher than {pct}% of counties.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = pct)
+            else:
+                info = "With a rank of {rank} out of {ctynum} included counties, {county_name} has a moving average lower than {pct}% of counties.".format(rank = rank, ctynum = ctynum, county_name = county_name, pct = round(100-pct,2))
 
         riskimg = 'riskchart.png'
         risk_pos = (round(26.5+(49*css_prop),2))
                 
-        return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk#, riskimg
+        return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk, c_update, m_update#, riskimg
         
 def usplot(c_or_d):
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
@@ -563,8 +569,10 @@ def avg_plot(cty):
 def vaxx_plot(cty):
     
     data = pd.read_csv('vaxxdataset.csv', index_col = 0)
-    
+
     data = data[data['County Name'] == cty]
+
+    v_update = data.columns[2].split('of ')[-1]
     
     if len(data) == 0:
         return 
@@ -710,6 +718,7 @@ def vaxx_plot(cty):
     fig.write_html('/app/templates/{cty}_vaxxprogressplot.html'.format(cty = cty), full_html = False)
     fig2.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
 
+    return v_update
 
 def multivaxx_plot():
     

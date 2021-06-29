@@ -560,7 +560,7 @@ def avg_plot(cty):
     
     fig.update_layout(
         yaxis_title='Moving Average', yaxis_range=[0,25+yval], xaxis_title = 'Date (Week of)',
-        title='Moving Average Past 5 weeks', title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', legend_x = 0.4, legend_y = -0.85
+        title='Moving Average Past 5 weeks', title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', legend_x = 0.4, legend_y = -1.2
     )
 
 
@@ -656,7 +656,7 @@ def vaxx_plot(cty):
         ))
     fig.update_layout(
         yaxis_title='% Fully Vaccinated', yaxis_range=[0,100], xaxis_title = 'Month',
-        title='Vaxx. Progress for {}'.format(cty), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', legend_x = 0.4, legend_y = -0.85
+        title='Vaxx. Progress for {}'.format(cty), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', legend_x = 0.4, legend_y = -1
     )
     
     #--

@@ -560,7 +560,7 @@ def avg_plot(cty):
     
     fig.update_layout(
         yaxis_title='Moving Average', yaxis_range=[0,25+yval], xaxis_title = 'Date (Week of)',
-        title='Moving Average Past 5 weeks', title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway'
+        title='Moving Average Past 5 weeks', title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', legend_x = 0.4, legend_y = -0.85
     )
 
 
@@ -656,7 +656,7 @@ def vaxx_plot(cty):
         ))
     fig.update_layout(
         yaxis_title='% Fully Vaccinated', yaxis_range=[0,100], xaxis_title = 'Month',
-        title='Vaccination Progress for {}'.format(cty), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway'
+        title='Vaxx. Progress for {}'.format(cty), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', legend_x = 0.4, legend_y = -0.85
     )
     
     #--
@@ -712,7 +712,7 @@ def vaxx_plot(cty):
     ))
 
     fig2.update_layout(xaxis_range=[0,100], title ={'text':'Current % Vaccinated, {}'.format(full_date) ,'xanchor': 'center',
-        'yanchor': 'top'}, xaxis_title="% People Vaccinated", yaxis_title = 'Age Demographic', font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5)
+        'yanchor': 'top'}, xaxis_title="% People Vaccinated", yaxis_title = 'Age Demographic', font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5, legend_x = 0.4, legend_y = -0.7)
 
 
     fig.write_html('/app/templates/{cty}_vaxxprogressplot.html'.format(cty = cty), full_html = False)

@@ -107,7 +107,6 @@
 			{% include county+"_movingavgplot.html" %}
 		</div>
 	</div>
-
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<p></p>
@@ -154,7 +153,11 @@
 			{% include county+"_vaxxprogressplot.html" %}
 		</div>
 	</div>
-
+	<div class = 'content'>
+		<div class = 'title'>
+			<img style="max-width: 30%; height: auto;" src="{{url_for('static', filename = 'vaxxlegend.png')}}">
+		</div>
+	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			{% include county+"_vaxxplot.html" %}

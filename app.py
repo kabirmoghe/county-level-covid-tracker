@@ -15,7 +15,7 @@ def home():
 	templates = os.listdir('/app/templates')
 	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
 	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
-	
+
 	readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
 	readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
 
@@ -24,10 +24,6 @@ def home():
 
 @app.route("/data", methods = ['POST', 'GET'])
 def countyinfo():
-
-	templates = os.listdir('/app/templates')
-	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 
 	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
 		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
@@ -70,17 +66,17 @@ def countyinfo():
 			else:
 				return render_template("undef_result.html", issue = 'Please enter a valid county name (i.e. Orange County, CA). The county you entered, {}, may not have complete information.'.format(county))
 	else:
+		templates = os.listdir('/app/templates')
+		needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+		[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
+
 		ctys = covidapp.county_list()
 		return render_template("data.html", ctys = ctys)
 		#return render_template("data.html", states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'])
-			
-
+		
+		
 @app.route("/stats", methods = ['POST', 'GET'])
 def stats():
-
-	templates = os.listdir('/app/templates')
-	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 
 	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
 		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
@@ -101,6 +97,11 @@ def stats():
 				return render_template("deaths_stats.html", top10 = [top10.to_html(classes='data', header = True)], bot10 = [bot10.to_html(classes='data', header = True)], choice = choice, date = date, num0 = num0)
 
 	else:
+
+		templates = os.listdir('/app/templates')
+		needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+		[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
+
 		return render_template("statshome.html")
 
 @app.route("/explore", methods = ['POST', 'GET'])
@@ -125,6 +126,11 @@ def explore():
 		return render_template("explore_results.html", attr1 = attr1, attr2 = attr2, trendline = trendline)
 			
 	else:
+
+		templates = os.listdir('/app/templates')
+		needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+		[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
+		
 		cols = [col for col in pd.read_csv('fulldataset.csv').columns[3:] if col != 'State' and "Mask" not in col]
 		cols.reverse()
 		return render_template("explorehome.html", cols = cols)

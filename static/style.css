@@ -18,12 +18,12 @@ table, th, td{
 div#loading {
     position: absolute;
     display: none;
-    background: url(/static/rolling.gif) no-repeat;
-    width: 70%;
-  	height: 70%;
-  	top: 45%;
-  	left: 48.3%;
-  	background-size: 45px 45px;
+    background: url(/static/covid.gif) no-repeat;
+    width: 50%;
+  	height: 50%;
+  	top: 48%;
+  	left: 48.5%;
+  	background-size: 5%;
     }
 
 button{

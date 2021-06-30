@@ -12,6 +12,10 @@ app.secret_key = 'hello'
 @app.route("/")
 def home():
 
+	templates = os.listdir('/app/templates')
+	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
+	
 	readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
 	readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
 
@@ -20,6 +24,10 @@ def home():
 
 @app.route("/data", methods = ['POST', 'GET'])
 def countyinfo():
+
+	templates = os.listdir('/app/templates')
+	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 
 	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
 		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
@@ -69,6 +77,11 @@ def countyinfo():
 
 @app.route("/stats", methods = ['POST', 'GET'])
 def stats():
+
+	templates = os.listdir('/app/templates')
+	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
+
 	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
 		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
 		readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
@@ -92,6 +105,11 @@ def stats():
 
 @app.route("/explore", methods = ['POST', 'GET'])
 def explore():
+
+	templates = os.listdir('/app/templates')
+	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
+
 	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
 		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
 		readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
@@ -113,6 +131,11 @@ def explore():
 
 @app.route("/about")
 def about():
+
+	templates = os.listdir('/app/templates')
+	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
+
 	return render_template("about.html")
 
 if __name__ == '__main__':

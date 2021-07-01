@@ -573,9 +573,6 @@ def vaxx_plot(cty):
     data = data[data['County Name'] == cty]
 
     v_update = data.columns[2].split('of ')[-1]
-    
-    if len(data) == 0:
-        return 
 
     full_date = list(data['Date'])[-1]
     

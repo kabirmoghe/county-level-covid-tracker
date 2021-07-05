@@ -568,7 +568,7 @@ def avg_plot(cty):
 
 def vaxx_plot(cty):
     
-    data = pd.read_csv('/users/kabirmoghe/Desktop/covidapp/vaxxdataset.csv', index_col = 0)
+    data = pd.read_csv('vaxxdataset.csv', index_col = 0)
 
     data = data[data['County Name'] == cty]
 

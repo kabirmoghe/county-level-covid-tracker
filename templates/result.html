@@ -41,6 +41,24 @@
 	    });
 	});	
 	</script>	
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		    $("input[name$='cars']").click(function() {
+		        var test = $(this).val();
+
+		        $("div.desc").hide();
+		        $("#Plot-" + test).show();
+		    });
+		});
+	</script>
+
+	<script type="text/javascript">
+		window.onload = function(){
+		  document.getElementById("Plot-b").style.display='none';
+		};
+	</script>
 </head>
 <body>
 	{% extends "base.html" %}
@@ -145,12 +163,48 @@
 			<p></p>
 			<h4>Vaccination Progress for {{county}}*</h4>
 			<p style = 'color: #99A1AA'><em>Updated {{v_update}}</em></p>
-			<p><strong>*Note:</strong> {{note}} Additionally, President Biden has set a <a href="https://www.nbcnews.com/politics/white-house/graphic-track-biden-fourth-july-vaccination-goals-n1268803" target = '_blank'>goal</a> of having 160 million adults fully vaccinated by July 4, <strong>~76.51% of adults</strong>, shown by the red dashed line.</p>
+			<p><strong>*Note:</strong> {{note}}</p>
+			<p></p>
+
+			<!--Additionally, President Biden has set a <a href="https://www.nbcnews.com/politics/white-house/graphic-track-biden-fourth-july-vaccination-goals-n1268803" target = '_blank'>goal</a> of having 160 million adults fully vaccinated by July 4, <strong>~76.51% of adults</strong>, shown by the red dashed line.-->
 		</div>
 	</div>
+
+	<div class = 'content'>
+		<div class = 'title'>
+			<div class="switch-field">
+			    <input type="radio" id="radio-one" name="cars" value="a" checked/>
+			    <label for="radio-one">Age</label>
+			    <input type="radio" id="radio-two" name="cars" value="b" />
+			    <label for="radio-two">Full vs. Partial</label>
+			</div>
+		</div>
+	</div>
+
+	<div id="Plot-a" class="desc">
+		<div class = 'content'>
+			<div class = 'title'>
+				<img style="max-width: 50%; height: auto" src = "{{url_for('static', filename='agekey.png')}}">
+        		{% include county+"_agevaxxprogressplot.html" %}
+        		{% include county+"_agevaxxplot.html" %}
+        	</div>
+        </div>
+    </div>
+    <div id="Plot-b" class="desc">
+    	<div class = 'content'>
+    		<div class = 'title'>
+    			<img style="max-width: 25%; height: auto" src = "{{url_for('static', filename='vaxxkey.png')}}">
+        		{% include county+"_fullpartvaxxprogressplot.html" %}
+        		{% include county+"_fullpartvaxxplot.html" %}
+        	</div>
+        </div>
+    </div>
+
+	<!--
+
 	<div class = 'ncontent'>
 		<div class = 'title'>
-			{% include county+"_vaxxprogressplot.html" %}
+			{% include county+"_agevaxxprogressplot.html" %}
 		</div>
 	</div>
 	<div class = 'content'>
@@ -160,10 +214,10 @@
 	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-			{% include county+"_vaxxplot.html" %}
+			{% include county+"_agevaxxplot.html" %}
 		</div>
 	</div>
-
+	-->
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<h4>Significant Attributes of {{county}}</h4>

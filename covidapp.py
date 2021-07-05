@@ -66,7 +66,7 @@ def county_stats(county_name):
 
         des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
 
-        otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:-5]], axis = 1)
+        otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:-6]], axis = 1)
 
         stat = des_row[inf_col].iloc[0]
 
@@ -568,7 +568,7 @@ def avg_plot(cty):
 
 def vaxx_plot(cty):
     
-    data = pd.read_csv('vaxxdataset.csv', index_col = 0)
+    data = pd.read_csv('/users/kabirmoghe/Desktop/covidapp/vaxxdataset.csv', index_col = 0)
 
     data = data[data['County Name'] == cty]
 
@@ -605,18 +605,20 @@ def vaxx_plot(cty):
     
     date = list(data['Date'])[-1]
     
+    # Age breakdown vaxx. progress over time
+    
     fig = go.Figure()
 
-    fig.add_trace(go.Scatter(
-            name='Target Adults % Fully Vaxx.',
-            x=data['Date'],
-            hoverinfo = 'y',
-            y=[76.51 for i in range(len(data))],
-            line=dict(
-                color='#FF8195', dash = 'dash', width = 3
-            ),
-            mode='lines'
-        ))
+    #fig.add_trace(go.Scatter(
+    #        name='Target Adults % Fully Vaxx.',
+    #        x=data['Date'],
+    #        hoverinfo = 'y',
+    #        y=[76.51 for i in range(len(data))],
+    #        line=dict(
+    #            color='#FF8195', dash = 'dash', width = 3
+    #        ),
+    #        mode='lines'
+    #    ))
     
 
     fig.add_trace(go.Scatter(
@@ -632,7 +634,7 @@ def vaxx_plot(cty):
             x=data['Date'],
             y=data['% ≥ 12 Fully Vaccinated as of {}'.format(full_date)],
             marker=dict(
-                color='#81B8FF')
+                color='#EAB7F9')
         ))
 
 
@@ -652,19 +654,45 @@ def vaxx_plot(cty):
                 color='#FFC300')
         ))
     fig.update_layout(
-        yaxis_title='% Fully Vaccinated', yaxis_range=[0,100], xaxis_title = 'Month',
+        yaxis_title='% Fully Vaxx. by Age Group', yaxis_range=[0,100], xaxis_title = 'Month',
         title='Vaxx. Progress for {}'.format(cty), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', showlegend = False
     )
     
-    #--
+    # Full vs. Partially Vaxx. breakdown progress over time
+    
+    fig2 = go.Figure()
+
+    fig2.add_trace(go.Scatter(
+            name='% Fully Vaccinated',
+            x=data['Date'],
+            y=data['% Fully Vaccinated as of {}'.format(full_date)],
+            marker=dict(
+                color='#69F68C')
+        ))
+
+    fig2.add_trace(go.Scatter(
+            name='% 12+ Fully Vaxx.',
+            x=data['Date'],
+            y=data['% At Least Partially Vaccinated as of {}'.format(full_date)],
+            marker=dict(
+                color='#81B8FF')
+        ))
+    
+
+    fig2.update_layout(
+        yaxis_title='% Fully and Part. Vaxx', yaxis_range=[0,100], xaxis_title = 'Month',
+        title='Vaxx. Progress for {}'.format(cty), title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', showlegend = False
+    )
+    
+    # Age breakdown vaxx. current state
 
     data = pd.read_csv('fulldataset.csv', index_col = 0)
 
     data = data[data['County Name'] == cty]
 
-    fig2 = go.Figure()    
+    fig3 = go.Figure()    
 
-    fig2.add_trace(go.Bar(
+    fig3.add_trace(go.Bar(
     y=['All'],
     x=data['% Fully Vaccinated as of {}'.format(full_date)],
     width=[0.5],
@@ -675,18 +703,18 @@ def vaxx_plot(cty):
         )
     ))
 
-    fig2.add_trace(go.Bar(
+    fig3.add_trace(go.Bar(
     y=['12+'],
     x=data['% ≥ 12 Fully Vaccinated as of {}'.format(full_date)],
     width=[0.5],
     name='% 12+ Fully Vaxx.',
     orientation='h',
     marker=dict(
-        color='#81B8FF',
+        color='#EAB7F9',
         )
     ))
 
-    fig2.add_trace(go.Bar(
+    fig3.add_trace(go.Bar(
     y=['18+'],
     x=data['% ≥ 18 Fully Vaccinated as of {}'.format(full_date)],
     width=[0.5],
@@ -697,7 +725,7 @@ def vaxx_plot(cty):
         )
     ))
 
-    fig2.add_trace(go.Bar(
+    fig3.add_trace(go.Bar(
     y = ['65+'],
     x=data['% ≥ 65 Fully Vaccinated as of {}'.format(full_date)],
     width=[0.5],
@@ -708,12 +736,44 @@ def vaxx_plot(cty):
         )
     ))
 
-    fig2.update_layout(xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(full_date) ,'xanchor': 'center',
+    fig3.update_layout(xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(full_date) ,'xanchor': 'center',
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", yaxis_title = 'Age Demographic', font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5, showlegend = False)
 
+    # Full vs. Part. Vaxx Current State
+    
+    # Age breakdown vaxx. current state
 
-    fig.write_html('/app/templates/{cty}_vaxxprogressplot.html'.format(cty = cty), full_html = False)
-    fig2.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
+    fig4 = go.Figure()    
+
+    fig4.add_trace(go.Bar(
+        x=data['% At Least Partially Vaccinated as of {}'.format(full_date)],
+        y=[''],
+        width=[0.5],
+        name='% ≥ 1 Dose.',
+        orientation='h',
+        marker=dict(
+            color='#81B8FF',
+            )
+        ))
+    
+    fig4.add_trace(go.Bar(
+        y=[''],
+        x=data['% Fully Vaccinated as of {}'.format(full_date)],
+        width=[0.5],
+        name='% Fully Vaxx.',
+        orientation='h',
+        marker=dict(
+            color='#69F68C'
+            )
+        ))
+    
+    fig4.update_layout(barmode = 'overlay', xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(full_date) ,'xanchor': 'center',
+        'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5, showlegend = False)
+
+    fig.write_html('/app/templates/{cty}_agevaxxprogressplot.html'.format(cty = cty), full_html = False)
+    fig2.write_html('/app/templates/{cty}_fullpartvaxxprogressplot.html'.format(cty = cty), full_html = False)
+    fig3.write_html('/app/templates/{cty}_agevaxxplot.html'.format(cty = cty), full_html = False)
+    fig4.write_html('/app/templates/{cty}_fullpartvaxxplot.html'.format(cty = cty), full_html = False)
 
     return v_update
 

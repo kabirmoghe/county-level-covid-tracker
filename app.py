@@ -56,10 +56,10 @@ def countyinfo():
 						ptile = 'Bottom ~{}%'.format(str(round(pct)))
 
 				if county.split(', ')[1] == 'TX' or county.split(', ')[1] == 'HI':
-					note = 'Neither Hawaii nor Texas provide county-level data on vaccinations, hence why the visualization below is empty.'
+					note = 'Neither Hawaii nor Texas provide county-level data on vaccinations, hence why the visualizations below are empty.'
 
 				else:
-					note = 'The visualizations below show the percentage of fully vaccinated people within the county broken down by age group.'
+					note = 'Toggle the button below to choose whether to show visualizations on the percentage of fully vaccinated people within the county broken down by age group or visualizations on percent fully vaccinated and with at least one dose in the county.'
 
 				return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk, c_update = c_update, m_update = m_update, v_update = v_update)
 			
@@ -137,11 +137,11 @@ def explore():
 
 @app.route("/about")
 def about():
-
+	'''
 	templates = os.listdir('/app/templates')
 	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
 	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
-
+	'''
 	return render_template("about.html")
 
 if __name__ == '__main__':

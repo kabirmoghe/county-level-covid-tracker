@@ -181,9 +181,8 @@ div#content {
 }
 
 .switch-field {
-  display: flex;
+  display: inline-flex;
   margin-bottom: 36px;
-  overflow: hidden;
 }
 
 .switch-field input {

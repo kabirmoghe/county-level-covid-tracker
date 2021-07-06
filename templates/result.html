@@ -112,13 +112,8 @@
 	<div class = 'content'>
 		<div class = 'title' style = 'background-color: #EEF1F8;border: none; border-radius: 0px 0px 8px 8px; color: #000000;padding: 6px;'>
 			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='riskchart.png')}}" alt="Breakdown of Infection Rates Risk">
-				
 			<a href="/about#methodology" target = "_blank"><img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='riskkey.png')}}" alt="Breakdown of Infection Rates Risk"></a>
-		</div>
-	</div>
-
-	<div class = 'ncontent'>
-		<div class = 'title'>
+			<br><br>
 			{% include county+"_movingavgplot.html" %}
 		</div>
 	</div>

@@ -482,7 +482,7 @@ def create_vaxx_data():
     fig.write_html('/app/templates/{cty}_vaxxplot.html'.format(cty = cty), full_html = False)
 
 '''
-
+'''
 def avg_plot(cty):
 
     data = pd.read_csv('fulldataset.csv')
@@ -563,6 +563,61 @@ def avg_plot(cty):
     fig.update_layout(
         yaxis_title='Moving Average', yaxis_range=[0,25+yval], xaxis_title = 'Date (Week of)',
         title='Moving Average Past 5 weeks', title_x = 0.5, font_family="Raleway", hoverlabel_font_family = 'Raleway', showlegend = False
+    )
+
+    config = {'displayModeBar': False}
+
+    fig.write_html('/app/templates/{cty}_movingavgplot.html'.format(cty = cty), full_html = False, config = config)
+'''
+
+def avg_plot(cty):
+
+    data = pd.read_csv('fulldataset.csv')
+    data = pd.concat([data['County Name'], data[[col for col in data.columns if 'Cases' in col and 'Moving Avg.' in col]]], axis = 1)
+
+    data = data[data['County Name'] == cty]
+
+    data = data.transpose().iloc[1:].reset_index()
+
+    data.columns = ['Date', 'Moving Avg']
+
+    data['Date (Week of)'] = data['Date'].apply(lambda value: value.split('Avg. ')[-1])
+    data.drop('Date', axis = 1, inplace = True)
+
+    yval = 3
+
+    for value in data['Moving Avg']:
+        if value >= 25:
+            if (value-27)+3 > yval:
+                yval = (value-27)+3
+            else:
+                None
+        else:
+            None
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(name = 'Moving Avg.', x = data['Date (Week of)'], y = data['Moving Avg'], line={'color': '#18FF51', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+
+    fig.add_trace(go.Scatter(name = 'Moving Avg.', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 1), line={'color': '#FFF90F', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+    
+    fig.add_trace(go.Scatter(name = 'Moving Avg.', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 10), line={'color': '#FFAF00', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+    
+    fig.add_trace(go.Scatter(name = 'Moving Avg.', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 25), line={'color': '#ff0b00', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+    
+    '''
+    fig.add_trace(go.Scatter(
+            name='Moving Avg',
+            x=data['Date (Week of)'],
+            y=data['Moving Avg'],
+            hoverinfo = 'name+y',
+            mode = 'lines',
+            line=dict(
+                color='#64B1FC')
+        ))
+    '''
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', yaxis_range=[0,25+yval],
+        font_family="Raleway", hoverlabel_font_family = 'Raleway', showlegend = False, hoverlabel_bgcolor = 'white', hoverlabel_bordercolor = 'white', hoverlabel_font_color = 'black', xaxis_showgrid = False, margin = dict(t=0, pad = 20), font_color = 'black', xaxis_title = '(Week of)'
     )
 
     config = {'displayModeBar': False}

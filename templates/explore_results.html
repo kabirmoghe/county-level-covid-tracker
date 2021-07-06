@@ -17,6 +17,7 @@
 			<a href='/explore'><img style = 'max-width: 25px; height: auto' src="{{url_for('static', filename = 'back.png')}}"></a>
 			<p></p>
 			<h3>{{attr1}} vs. {{attr2}}</h3>
+			<p><br><br>(Double click to zoom back out.)</p>
 		</div>
 	</div>
 	{% include trendline+"_"+attr1+"_"+attr2+".html" %}

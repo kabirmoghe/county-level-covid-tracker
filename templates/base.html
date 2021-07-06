@@ -14,16 +14,38 @@
         }
 // ]]></script>
 	<title>Live COVID-19 Data</title>
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,500;1,300;1,500&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
 	<meta property="og:image" content="{{ url_for('static', filename = 'favicon.ico')}}"/>
 
 	<meta property="og:description" content="Learn about the situation of the COVID-19 pandemic through live, county-level data and visualizations. " />
 	<meta property="og:title" content="Live County-Level COVID-19 Data"/>
+
+	<style type="text/css">
+	  .mobileshow {display: none;}
+
+	  /* Smartphone Portrait and Landscape */
+	  @media only screen
+	    and (min-device-width : 320px)
+	    and (max-device-width : 480px){ 
+	      .mobileshow {display: inline;}
+	  }
+
+	  .mobilehide { display: inline; }
+
+	  /* Smartphone Portrait and Landscape */
+	  @media only screen
+	    and (min-device-width : 320px)
+	    and (max-device-width : 480px){
+	     .mobilehide { display: none;}
+	  }
+	</style>
+
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
 	  <a class="navbar-brand" href="/">Live County COVID-19 Data</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>

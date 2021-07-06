@@ -65,12 +65,9 @@
 	{% block titles %}Result{% endblock %}
 	{% block content %}
 	<br>
-	<div class = 'content'>
-		<div class = 'title'>
-			<a href='/data'><img style = 'max-width: 7%; height: auto' src="{{url_for('static', filename = 'back.png')}}"></a>
-			<p></p>
-			<h3>{{county}}</h3>
-		</div>
+	<div>
+			
+			<h3 style = 'text-align: center'><a href='/data'><img style = 'max-width: 25px; height: auto; text-align: left' src="{{url_for('static', filename = 'back.png')}}"></a> {{county}}</h3>
 	</div>		
 	<br>
 	<div class = 'ncontent'>
@@ -78,8 +75,8 @@
 			<h4>COVID-19 Infection Risk</h4>
 			<p style = 'color: #99A1AA'><em>Updated {{c_update}}</em></p>
 			<p>7-Day Moving Average: <strong>{{stat}} daily cases per 100,000</strong>&nbsp;</strong><span class="dot" style = 'height: 11px; width: 11px; background-color: {{color}}; border-radius: 50%; display: inline-block;'></span></p>
-			<p>{{info}}<br><br>
-				Hover over (or click on a mobile device) the colored bar below (formatted as <strong>'Your county name: infection rate'</strong>) to show more info, and click on the labeled key to learn about the methodology.</p>
+			<p>{{info}}<br>
+				<div class = 'mobilehide'>Hover over (click on mobile device) the colored bar below (<strong>'Your county name: moving average'</strong>) to show more info.</div><div class = 'mobileshow'>Click the colored bar below (<strong>'Your county name: moving average'</strong>) to show more info.</div> Click the risk key to learn about the methodology.</p>
 		</div>
 	</div>
 	<!--

@@ -25,12 +25,19 @@ div#loading {
   	left: 48.5%;
   	background-size: 5%;
     }
-
+/*
 button{
+  border: none;
   background-color: #B7E1F9;
-	border: none;
-  border-radius: 5px;
-  color: #3B4149;
+  border-radius: 8px;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+*/
+
+button.back{
+  border:  none;
+  background-color: Transparent;
 }
 
 h6.bubble, span.bubble{
@@ -66,7 +73,7 @@ input#getresults {
   border: none;
   background-color: #B7E1F9;
   border-radius: 5px;
-  color: #3B4149;
+  text-align: center;
 }
 
 select.options {

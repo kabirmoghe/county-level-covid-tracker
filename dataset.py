@@ -658,7 +658,7 @@ def create_covid_pop_data():
         
         date = '{month} {day}, {year}'.format(month = no_mo[month], day = day, year = year)
         
-        cols = df[df.columns[-71:]].columns
+        cols = df[df.columns[-36:]].columns
         
         g_dates = []
 

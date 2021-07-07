@@ -66,7 +66,20 @@ def county_stats(county_name):
 
         des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
 
-        otherinfo = pd.concat([des_row['Population'], des_row.iloc[:, -15:-6]], axis = 1)
+
+        data2 = data.drop('Mask Mandate Details', axis = 1)
+
+        meaninfo = pd.DataFrame(pd.concat([data['Population'], data2.iloc[:, -15:-6]], axis = 1).mean()).transpose().round(2)
+
+        for col in meaninfo.columns:
+            if col != 'Population':
+                meaninfo[col] = meaninfo[col].round(2)
+            else:
+                meaninfo[col] = int(meaninfo[col].round())
+        
+        meaninfo.index = ['U.S. County Avg.']
+
+        otherinfo = pd.concat([pd.concat([des_row['Population'], des_row.iloc[:, -15:-6]], axis = 1), meaninfo])
 
         stat = des_row[inf_col].iloc[0]
 
@@ -720,7 +733,9 @@ def vaxx_plot(cty):
     
     fig2 = go.Figure()
 
-    fig2.add_trace(go.Scatter(
+    if len(data[data['% Fully Vaccinated as of {}'.format(full_date)] > data['% At Least Partially Vaccinated as of {}'.format(full_date)]]) > 0:
+
+        fig2.add_trace(go.Scatter(
             name='% Fully Vaccinated',
             x=data['Date'],
             y=data['% Fully Vaccinated as of {}'.format(full_date)],
@@ -728,14 +743,27 @@ def vaxx_plot(cty):
                 color='#69F68C')
         ))
 
-    fig2.add_trace(go.Scatter(
-            name='% 12+ Fully Vaxx.',
-            x=data['Date'],
-            y=data['% At Least Partially Vaccinated as of {}'.format(full_date)],
-            marker=dict(
-                color='#81B8FF')
-        ))
+        vaxxkeytype = 'vaxxkeyissue'
+
+    else:
+
+        fig2.add_trace(go.Scatter(
+                name='% Fully Vaccinated',
+                x=data['Date'],
+                y=data['% Fully Vaccinated as of {}'.format(full_date)],
+                marker=dict(
+                    color='#69F68C')
+            ))
+
+        fig2.add_trace(go.Scatter(
+                name='% 12+ Fully Vaxx.',
+                x=data['Date'],
+                y=data['% At Least Partially Vaccinated as of {}'.format(full_date)],
+                marker=dict(
+                    color='#81B8FF')
+            ))
     
+        vaxxkeytype = 'vaxxkey'
 
     fig2.update_layout(
         yaxis_title='% Fully and Part. Vaxx', yaxis_range=[0,100], xaxis_title = 'Month',
@@ -835,7 +863,7 @@ def vaxx_plot(cty):
     fig3.write_html('/app/templates/{cty}_agevaxxplot.html'.format(cty = cty), full_html = False, config = config)
     fig4.write_html('/app/templates/{cty}_fullpartvaxxplot.html'.format(cty = cty), full_html = False, config = config)
 
-    return v_update
+    return v_update, vaxxkeytype
 
 def multivaxx_plot():
     

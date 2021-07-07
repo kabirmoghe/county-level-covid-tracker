@@ -39,13 +39,20 @@ def countyinfo():
 
 			if county in data1['County Name'].values and county in data2['County Name'].values:
 
-				v_update = covidapp.vaxx_plot(county)
+				v_update, vaxxkeytype = covidapp.vaxx_plot(county)
 				covidapp.avg_plot(county)
 				allinfo = covidapp.county_stats(county)
 				
 				tbl, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk, c_update, m_update = allinfo
 
 				ctyrisk_pos = risk_pos - 12.5
+
+				if vaxxkeytype == 'vaxxkeyissue':
+					vaxxnote = 'The partial vaccination data for {} is incomplete, so it is not shown below.'.format(county)
+					vaxxsize = 10
+				else:
+					vaxxnote = ''
+					vaxxsize = 25
 
 				if round(pct) == 100.0:
 					ptile = 'Top ~99%'
@@ -56,12 +63,12 @@ def countyinfo():
 						ptile = 'Bottom ~{}%'.format(str(round(pct)))
 
 				if county.split(', ')[1] == 'TX' or county.split(', ')[1] == 'HI':
-					note = 'Neither Hawaii nor Texas provide county-level data on vaccinations, hence why the visualizations below are empty.'
+					note = 'Hawaii, Texas, and counties in California with populations less than 20,000 do not provide county-level data on vaccinations, hence why the visualizations below are empty.'
 
 				else:
 					note = 'Toggle the button below to show either visualizations on the percentage of fully vaccinated people within the county broken down by age group or visualizations on percent fully vaccinated and percent with at least one dose in the county.'
 
-				return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk, c_update = c_update, m_update = m_update, v_update = v_update)
+				return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk, c_update = c_update, m_update = m_update, v_update = v_update, vaxxkeytype = vaxxkeytype, vaxxnote = vaxxnote, vaxxsize = vaxxsize)
 			
 			else:
 				return render_template("undef_result.html", issue = 'Please enter a valid county name (i.e. Orange County, CA). The county you entered, {}, may not have complete information.'.format(county))

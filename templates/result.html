@@ -113,7 +113,8 @@
 		<div class = 'title' style = 'background-color: #EEF1F8;border: none; border-radius: 0px 0px 8px 8px; color: #000000;padding: 6px;'>
 			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='riskchart.png')}}" alt="Breakdown of Infection Rates Risk">
 			<a href="/about#methodology" target = "_blank"><img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='riskkey.png')}}" alt="Breakdown of Infection Rates Risk"></a>
-			<br><br>
+			<br><br><br>
+			<p>5-Week Moving Avg. Trend</p>
 			{% include county+"_movingavgplot.html" %}
 		</div>
 	</div>
@@ -156,8 +157,8 @@
 			<h4>Vaccination Progress for {{county}}*</h4>
 			<p style = 'color: #99A1AA'><em>Updated {{v_update}}</em></p>
 			<p><strong>*Note:</strong> {{note}}</p>
-			<p></p>
-
+			<p>{{vaxxnote}}</p>
+			<br>
 			<!--Additionally, President Biden has set a <a href="https://www.nbcnews.com/politics/white-house/graphic-track-biden-fourth-july-vaccination-goals-n1268803" target = '_blank'>goal</a> of having 160 million adults fully vaccinated by July 4, <strong>~76.51% of adults</strong>, shown by the red dashed line.-->
 		</div>
 	</div>
@@ -181,7 +182,7 @@
     <div id="Plot-b" class="desc">
     	<div class = 'content'>
     		<div class = 'title'>
-    			<img style="max-width: 25%; height: auto" src = "{{url_for('static', filename='vaxxkey.png')}}">
+    			<img style="max-width: {{vaxxsize}}%; height: auto" src = "{{url_for('static', filename=vaxxkeytype+'.png')}}">
         		{% include county+"_fullpartvaxxprogressplot.html" %}
         		{% include county+"_fullpartvaxxplot.html" %}
         	</div>

@@ -231,7 +231,7 @@ def create_mask_data():
         
     newps = ps[loc:]
 
-    mask_info = pd.DataFrame([val for val in newps if len(val) >150 and 'you' not in val.lower()], columns = ['Mask Mandate Details'])
+    mask_info = pd.DataFrame([val for val in newps if len(val) >180 and 'you' not in val.lower()], columns = ['Mask Mandate Details'])
             
     mask_data = pd.concat([st,md, mask_info], axis = 1)
     

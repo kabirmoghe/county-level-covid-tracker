@@ -7,13 +7,42 @@ div#all {
   padding-right: 25px;
 }
 
+/*
 table, th, td{
 	border: 1px solid white;
 	outline-color: #FFFFFF;
   text-align: center;
   vertical-align: middle;
   font-size: 14px;
+}*/
+
+.styled-table {
+    overflow-x:auto;
+    width:  700px;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    text-align: left;
+    border-radius:12px;
 }
+
+.styled-table thead tr {
+    background-color: #5CA8F3;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid transparent;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
 
 div#loading {
     position: absolute;
@@ -49,7 +78,7 @@ h6.bubble, span.bubble{
 }
 
 .bubble{
-  background-color: #EEF1F8;
+  background-color: #CBE5FF;
   border: none;
   border-radius: 4px;
   color: #000000;

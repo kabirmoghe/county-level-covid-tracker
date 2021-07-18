@@ -66,7 +66,6 @@ def county_stats(county_name):
 
         des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
 
-
         data2 = data.drop('Mask Mandate Details', axis = 1)
 
         meaninfo = pd.DataFrame(pd.concat([data['Population'], data2.iloc[:, -15:-6]], axis = 1).mean()).transpose().round(2)
@@ -77,9 +76,12 @@ def county_stats(county_name):
             else:
                 meaninfo[col] = int(meaninfo[col].round())
         
-        meaninfo.index = ['U.S. County Avg.']
+        meaninfo.index = ['Avg. American County']
 
         otherinfo = pd.concat([pd.concat([des_row['Population'], des_row.iloc[:, -15:-6]], axis = 1), meaninfo])
+
+        for col in otherinfo.columns:
+            otherinfo[col] = otherinfo[col].apply(lambda value: "{:,}".format(value))
 
         stat = des_row[inf_col].iloc[0]
 
@@ -610,13 +612,13 @@ def avg_plot(cty):
 
     fig = go.Figure()
 
-    fig.add_trace(go.Scatter(name = 'Moving Avg.', x = data['Date (Week of)'], y = data['Moving Avg'], line={'color': '#18FF51', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+    fig.add_trace(go.Scatter(name = '(Moving Avg)', x = data['Date (Week of)'], y = data['Moving Avg'], line={'color': '#18FF51', 'width':5}, mode='lines+markers', hoverinfo = 'y'))
 
-    fig.add_trace(go.Scatter(name = 'Moving Avg.', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 1), line={'color': '#FFF90F', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+    fig.add_trace(go.Scatter(name = '(Moving Avg)', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 1), line={'color': '#FFF90F', 'width':5}, mode='lines+markers', hoverinfo = 'y'))
     
-    fig.add_trace(go.Scatter(name = 'Moving Avg.', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 10), line={'color': '#FFAF00', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+    fig.add_trace(go.Scatter(name = '(Moving Avg)', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 10), line={'color': '#FFAF00', 'width':5}, mode='lines+markers', hoverinfo = 'y'))
     
-    fig.add_trace(go.Scatter(name = 'Moving Avg.', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 25), line={'color': '#ff0b00', 'width':5}, mode='lines+markers', hoverinfo = 'x + y'))
+    fig.add_trace(go.Scatter(name = '(Moving Avg)', x=data['Date (Week of)'], y=data['Moving Avg'].where(data['Moving Avg'] >= 25), line={'color': '#ff0b00', 'width':5}, mode='lines+markers', hoverinfo = 'y'))
     
     '''
     fig.add_trace(go.Scatter(

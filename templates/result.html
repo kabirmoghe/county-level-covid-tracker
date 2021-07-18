@@ -72,7 +72,7 @@
 	<br>
 	<div class = 'ncontent'>
 		<div class = 'title'>
-			<h4>COVID-19 Infection Risk</h4>
+			<h4>COVID-19 Infection Risk <img style = 'max-width: 3.75%; height: auto' src="{{url_for('static', filename = 'virus.png')}}"></h4>
 			<p style = 'color: #99A1AA'><em>Updated {{c_update}}</em></p>
 			<p>7-Day Moving Average: <strong>{{stat}} daily cases per 100,000</strong>&nbsp;</strong><span class="dot" style = 'height: 11px; width: 11px; background-color: {{color}}; border-radius: 50%; display: inline-block;'></span></p>
 			<p>{{info}}<br>
@@ -92,7 +92,7 @@
 	 
 	
 	<div class = 'ncontent'>
-		<div class = 'title' style = 'background-color: #EEF1F8; border: none; border-radius: 8px 8px 0px 0px; color: #000000;padding: 6px;'>
+		<div class = 'title' style = 'background-color: #CBE5FF; border: none; border-radius: 8px 8px 0px 0px; color: #000000;padding: 6px;'>
 				<p></p>
 		  		<div class="myDIV">
 		  			<h6 class = 'bubble' style=";margin-left: {{ctyrisk_pos}}%; background-color: {{color}};"><strong>{{county}}: {{stat}}</strong></h6>
@@ -110,7 +110,7 @@
 		</div>
 	</div>
 	<div class = 'content'>
-		<div class = 'title' style = 'background-color: #EEF1F8;border: none; border-radius: 0px 0px 8px 8px; color: #000000;padding: 6px;'>
+		<div class = 'title' style = 'background-color: #CBE5FF;border: none; border-radius: 0px 0px 8px 8px; color: #000000;padding: 6px;'>
 			<img style="max-width: 70%; height: auto;" src="{{url_for('static', filename='riskchart.png')}}" alt="Breakdown of Infection Rates Risk">
 			<a href="/about#methodology" target = "_blank"><img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='riskkey.png')}}" alt="Breakdown of Infection Rates Risk"></a>
 			<br><br><br>
@@ -122,7 +122,7 @@
 		<div class = 'title'>
 			<p></p>
 				<p><strong>{{rec}}</strong></p><br>
-				<h4>Mandates and Policies for {{county}}</h4>
+				<h4>Mandates and Policies <img style = 'max-width: 5%; height: auto' src="{{url_for('static', filename = 'mask.png')}}"></h4>
 				<p style = 'color: #99A1AA;'><em>{{m_update}}</em></p>
 		</div>
 	</div>
@@ -154,9 +154,9 @@
 		<div class = 'title'>
 			<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
 			<p></p>
-			<h4>Vaccination Progress for {{county}}*</h4>
+			<h4>Vaccination Progress <img style = 'max-width: 4%; height: auto' src="{{url_for('static', filename = 'vaccine.png')}}"></h4>
 			<p style = 'color: #99A1AA'><em>Updated {{v_update}}</em></p>
-			<p><strong>*Note:</strong> {{note}}</p>
+			<p><strong>Note:</strong> {{note}}</p>
 			<p>{{vaxxnote}}</p>
 			<br>
 			<!--Additionally, President Biden has set a <a href="https://www.nbcnews.com/politics/white-house/graphic-track-biden-fourth-july-vaccination-goals-n1268803" target = '_blank'>goal</a> of having 160 million adults fully vaccinated by July 4, <strong>~76.51% of adults</strong>, shown by the red dashed line.-->
@@ -215,7 +215,7 @@
 	</div>
 	<div class = 'ncontent'>
 		
-			<div style="overflow-x:auto;background-color:#E4EEFD; width:700px">
+			<div class = 'styled-table'>
 				{% for item in tbl%}
 			            {{ item|safe }}
 				{% endfor %}

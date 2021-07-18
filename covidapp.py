@@ -7,7 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 def county_list():
-    ctys = list(pd.read_csv('https://raw.githubusercontent.com/kabirmoghe/Demographic-Data/main/countynames.csv')['County Name'].values)
+    ctys = list(pd.read_csv('fulldataset.csv')['County Name'].values)
     return ctys
 
 def county_stats(county_name):

@@ -18,10 +18,9 @@ table, th, td{
 
 .styled-table {
     overflow-x:auto;
-    width:  700px;
+    width: 700px;
     margin: 25px 0;
     font-size: 0.9em;
-    min-width: 400px;
     text-align: left;
     border-radius:12px;
 }
@@ -100,7 +99,7 @@ input#box {
 
 input#getresults {
   border: none;
-  background-color: #B7E1F9;
+  background-color: #CBE5FF;
   border-radius: 5px;
   text-align: center;
 }

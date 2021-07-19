@@ -12,9 +12,9 @@ app.secret_key = 'hello'
 @app.route("/")
 def home():
 
-	templates = os.listdir('/app')
+	templates = os.listdir('/app/templates')
 	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-	[os.remove('/app/{}'.format(file)) for file in templates if file not in needed]
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 
 	readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
 	readbucketdata.readbucketdata('full').to_csv('fulldataset.csv')
@@ -73,9 +73,9 @@ def countyinfo():
 			else:
 				return render_template("undef_result.html", issue = 'Please enter a valid county name (i.e. Orange County, CA). The county you entered, {}, may not have complete information.'.format(county))
 	else:
-		templates = os.listdir('/app')
+		templates = os.listdir('/app/templates')
 		needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-		[os.remove('/app/{}'.format(file)) for file in templates if file not in needed]
+		[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 
 		ctys = covidapp.county_list()
 		return render_template("data.html", ctys = ctys)
@@ -105,18 +105,18 @@ def stats():
 
 	else:
 
-		templates = os.listdir('/app')
+		templates = os.listdir('/app/templates')
 		needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-		[os.remove('/app/{}'.format(file)) for file in templates if file not in needed]
+		[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 
 		return render_template("statshome.html")
 
 @app.route("/explore", methods = ['POST', 'GET'])
 def explore():
 
-	templates = os.listdir('/app')
+	templates = os.listdir('/app/templates')
 	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-	[os.remove('/app/{}'.format(file)) for file in templates if file not in needed]
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 
 	if path.exists('vaxxdataset.csv') == False and path.exists('fulldataset.csv') == False:
 		readbucketdata.readbucketdata('vaxx').to_csv('vaxxdataset.csv')
@@ -134,9 +134,9 @@ def explore():
 			
 	else:
 
-		templates = os.listdir('/app')
+		templates = os.listdir('/app/templates')
 		needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-		[os.remove('/app/{}'.format(file)) for file in templates if file not in needed]
+		[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 		
 		cols = [col for col in pd.read_csv('fulldataset.csv').columns[3:] if col != 'State' and "Mask" not in col]
 		cols.reverse()
@@ -145,9 +145,9 @@ def explore():
 @app.route("/about")
 def about():
 	'''
-	templates = os.listdir('/app')
+	templates = os.listdir('/app/templates')
 	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-	[os.remove('/app/{}'.format(file)) for file in templates if file not in needed]
+	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
 	'''
 	return render_template("about.html")
 

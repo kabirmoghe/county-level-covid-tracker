@@ -23,6 +23,13 @@
 	{% block titles %}Home Page{% endblock %}
 	{% block content%}
 	<br>
+	<div style = 'width: 1000px'>
+		<marquee direction="right">
+			<img style = 'max-width:  5%; height:  auto' src="{{url_for('static', filename = 'nationwideavg.png')}}"> &nbsp; &nbsp;
+			{{fullyvaxx}} million people fully vaccinated
+			<img style = 'max-width:  10%; height:  auto' src="{{url_for('static', filename = 'nationwidevaxx.png')}}">
+		</marquee>
+	</div>
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<h3>About this project</h3>

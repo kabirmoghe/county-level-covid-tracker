@@ -43,7 +43,7 @@ def countyinfo():
 				covidapp.avg_plot(county)
 				allinfo = covidapp.county_stats(county)
 				
-				tbl, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk, c_update, m_update = allinfo
+				tbl, stat, info, rec, risk_pos, pct, mask_details, color, risk, c_update, m_update = allinfo
 
 				ctyrisk_pos = risk_pos - 12.5
 
@@ -68,7 +68,7 @@ def countyinfo():
 				else:
 					note = 'Toggle the button below to show either visualizations on the percentage of fully vaccinated people within the county broken down by age group or visualizations on percent fully vaccinated and percent with at least one dose in the county.'
 
-				return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, y_n_mask = y_n_mask, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk, c_update = c_update, m_update = m_update, v_update = v_update, vaxxkeytype = vaxxkeytype, vaxxnote = vaxxnote, vaxxsize = vaxxsize)
+				return render_template("result.html", county = county, tbl = [tbl.to_html(classes='data', header = True)], stat = stat, info = info, rec = rec, risk_pos = risk_pos, pct = pct, ctyrisk_pos = ctyrisk_pos, mask_details = mask_details, color = color, note = note, ptile = ptile, risk = risk, c_update = c_update, m_update = m_update, v_update = v_update, vaxxkeytype = vaxxkeytype, vaxxnote = vaxxnote, vaxxsize = vaxxsize)
 			
 			else:
 				return render_template("undef_result.html", issue = 'Please enter a valid county name (i.e. Orange County, CA). The county you entered, {}, may not have complete information.'.format(county))
@@ -144,12 +144,14 @@ def explore():
 
 @app.route("/about")
 def about():
-	'''
-	templates = os.listdir('/app/templates')
-	needed = ['index.html', '.DS_Store', 'about.html', 'base.html', 'explore_results.html', 'explorehome.html', 'vaxx_stats.html', 'data.html', 'deaths_stats.html', 'statshome.html', 'cases_stats.html', 'result.html', 'empty.html', 'undef_result.html']
-	[os.remove('/app/templates/{}'.format(file)) for file in templates if file not in needed]
-	'''
-	return render_template("about.html")
+
+	static = os.listdir('/app/static')
+	[os.remove('/app/static/{}'.format(file)) for file in static if file == 'nationwideavg.png']
+
+	covidapp.nationwideavg()
+	fullyvaxx, pct_partial =  covidapp.nationwidevaxx()
+
+	return render_template("about.html", fullyvaxx = fullyvaxx, pct_partial = pct_partial)
 
 if __name__ == '__main__':
     app.run(debug = True)

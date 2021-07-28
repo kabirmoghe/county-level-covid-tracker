@@ -5,10 +5,49 @@ import json
 from urllib.request import urlopen
 import plotly.express as px
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import matplotlib
+import seaborn as sns
+
 
 def county_list():
+
     ctys = list(pd.read_csv('fulldataset.csv')['County Name'].values)
     return ctys
+
+def nationwideavg():
+
+    matplotlib.use('agg')
+
+    data = pd.read_csv('fulldataset.csv', index_col = 0)
+    
+    nationdata = pd.DataFrame(data[[col for col in data.columns if 'Cases' in col and 'Moving' in col]].mean()).reset_index()
+    nationdata.columns = ['Week','Approx. Moving Avg.']
+    nationdata['Week'] = nationdata['Week'].apply(lambda value: value.split('Avg. ')[-1].split(',')[0])
+    
+    nationdata.plot(x = 'Week', y = 'Approx. Moving Avg.', linewidth=25, color = '#3258a8', legend = False)
+    plt.axis('off')
+    plt.savefig('/app/static/nationwideavg.png', bbox_inches='tight')
+
+def nationwidevaxx():
+
+    matplotlib.use('agg')
+
+    sns.set(style = 'dark')
+
+    data = pd.read_csv('https://data.cdc.gov/api/views/unsk-b7fc/rows.csv?accessType=DOWNLOAD')
+    
+    fully_vaxx, pct_partial = round((data[data['Location'] == 'US'].iloc[0][['Series_Complete_Yes','Administered_Dose1_Pop_Pct', ]][0])/1000000, 1), data[data['Location'] == 'US'].iloc[0][['Series_Complete_Yes','Administered_Dose1_Pop_Pct', ]][1]
+
+    y = [pct_partial]
+
+    plt.figure(figsize = (10,2))
+    plt.barh(width = y, y = ' ')
+    plt.tick_params(labelbottom = False)
+    plt.xlim(0,100)
+    plt.savefig('/app/static/nationwidevaxx.png',  bbox_inches='tight')
+
+    return fully_vaxx, pct_partial
 
 def county_stats(county_name):
     if county_name == '':
@@ -58,15 +97,13 @@ def county_stats(county_name):
 
         des_row.rename(index = {des_row.index.values[0]: county_name}, inplace = True)
 
-        mask_info= [des_row[col].values[0] for col in des_row.columns if 'mask' in col.lower()]
+        mask_details= [des_row[col].values[0] for col in des_row.columns if 'mask' in col.lower()][0]
 
-        m_update = [col.split('(')[-1].split(')')[0] for col in data.columns if "mandate" in col.lower() and 'statewide' in col.lower()][0]
+        m_update = [col.split('as of ')[1] for col in data.columns if 'Mask Mandate Details' in col][0]
 
-        y_n_mask, mask_details = mask_info
+        des_row.drop('Mask Mandate Details as of {}'.format(m_update), axis = 1, inplace = True)
 
-        des_row.drop('Mask Mandate Details', axis = 1, inplace = True)
-
-        data2 = data.drop('Mask Mandate Details', axis = 1)
+        data2 = data.drop('Mask Mandate Details as of {}'.format(m_update), axis = 1)
 
         meaninfo = pd.DataFrame(pd.concat([data['Population'], data2.iloc[:, -15:-6]], axis = 1).mean()).transpose().round(2)
 
@@ -154,8 +191,10 @@ def county_stats(county_name):
 
         riskimg = 'riskchart.png'
         risk_pos = (round(26.5+(49*css_prop),2))
-                
-        return otherinfo, stat, info, rec, risk_pos, pct, y_n_mask, mask_details, color, risk, c_update, m_update#, riskimg
+               
+        m_update = 'Updated {}'.format([col.split('as of ')[1] for col in data.columns if 'Mask Mandate Details' in col][0])
+
+        return otherinfo, stat, info, rec, risk_pos, pct, mask_details, color, risk, c_update, m_update#, riskimg
         
 def usplot(c_or_d):
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
@@ -835,7 +874,7 @@ def vaxx_plot(cty):
 
     fig4.add_trace(go.Bar(
         x=data['% At Least Partially Vaccinated as of {}'.format(full_date)],
-        y=[''],
+        y=['1+ Dose'],
         width=[0.5],
         name='% ≥ 1 Dose.',
         orientation='h',
@@ -845,7 +884,7 @@ def vaxx_plot(cty):
         ))
     
     fig4.add_trace(go.Bar(
-        y=[''],
+        y=['Full.'],
         x=data['% Fully Vaccinated as of {}'.format(full_date)],
         width=[0.5],
         name='% Fully Vaxx.',
@@ -855,7 +894,7 @@ def vaxx_plot(cty):
             )
         ))
     
-    fig4.update_layout(barmode = 'overlay', xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(full_date) ,'xanchor': 'center',
+    fig4.update_layout(xaxis_range=[0,100], title ={'text':'% Vaccinated, {}'.format(full_date) ,'xanchor': 'center',
         'yanchor': 'top'}, xaxis_title="% People Vaccinated", font_family="Raleway", hoverlabel_font_family = 'Raleway', title_x=0.5, showlegend = False)
 
     config = {'displayModeBar': False}

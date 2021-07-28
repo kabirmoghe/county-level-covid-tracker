@@ -167,18 +167,17 @@ def create_mask_data():
     }
     
     mainContent = requests.get("https://www.aarp.org/health/healthy-living/info-2020/states-mask-mandates-coronavirus.html")
-
+    
     mask_html = BeautifulSoup(mainContent.text,'lxml')
+    
     
     ps = []
 
     for paragraph in mask_html.find_all('p'):
         ps.append(paragraph.text.strip())
-    
-    mandates = [val for val in ps if val.split(':')[0] == 'Statewide order' or val.split(':')[0] == 'Citywide order'or val.split(':')[0] == 'Territory-wide order']
-    
+        
     sps = []
-
+    
     for span in mask_html.find_all('span'):
     
         txt = span.text.strip()
@@ -189,27 +188,7 @@ def create_mask_data():
     date_txt = sps[15].split()
         
     date_updated = date_txt[5] + ' ' + date_txt[6] + ' ' + date_txt[7]
-    
-    def clean_mandates(ls):
-    
-        clean_mandates = []
-    
-        for string in mandates:
-        
-            s_str = string.split()
-        
-            if len(s_str) == 3:
-                new_str = '{}'.format(s_str[2])
-                clean_mandates.append(new_str)
-        
-            else:
-                new_str = '{} ({} {})'.format(s_str[2][:3], s_str[4].title(), s_str[5].title())
-                clean_mandates.append(new_str)
-            
-        return clean_mandates
 
-    cm = clean_mandates(mandates)
-    
     state_list = []
 
     for heading in mask_html.find_all('h4'):
@@ -221,22 +200,21 @@ def create_mask_data():
     st = pd.DataFrame(state_list, columns=['State'])
     st['State'] = st['State'].map(states)
 
-    md = pd.DataFrame(cm, columns = ['Statewide Mask Mandate (Updated {})'.format(date_updated)])
+    #md = pd.DataFrame(cm, columns = ['Statewide Mask Mandate (Updated {})'.format(date_updated)])
     
     loc = 0
 
     for i in range(len(ps)):
-        if 'Here’s where each state stands on the use of face masks' in ps[i].split(','):
+        if 'Here’s where each state stands on the use of face masks' in ps[i]:
             loc = i+2
         
     newps = ps[loc:]
 
-    mask_info = pd.DataFrame([val for val in newps if len(val) >180 and 'you' not in val.lower()], columns = ['Mask Mandate Details'])
+    mask_info = pd.DataFrame([val for val in newps if len(val) >180 and 'you' not in val.lower()], columns = ['Mask Mandate Details as of {}'.format(date_updated)])
             
-    mask_data = pd.concat([st,md, mask_info], axis = 1)
+    mask_data = pd.concat([st, mask_info], axis = 1)
     
     return mask_data
-
 # Data from usafacts.org (https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/)
 # URLs for cases, deaths, and population data from the above website
 

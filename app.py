@@ -148,10 +148,10 @@ def about():
 	static = os.listdir('/app/static')
 	[os.remove('/app/static/{}'.format(file)) for file in static if file == 'nationwideavg.png']
 
-	covidapp.nationwideavg()
-	fullyvaxx, pct_partial =  covidapp.nationwidevaxx()
+	#covidapp.nationwideavg()
+	#fullyvaxx, pct_partial =  covidapp.nationwidevaxx()
 
-	return render_template("about.html", fullyvaxx = fullyvaxx, pct_partial = pct_partial)
+	return render_template("about.html")#, fullyvaxx = fullyvaxx, pct_partial = pct_partial)
 
 if __name__ == '__main__':
     app.run(debug = True)

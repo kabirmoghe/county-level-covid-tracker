@@ -5,6 +5,7 @@ import io
 from io import StringIO
 import os
 import boto3
+from urllib.request import Request, urlopen
 import readbucketdata
 
 
@@ -185,9 +186,9 @@ def create_mask_data():
         if txt != '' and txt != '|':
             sps.append(txt)
 
-    date_txt = sps[17].split()
+    date_txt = [sp for sp in sps if 'Updated' in sp][0]
         
-    date_updated = date_txt[5] + ' ' + date_txt[6] + ' ' + date_txt[7]
+    date_updated = date_txt.split('Updated ')[-1]
 
     state_list = []
 
@@ -582,9 +583,9 @@ def create_covid_pop_data():
                  12:'December'
                 }
     
-    cases_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv'
-    deaths_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv'
-    pop_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_county_population_usafacts.csv'
+    cases_url = 'https://static.usafacts.org/public/data/covid-19/covid_confirmed_usafacts.csv'
+    deaths_url = 'https://static.usafacts.org/public/data/covid-19/covid_deaths_usafacts.csv'
+    pop_url = 'https://static.usafacts.org/public/data/covid-19/covid_county_population_usafacts.csv'
     
     # Removes space in county names
     
@@ -594,7 +595,11 @@ def create_covid_pop_data():
         return cty
     
     # Creates the cumulative cases dataframe
-    cases = pd.read_csv(cases_url)
+    cases_req = Request(cases_url)
+    cases_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
+    cases_content = urlopen(cases_req)
+
+    cases = pd.read_csv(cases_content)
     cases['countyFIPS'] = cases['countyFIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
     cases = cases[cases['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
     cases['County Name'] = cases['County Name']  + ', ' + cases['State']
@@ -606,7 +611,12 @@ def create_covid_pop_data():
     ctynames = cases['County Name']
     
     # Creates the cumulative deaths dataframe
-    deaths = pd.read_csv(deaths_url)
+
+    deaths_req = Request(deaths_url)
+    deaths_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
+    deaths_content = urlopen(deaths_req)
+
+    deaths = pd.read_csv(deaths_content)
     deaths['countyFIPS'] = deaths['countyFIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
     deaths = deaths[deaths['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
     deaths['County Name'] = deaths['County Name']  + ', ' + deaths['State']
@@ -619,8 +629,11 @@ def create_covid_pop_data():
             return val
 
     # Creates the population dataframe
-    
-    pop = pd.read_csv(pop_url)
+    pop_req = Request(pop_url)
+    pop_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
+    pop_content = urlopen(pop_req)
+
+    pop = pd.read_csv(pop_content)
     pop['countyFIPS'] = pop['countyFIPS'].apply(lambda value: '0' + str(value) if len(str(value)) == 4 else str(value))
     pop = pop[pop['County Name'] != 'Statewide Unallocated'].reset_index(drop = True)
     pop['County Name'] = pop['County Name']  + ', ' + pop['State']

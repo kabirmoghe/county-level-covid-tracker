@@ -171,7 +171,6 @@ def create_mask_data():
     
     mask_html = BeautifulSoup(mainContent.text,'lxml')
     
-    
     ps = []
 
     for paragraph in mask_html.find_all('p'):
@@ -196,7 +195,9 @@ def create_mask_data():
         if len(state_list) == 52:
             break
         else:
-            state_list.append(heading.text.strip())
+            heading = heading.text.strip()
+            if len(heading.split()) <= 4:   
+                state_list.append(heading)
     
     st = pd.DataFrame(state_list, columns=['State'])
     st['State'] = st['State'].map(states)
@@ -207,7 +208,7 @@ def create_mask_data():
 
     for i in range(len(ps)):
         if 'Here’s where each state stands on the use of face masks' in ps[i]:
-            loc = i+2
+            loc = i+1
         
     newps = ps[loc:]
 

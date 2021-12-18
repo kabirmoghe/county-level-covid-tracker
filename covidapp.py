@@ -217,10 +217,10 @@ def usplot(c_or_d):
         num0 = len(data[data[last_case_rate] == 0])
 
         fig = px.choropleth(data, geojson=counties, locations='County FIPS', color=last_case_rate,
-                               color_continuous_scale=['#3EAC58', '#F6E520','#F6E520','#F6E520','#F6E520', '#ED9A0C', '#ED9A0C','#ED9A0C', '#ED9A0C', '#ED9A0C','#E64B01'],
+                               color_continuous_scale=['#3EAC58', '#F6E520','#F6E520','#F6E520','#F6E520', '#ED9A0C', '#ED9A0C','#ED9A0C', '#ED9A0C', '#ED9A0C', '#E64B01','#E64B01','#E64B01','#E64B01','#C92607'],
                                hover_name = 'County Name',
                                hover_data=[last_case_rate, 'Population'],
-                               scope="usa", range_color=[0,25],
+                               scope="usa", range_color=[0,40],
                                labels={last_case_rate:'Infection Risk (Daily Cases per 100k)'}
 
                                )

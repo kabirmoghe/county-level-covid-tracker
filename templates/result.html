@@ -67,7 +67,7 @@
 	<br>
 	<div>
 			
-			<h3 style = 'text-align: center'><a href='/data'><img style = 'max-width: 25px; height: auto; text-align: left' src="{{url_for('static', filename = 'back.png')}}"></a> {{county}}</h3>
+			<h3 style = 'text-align: center'><a href='/data'><img style = 'max-width: 25px; height: auto; text-align: left' src="{{url_for('static', filename = 'back.svg')}}"></a> {{county}}</h3>
 	</div>		
 	<br>
 	<div class = 'ncontent'>
@@ -122,7 +122,7 @@
 		<div class = 'title'>
 			<p></p>
 				<p><strong>{{rec}}</strong></p><br>
-				<h4>Mandates and Policies <img style = 'max-width: 5%; height: auto' src="{{url_for('static', filename = 'mask.png')}}"></h4>
+				<h4>Mandates and Policies <img style = 'max-width: 5%; height: auto' src="{{url_for('static', filename = 'mask.svg')}}"></h4>
 				<p style = 'color: #99A1AA;'><em>{{m_update}}</em></p>
 		</div>
 	</div>
@@ -131,8 +131,16 @@
 
 				<p>{{mask_details}}</p>
 				<p></p>
+				<p>Learn more about mandates in {{state}}:
+				<ul>
+				{% for item in link_dict %}
+					<li><a href={{link_dict[item]}} target = "_blank">{{item}}</a></li>
+				{% endfor %}
+				</ul>
+				</p>
 		</div>
 	</div>
+	<!--
 	<div class = 'ncontent'>
 		<div class = 'title'>
 				<p></p>
@@ -149,11 +157,12 @@
 			</ul>
 		</div>
 	</div>
+    -->
 	<div class = 'ncontent'>
 		<div class = 'title'>
 			<!--<img style="max-width: 50%; height: auto;" src="{{url_for('static', filename='countyplot.png')}}" alt="Change in Infection Rate Over Time">-->
 			<p></p>
-			<h4>Vaccination Progress <img style = 'max-width: 4%; height: auto' src="{{url_for('static', filename = 'vaccine.png')}}"></h4>
+			<h4>Vaccination Progress <img style = 'max-width: 4%; height: auto' src="{{url_for('static', filename = 'vaccine.svg')}}"></h4>
 			<p style = 'color: #99A1AA'><em>Updated {{v_update}}</em></p>
 			<p><strong>Note:</strong> {{note}}</p>
 			<p>{{vaxxnote}}</p>

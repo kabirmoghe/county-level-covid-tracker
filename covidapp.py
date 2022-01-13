@@ -99,11 +99,13 @@ def county_stats(county_name):
 
         mask_details= [des_row[col].values[0] for col in des_row.columns if 'mask' in col.lower()][0]
 
+        mask_links = des_row["Learn More"].values[0]
+
         m_update = [col.split('as of ')[1] for col in data.columns if 'Mask Mandate Details' in col][0]
 
-        des_row.drop('Mask Mandate Details as of {}'.format(m_update), axis = 1, inplace = True)
+        des_row.drop(['Mask Mandate Details as of {}'.format(m_update), "Learn More"], axis = 1, inplace = True)
 
-        data2 = data.drop('Mask Mandate Details as of {}'.format(m_update), axis = 1)
+        data2 = data.drop(['Mask Mandate Details as of {}'.format(m_update), "Learn More"], axis = 1)
 
         meaninfo = pd.DataFrame(pd.concat([data['Population'], data2.iloc[:, -15:-6]], axis = 1).mean()).transpose().round(2)
 
@@ -194,7 +196,7 @@ def county_stats(county_name):
                
         m_update = 'Updated {}'.format([col.split('as of ')[1] for col in data.columns if 'Mask Mandate Details' in col][0])
 
-        return otherinfo, stat, info, rec, risk_pos, pct, mask_details, color, risk, c_update, m_update#, riskimg
+        return otherinfo, stat, info, rec, risk_pos, pct, mask_details, mask_links, color, risk, c_update, m_update#, riskimg
         
 def usplot(c_or_d):
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:

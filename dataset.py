@@ -209,12 +209,34 @@ def create_mask_data():
     for i in range(len(ps)):
         if 'Here’s where each state stands on the use of face masks' in ps[i]:
             loc = i+1
+    
+    # Link portion
+    
+    full_ps = []
+
+    for p in mask_html.find_all("p"):
+        full_ps.append(p)
+    
+    moreInfo = [p for p in full_ps if "learn more:" in p.text.strip().lower()]
+    
+    links = []
+
+    for val in moreInfo:
+        state_links = ""
+        for link in val.find_all('a', href = True):
+            if len(state_links) > 0:
+                state_links += ", " + link.text.strip().title() + " - " + link["href"] 
+            else:
+                state_links = link.text.strip().title() + " - " + link["href"]
+        links.append(state_links)
+            
+    links = pd.DataFrame(links, columns = ["Learn More"])
         
     newps = ps[loc:]
 
-    mask_info = pd.DataFrame([val for val in newps if len(val) >180 and 'you' not in val.lower()], columns = ['Mask Mandate Details as of {}'.format(date_updated)])
+    mask_info = pd.DataFrame([val for val in newps if len(val) >120 and 'you' not in val.lower()], columns = ['Mask Mandate Details as of {}'.format(date_updated)])
             
-    mask_data = pd.concat([st, mask_info], axis = 1)
+    mask_data = pd.concat([st, mask_info, links], axis = 1)
     
     return mask_data
 # Data from usafacts.org (https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/)
@@ -756,9 +778,12 @@ def create_vaxx_data():
 
         data = data[['Date', 'Recip_County', 'Series_Complete_Pop_Pct',
            'Series_Complete_12PlusPop_Pct', 'Series_Complete_18PlusPop_Pct',
-           'Series_Complete_65PlusPop_Pct', 'Administered_Dose1_Pop_Pct']]
+           'Series_Complete_65PlusPop_Pct', 'Administered_Dose1_Pop_Pct',
+           'Booster_Doses_Vax_Pct', 'Booster_Doses_18Plus_Vax_Pct', 
+           'Booster_Doses_50Plus_Vax_Pct', 'Booster_Doses_65Plus_Vax_Pct']]
 
-        data.columns = ['Date', 'County Name', '% Fully Vaccinated as of {}'.format(date),'% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date), '% At Least Partially Vaccinated as of {}'.format(date)]
+        data.columns = ['Date', 'County Name', '% Fully Vaccinated as of {}'.format(date),'% ≥ 12 Fully Vaccinated as of {}'.format(date), '% ≥ 18 Fully Vaccinated as of {}'.format(date), '% ≥ 65 Fully Vaccinated as of {}'.format(date), '% At Least Partially Vaccinated as of {}'.format(date), 
+                        '% with Vaxx. and Booster as of {}'.format(date), '% ≥ 18 with Vaxx. and Booster as of {}'.format(date), '% ≥ 50 with Vaxx. and Booster as of {}'.format(date), '% ≥ 65 with Vaxx. and Booster as of {}'.format(date)]
 
         dates = list(data['Date'])
 
@@ -768,8 +793,10 @@ def create_vaxx_data():
 
         data['Date'] = data['Date'].apply(lambda date: word_name(date))
         
+        # Dec 15 first day for boosters
+        
         return data
-
+        
     data = data()
 
     data = data[data['County Name'] != 'Chattahoochee County, GA']
@@ -816,7 +843,7 @@ def combiner():
 
     return county_data
 
-def main_function():
+def main():
     data = combiner()
     
     filename = 'fulldataset.csv'
@@ -830,4 +857,4 @@ def main_function():
     response = client.put_object(Body = csv_buffer.getvalue(), Bucket = bucketname, Key = filename)
 
 if __name__ == '__main__':
-    main_function()
+    main()

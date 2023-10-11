@@ -14,10 +14,25 @@ import readbucketdata
 # Basic Stats Relating to the Virus *download "stat_data.csv", attached, and insert the path of the file*
 
 # "stat_data.csv" comes from the census website and has been cut down to only a few important attributes; download the full file here: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/cc-est2019-alldata.csv
+def get_private_data(token, owner, repo, path):
+    r = requests.get(
+        'https://api.github.com/repos/{owner}/{repo}/contents/{path}'.format(
+    owner=owner, repo=repo, path=path),
+    headers={
+        'accept': 'application/vnd.github.v3.raw',
+        'authorization': 'token {}'.format(token)
+            }
+    )
+
+    string_io_obj = StringIO(r.text)
+    df = pd.read_csv(string_io_obj, sep=",", index_col=0)
+    
+    return df
 
 def create_race_data():
     
-    stat_data = pd.read_csv('https://raw.githubusercontent.com/kabirmoghe/Demographic-Data/main/stat_data.csv', index_col = 0)
+    stat_data = get_private_data('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','kabirmoghe','Demographic-Data','stat_data.csv')
+    # pd.read_csv('https://raw.githubusercontent.com/kabirmoghe/Demographic-Data/main/stat_data.csv', index_col = 0)
     
     pop_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_county_population_usafacts.csv'
 
@@ -185,9 +200,12 @@ def create_mask_data():
         if txt != '' and txt != '|':
             sps.append(txt)
 
-    date_txt = [sp for sp in sps if 'Updated' in sp][0]
-        
-    date_updated = date_txt.split('Updated ')[-1]
+    date_updated = ""
+    
+    for i in range(len(sps)):
+        if "Published" in sps[i]:
+            date_updated = sps[i+1]
+            break
 
     state_list = []
 
@@ -205,10 +223,10 @@ def create_mask_data():
     #md = pd.DataFrame(cm, columns = ['Statewide Mask Mandate (Updated {})'.format(date_updated)])
     
     loc = 0
-
     for i in range(len(ps)):
-        if 'Here’s where each state stands on the use of face masks' in ps[i]:
-            loc = i+1
+        if "Alabama" in ps[i]:
+            loc = i
+            break
     
     # Link portion
     
@@ -232,13 +250,16 @@ def create_mask_data():
             
     links = pd.DataFrame(links, columns = ["Learn More"])
         
-    newps = ps[loc:]
+    # newps = ps[loc:]
 
-    mask_info = pd.DataFrame([val for val in newps if len(val) >120 and 'you' not in val.lower()], columns = ['Mask Mandate Details as of {}'.format(date_updated)])
+    mask_info = pd.DataFrame([h4.find_next_sibling('p').text for h4 in mask_html.find_all('h4')], columns = ['Mask Mandate Details as of {}'.format(date_updated)])
+
+    # mask_info = pd.DataFrame([val for val in newps if len(val) >120 and 'you' not in val.lower()], columns = ['Mask Mandate Details as of {}'.format(date_updated)])
             
     mask_data = pd.concat([st, mask_info, links], axis = 1)
     
     return mask_data
+    
 # Data from usafacts.org (https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/)
 # URLs for cases, deaths, and population data from the above website
 

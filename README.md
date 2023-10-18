@@ -16,6 +16,7 @@ This repository contains the core parts of the webapp, namely the python files t
 ### Files/Code + Significance:
 * <b>Static</b>: images, graphics, etc.
 * <b>Templates</b>: HTML files (frontend) used in conjunction with the python backend
+* <b>Procfile</b>: outlines procedure for running app on Heroku
 * <b>app.py</b>: implements routes for the app and defines what happens at each page, passes variables to the frontend, etc.
 * <b>covidapp.py</b>: creates many functions for calculating metrics on the data
 * <b>dataset.py</b>: automated script for producing county-level COVID-19 dataset & place in S3

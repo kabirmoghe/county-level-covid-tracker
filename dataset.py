@@ -32,7 +32,7 @@ def get_private_data(token, owner, repo, path):
 def create_race_data():
     
     # Gets demographic data
-    stat_data = get_private_data('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','kabirmoghe','Demographic-Data','stat_data.csv')
+    stat_data = get_private_data(TOKEN,OWNER,REPO,PATH)
     
     # Population data source
     pop_url = 'https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_county_population_usafacts.csv'

@@ -13,7 +13,7 @@ def readbucketdata(file):
     else:
         filename = 'fulldataset.csv'
     
-    bucketname = 'coviddatakm'
+    bucketname = BUCKETNAME
 
     client = boto3.client('s3')
 

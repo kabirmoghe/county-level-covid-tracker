@@ -4,6 +4,7 @@ import os
 import boto3
 import pandas as pd
 
+# Reads COVID-19 dataset from S3 bucket (1 of 2)
 def readbucketdata(file):
 
     if file == 'vaxx':

@@ -6,7 +6,7 @@ A tool for users across the United States (everyone from school faculty, to stat
 
 Check out the app [here](https://livecovidapp.herokuapp.com)!
 
-_Note: many data providers like the CDC have stopped regularly collecting/publishing county-level data given that 3+ years have passed since the pandemic's onset, so information provided will be as recent as possible (based on the recency of source data) but may not be up-to-date. As a result, please also excuse issues with the app and sudden breakdowns._
+_<b>Note</b>: many data providers like the CDC have stopped regularly collecting/publishing county-level data given that 3+ years have passed since the pandemic's onset, so information provided will be as recent as possible (based on the recency of source data) but may not be up-to-date. As a result, please also excuse issues with the app and sudden breakdowns._
 
 ## Purpose & Takeaways
 * The story behind this app began with the need for granular information on COVID-19, prompting the development of county-level data on infections, mortality, mandates, county demographics, and a whole series of evolving attributes (with the initial motivation described in more detail [here](https://kabirmoghe.medium.com/county-based-covid-19-dataset-and-analytical-trends-ff1617030ba8)). Ultimately, I hoped to democratize the data and interpret it in a parsable way for others who were also in the dark. This ultimately evolved into the app you see today, before other sites like [CovidActNow](https://covidactnow.org/?s=48033551) and the New York Times' COVID-19 tracker popped up. I shared the app and its data with faculty at my school and some officials at WHO, whose feedback helped improve the data and metrics over time.

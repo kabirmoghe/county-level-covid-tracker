@@ -1,7 +1,10 @@
 # Live County-Level COVID-19 Tracker [2020 - ]
 A tool for users across the United States (everyone from school faculty, to state officials, to everyday users and more) to track the local effects of and measures against COVID-19, integrating real-world and self-updating data with intuitive metrics & displays.
+
 1) Learn more about the application on my [blog post]([url](https://kabirmoghe.medium.com/live-covid-19-county-level-web-app-dbd6db3cc6bf)).
 2) Take a look at some analysis I performed in early 2020 on another [blog post](https://kabirmoghe.medium.com/county-based-covid-19-dataset-and-analytical-trends-ff1617030ba8).
+
+Check out the app [here](https://livecovidapp.herokuapp.com)!
 
 ## Purpose & Takeaways
 * The story behind this app began with the need for granular information on COVID-19, prompting the development of county-level data (described more in depth in post (2)). Ultimately, I hoped to democratize the data and interpret it in a parsable way for others that needed the data. This ultimately evolved into the app you see today, before other sites like [covidactnow](https://covidactnow.org/?s=48033551) and the New York Times' COVID-19 tracker popped up. I shared the data with faculty at my school and some officials at WHO to get feedback and ultimately improved the data and metrics over time.

@@ -1,4 +1,4 @@
-# Live County-Level COVID-19 Tracker [2020 - ]
+# County-Level COVID-19 Tracker
 A tool for users across the United States (everyone from school faculty, to state officials, to everyday users and more) to track the local effects of and measures against COVID-19, integrating real-world and self-updating data with intuitive metrics & displays.
 
 1) Learn more about the application on my [blog post](https://kabirmoghe.medium.com/live-covid-19-county-level-web-app-dbd6db3cc6bf).
